@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 
 
 class UserBase(BaseModel):
-    id: int
     username: str = Field(min_length=3, max_length=16)
     password: str = Field(min_length=3, max_length=16)
     role: str = Field(min_length=1)
@@ -24,7 +23,7 @@ class UserUpdate(UserBase):
 
 
 class UserUpdatePartial(UserBase):
-    id: int
+    id: int | None = None
     username: str | None = None
     password: str | None = None
     role: str | None = None
