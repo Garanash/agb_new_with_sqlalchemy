@@ -26,7 +26,6 @@ class MetizCreate(MetizBase):
     pass
 
 
-
 class MetizRead(MetizBase):
     id: int
 
@@ -36,7 +35,7 @@ class MetizUpdate(MetizBase):
 
 
 class MetizUpdatePartial(MetizBase):
-    id: int
+    id: int | None = None
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None
