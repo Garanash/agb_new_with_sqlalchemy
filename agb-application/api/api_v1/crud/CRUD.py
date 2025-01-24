@@ -34,8 +34,8 @@ async def update_object(
 ):
     for name, value in object_updating.model_dump(exclude_unset=partial).items():
         setattr(object_for_update, name, value)
-        await session.commit()
-        return object_for_update
+    await session.commit()
+    return object_for_update
 
 
 async def delete_object(

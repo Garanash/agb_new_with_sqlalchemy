@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from asyncpg import UniqueViolationError
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -24,8 +25,11 @@ async def get_metizes(
 async def create_metiz(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         metiz_create: MetizCreate):
-    metiz = await create_new_object(session=session, object_create=metiz_create, model=Metiz)
-    return metiz
+    try:
+        metiz = await create_new_object(session=session, object_create=metiz_create, model=Metiz)
+        return metiz
+    except BaseException:
+        return HTTPException(status_code=status.HTTP_409_CONFLICT, detail="metiz already exists")
 
 
 @router.get('/{object_id}', response_model=None, response_model_by_alias=True)
