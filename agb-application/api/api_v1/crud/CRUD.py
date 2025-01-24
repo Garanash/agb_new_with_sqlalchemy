@@ -1,24 +1,24 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from api.api_v1.schemas import UserUpdatePartial, UserCreate, MetizCreate, RWDCreate, RWDUpdatePartial, \
-    MetizUpdatePartial
-from core.models import Metiz, User, RWD
+    MetizUpdatePartial, ProjectUpdatePartial, ProjectCreate
+from core.models import Metiz, User, RWD, Project
 from typing import Optional
 
 
-async def get_all_objects(session: AsyncSession, model: Optional[type[User | Metiz | RWD]]):
+async def get_all_objects(session: AsyncSession, model: Optional[type[User | Metiz | RWD | Project]]):
     stmt = select(model).order_by(model.id)
     result = await session.scalars(stmt)
     return result.all()
 
 
-async def get_object_by_id(session: AsyncSession, model: Optional[type[User | Metiz | RWD]], request_id: int):
+async def get_object_by_id(session: AsyncSession, model: Optional[type[User | Metiz | RWD | Project]], request_id: int):
     return await session.get(model, request_id)
 
 
 async def create_new_object(session: AsyncSession,
-                            model: Optional[type[User | Metiz | RWD]],
-                            object_create: Optional[UserCreate | MetizCreate | RWDCreate]
+                            model: Optional[type[User | Metiz | RWD | Project]],
+                            object_create: Optional[UserCreate | MetizCreate | RWDCreate | ProjectCreate]
                             ):
     obj = model(**object_create.model_dump())
     session.add(obj)
@@ -28,8 +28,8 @@ async def create_new_object(session: AsyncSession,
 
 async def update_object(
         session: AsyncSession,
-        object_for_update: Optional[User | Metiz | RWD],
-        object_updating: Optional[UserUpdatePartial | MetizUpdatePartial | RWDUpdatePartial],
+        object_for_update: Optional[User | Metiz | RWD | Project],
+        object_updating: Optional[UserUpdatePartial | MetizUpdatePartial | RWDUpdatePartial | ProjectUpdatePartial],
         partial: bool = True
 ):
     for name, value in object_updating.model_dump(exclude_unset=partial).items():
@@ -40,7 +40,7 @@ async def update_object(
 
 async def delete_object(
         session: AsyncSession,
-        model: Optional[type[User | Metiz | RWD | None]]
+        model: Optional[type[User | Metiz | RWD | Project | None]]
 ) -> None:
     await session.delete(model)
     await session.commit()

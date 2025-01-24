@@ -11,6 +11,7 @@ class ApiV1Prefix(BaseModel):
     users: str = '/users'
     metiz: str = '/metiz'
     RWD: str = '/RWD'
+    project: str = "/project"
 
 
 class ApiPrefix(BaseModel):
