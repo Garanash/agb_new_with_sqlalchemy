@@ -1,5 +1,3 @@
-from fastapi import HTTPException, status
-from sqlalchemy.exc import NoResultFound
 from sqlalchemy import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
