@@ -1,9 +1,8 @@
-from sqlalchemy import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from api.api_v1.schemas import UserBase, MetizBase, UserUpdatePartial, UserCreate, MetizCreate
+from api.api_v1.schemas import MetizBase, UserUpdatePartial, UserCreate, MetizCreate
 from core.models import Metiz, User
-from typing import Any, Optional
+from typing import Optional
 
 
 async def get_all_objects(session: AsyncSession, model: Optional[type[User | Metiz]]):
