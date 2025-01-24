@@ -20,7 +20,7 @@ async def lifespan(app: FastAPI):
 main_app = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
 main_app.include_router(
     api_router,
-    prefix=settings.api.prefix
+    prefix=settings.api.prefix # убрать при деплое
 )
 
 
