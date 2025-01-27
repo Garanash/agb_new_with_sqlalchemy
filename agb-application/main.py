@@ -26,7 +26,7 @@ main_app.include_router(
 
 @main_app.get('/')
 def main(request: Request):
-    return templates.TemplateResponse('/search/start.html', {'request': request})
+    return templates.TemplateResponse('start.html', {'request': request})
 
 
 

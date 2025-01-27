@@ -69,7 +69,10 @@
                        data-id="{{item.id}}"
                        data-method="patch"
                     >Изменить
-                    </a> |
+                    </a>
+                    {% if user.superuser === true %}
+                       <!-- Код, который выполняется, если условие истинно -->
+                    |
                     <a id="deleteLink{{item.id}}"
                        data-id="{{item.id}}"
                        href="/metizes/delete/{{item.id}}"
@@ -77,6 +80,7 @@
                        class="btn btn-danger"
                     >Удалить
                     </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

@@ -11,10 +11,13 @@ from api.api_v1.views.purchasedhydroperforator import router as purchasedhydrope
 from api.api_v1.views.adapters_and_plugs import router as adapterandplugs_router
 from api.api_v1.views.according_to_the_draw import router as according_to_the_draw_router
 from api.api_v1.views.search import router as search_router
+from api.api_v1.auth.views import router as auth_router
+
 
 router = APIRouter(
     # prefix=settings.api.v1.prefix
 )
+router.include_router(auth_router)
 router.include_router(users_router, prefix=settings.api.v1.users)
 router.include_router(metiz_router, prefix=settings.api.v1.metiz)
 router.include_router(rwd_router, prefix=settings.api.v1.RWD)
