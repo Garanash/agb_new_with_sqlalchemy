@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <form action="/metizes/create" method="POST">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Номер в каталоге</label>
+                    <input type="text" name="number_in_catalog" placeholder="number_in_katalog" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Номер в каталоге АГБ</label>
+                    <input type="text" name="number_in_catalog_agb" placeholder="number_in_katalog_agb"
+                           class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Название в КД</label>
+                    <input type="text" name="name_in_kd" placeholder="name_in_kd" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Название в каталоге</label>
+                    <input type="text" name="name_in_catalog" placeholder="name_in_katalog" class="form-control"/>
+                </div>
+
+                <div class="col">
+                    <label>Название в каталоге АГБ</label>
+                    <input type="text" name="name_in_catalog_agb" placeholder="name_in_katalog_agb"
+                           class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Стандарт
+                        <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
+                    <input type="text" name="standard" placeholder="standard" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Тип</label>
+                    <select class="form-select" aria-label="Default select example" id="type" name="type" typeof="text">
+                        <option value="-">-- Выберите тип --</option>
+                        <option value="bolt">Болт</option>
+                        <option value="samorez">Саморез</option>
+                        <option value="gvozd">Гвоздь</option>
+                        <option value="shayba">Шайба</option>
+                        <option value="vint">Винт</option>
+                        <option value="gayka">Гайка</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Профиль</label>
+                    <select class="form-select" aria-label="Default select example" id="profile" name="profile"
+                            typeof="text">
+                        <option value="-">-- Выберите профиль --</option>
+                        <option value="UNC">UNC</option>
+                        <option value="M">M</option>
+                        <option value="ПСВ.711141.001">ПСВ.711141.001</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Диаметр <small>(Номинальный)</small></label>
+                    <input type="text" name="diameter_nominal" placeholder="diameter" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Шаг резьбы</label>
+                    <input type="text" name="step" placeholder="step" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Длинна</label>
+                    <input type="text" name="length" placeholder="length" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Класс прочности</label>
+                    <input type="text" name="accuracy" placeholder="accuracy" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Материал покрытия</label>
+                    <input type="text" name="material_or_coverage" placeholder="material" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Присвоил</label>
+                    <input required type="text" name="assigned" placeholder="assigned"
+                           class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Примечание</label>
+                    <input type="text" name="note" placeholder="note" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Применяемость</label>
+                    <input type="text" name="applicability" placeholder="applicability" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Дата</label>
+                    <input type="datetime-local" name="date" placeholder="date"
+                           class="form-control" value="{{ current_datetime }}" readonly/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <button class="btn btn-primary" style="width: 400px">Создать</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

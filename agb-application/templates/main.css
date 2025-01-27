@@ -1,0 +1,13 @@
+#search {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh; /* задаем высоту контейнера */
+}
+.wrapper{
+width:100%;
+}
+.body{
+background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(112,112,112,1) 41%, rgba(20,20,20,0.9528186274509804) 73%, rgba(178,190,193,1) 100%);
+}

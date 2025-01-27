@@ -20,13 +20,14 @@ async def lifespan(app: FastAPI):
 main_app = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
 main_app.include_router(
     api_router,
-    prefix=settings.api.prefix # убрать при деплое
+    # prefix=settings.api.prefix # убрать при деплое
 )
 
 
 @main_app.get('/')
 def main(request: Request):
-    return templates.TemplateResponse('fake_start.html', {'request': request})
+    return templates.TemplateResponse('/search/start.html', {'request': request})
+
 
 
 if __name__ == '__main__':
