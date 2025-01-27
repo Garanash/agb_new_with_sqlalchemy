@@ -12,7 +12,10 @@ class ApiV1Prefix(BaseModel):
     metiz: str = '/metiz'
     RWD: str = '/RWD'
     project: str = "/project"
-
+    purchased: str = '/purchased'
+    purchasedHydro: str = '/purchased_hydroperforator'
+    according: str = '/according_to_the_draw'
+    adaptersAndPlugs: str = '/adapter_and_plugs'
 
 class ApiPrefix(BaseModel):
     prefix: str = '/api'
