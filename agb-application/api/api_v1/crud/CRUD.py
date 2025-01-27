@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, Sequence, text, or_
+from sqlalchemy.inspection import inspect
 from api.api_v1.schemas import UserUpdatePartial, UserCreate, MetizCreate, RWDCreate, RWDUpdatePartial, \
     MetizUpdatePartial, ProjectUpdatePartial, ProjectCreate, PurchasedUpdatePartial, PurchasedCreate, \
     PurchasedHydroperforatorCreate, PurchasedHydroperforatorUpdatePartial, AdapterAndPlugsUpdatePartial, \
@@ -55,3 +56,18 @@ async def delete_object(
 ) -> None:
     await session.delete(model)
     await session.commit()
+
+
+async def search_by_request(
+        session: AsyncSession,
+        model: Optional[type[
+            User | Metiz | RWD | Project | AdaptersAndPlugs | AccordingToTheDrawing | Purchased | PurchasedHydroperforator]],
+        request: str
+):
+    attributes = [attr.key for attr in inspect(model).mapper.attrs]
+    attributes.pop(attributes.index('marked_for_deletion'))
+    attributes.pop(attributes.index('id'))
+    conditions = [getattr(model, attr).ilike(f"%{request}%") for attr in attributes]
+    query = select(model).where(or_(*conditions))
+    result = await session.execute(query)
+    return result.scalars().all()

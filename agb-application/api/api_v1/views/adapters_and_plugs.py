@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.api_v1.schemas.adapters_and_plugs import AdapterAndPlugsRead, AdapterAndPlugsCreate, \
     AdapterAndPlugsUpdatePartial, AdapterAndPlugsBase, AdapterAndPlugsDelete
 from core.models import db_helper, AdaptersAndPlugs
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object
+from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
+    search_by_request
 
 router = APIRouter(
     tags=['AdapterAndPlugsBases'],
@@ -67,3 +68,11 @@ async def update_adapters_and_plugs_by_id(
         object_updating=adapters_and_plugs_updated,
         object_for_update=adapters_and_plugs,
     )
+
+
+@router.get('/s/{request_item}')
+async def search_adapter_by_request(
+        request_item: str,
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+):
+    return await search_by_request(request=request_item, session=session, model=AdaptersAndPlugs)

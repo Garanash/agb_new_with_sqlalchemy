@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.api_v1.schemas.project import ProjectRead, ProjectCreate, ProjectUpdatePartial, ProjectBase, ProjectDelete
 from core.models import db_helper, Project
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object
+from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
+    search_by_request
 
 router = APIRouter(
     tags=['ProjectBases'],
@@ -64,3 +65,10 @@ async def update_project_by_id(
         object_updating=project_updated,
         object_for_update=project,
     )
+
+@router.get('/s/{request_item}')
+async def search_project_by_request(
+        request_item: str,
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+):
+    return await search_by_request(request=request_item, session=session, model=Project)
