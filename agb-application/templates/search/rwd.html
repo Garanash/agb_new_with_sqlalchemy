@@ -73,63 +73,11 @@
                 <li><a href="/search_rwd" class="nav-link px-2 link-secondary">РВД</a></li>
                 <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
                 <li><a href="/search_adapters" class="nav-link px-2 link-body-emphasis">Адаптеры</a></li>
-                <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
                 <li><a href="/search_purchasedhydro" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
             </ul>
-
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Войти
-            </button>
-            <!--            MODAL-->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Вход: </h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="/auth/autorize_me" method="POST">
-                                <div class="container">
-                                    <label> Введите имя пользователя</label>
-                                    <br>
-                                    <input class="form-control" type="text" name="username" placeholder="username">
-                                </div>
-                                <div class="container">
-                                    <label> Введите пароль</label>
-                                    <br>
-                                    <input class="form-control" type="password" name="password" placeholder="password">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Отправить</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
-        <!--            <div class="dropdown text-end">-->
-        <!--                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"-->
-        <!--                   data-bs-toggle="dropdown" aria-expanded="false">-->
-        <!--                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">-->
-        <!--                </a>-->
-        <!--                <ul class="dropdown-menu text-small">-->
-        <!--                    <li><a class="dropdown-item" href="#">New project...</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Settings</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Profile</a></li>-->
-        <!--                    <li>-->
-        <!--                        <hr class="dropdown-divider">-->
-        <!--                    </li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Sign out</a></li>-->
-        <!--                </ul>-->
-        <!--            </div>-->
-    </div>
     </div>
 </header>
 <div class="container" id="search">
@@ -140,7 +88,7 @@
     </div>
     <br><br>
     <div class="wrapper">
-        <form action="/metizes/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
+        <form action="/RWD/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
             <input id="main_input" name="main_input" type="text" class="form-control"
                    placeholder="Введите название или артикул"
                    aria-label="Recipient's username" aria-describedby="button-addon2">
