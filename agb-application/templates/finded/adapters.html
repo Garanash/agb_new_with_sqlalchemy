@@ -1,0 +1,139 @@
+{% extends '/finded/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="page-header text-center">
+        Поиск
+    </h1>
+    <div class="wrapper">
+        <form action="/metiz/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
+            <input id="main_input" name="main_input" type="text" class="form-control"
+                   placeholder="Введите название или артикул"
+                   aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button class="btn btn-primary" type="submit" id="button-addon2">Поиск</button>
+        </form>
+    </div>
+</div>
+<div class="row" style="margin:20px;">
+    <div class="col-12">
+        <a href="/adapter/addnew" class="btn btn-primary">Добавить</a>
+        <br><br>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="rotated">Номер в каталоге</th>
+                    <th class="rotated">Номер в каталоге АГБ</th>
+                    <th class="rotated">Имя в каталоге</th>
+                    <th class="rotated">Имя в КД</th>
+                    <th class="rotated">Имя в каталоге АГБ</th>
+                    <th class="rotated">Тип адаптера</th>
+                    <th class="rotated">Угол адаптера</th>
+                    <th class="rotated">Выход 1</th>
+                    <th class="rotated">Выход 2</th>
+                    <th class="rotated">Выход 3</th>
+                    <th class="rotated">Имя в ОЕМ</th>
+                    <th class="rotated">Присвоил</th>
+                    <th class="rotated">Примечание</th>
+                    <th class="rotated">Применяемость</th>
+                    <th class="rotated">Дата присвоения</th>
+                    <th width="250px"> Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+            {% for item in adapters %}
+            <tr>
+                <td>{{ item.number_in_catalog }}</td>
+                <td>{{ item.number_in_catalog_agb }}</td>
+                <td>{{ item.name_in_catalog }}</td>
+                <td>{{ item.name_in_KD }}</td>
+                <td>{{ item.name_in_catalog_agb }}</td>
+                <td>{{ item.adapter_type }}</td>
+                <td>{{ item.adapter_angle }}</td>
+                <td>{{ item.exit_first }}</td>
+                <td>{{ item.exit_second }}</td>
+                <td>{{ item.center_exit }}</td>
+                <td>{{ item.name_in_OEM }}</td>
+                <td>{{ item.assigned }}</td>
+                <td>{{ item.note }}</td>
+                <td>{{ item.applicability }}</td>
+                <td>{{ item.date }}</td>
+                <td>
+                    <a id="patchLink{{item.id}}"
+                       href="/metiz/patch/{{item.id}}"
+                       class="btn btn-success"
+                       data-id="{{item.id}}"
+                       data-method="patch"
+                    >Изменить
+                    </a>
+<!--                    |-->
+<!--                    <a id="deleteLink{{item.id}}"-->
+<!--                       data-id="{{item.id}}"-->
+<!--                       href="/metizes/delete/{{item.id}}"-->
+<!--                       data-method="delete"-->
+<!--                       class="btn btn-danger"-->
+<!--                    >Удалить-->
+<!--                    </a>-->
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .rotated {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    }
+</style>
+<script>
+    document.getElementById('deleteLink').addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const id = this.getAttribute('data-id');
+
+      fetch('/adapters/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // Обновите UI после успешного удаления
+        this.remove(); // Удаляем сам элемент ссылки
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+    document.getElementById('patchLink').addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const id = this.getAttribute('data-id');
+
+          fetch('/adapters/patch', {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: id }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+            // Обновите UI после успешного удаления
+            this.remove(); // Удаляем сам элемент ссылки
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        });
+</script>
+</script>
+{% endblock content %}
+        
