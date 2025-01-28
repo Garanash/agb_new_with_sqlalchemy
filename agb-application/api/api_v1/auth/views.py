@@ -42,12 +42,14 @@ async def auth_login_cookie(
         if credentials.password == res.password:
             token = security.create_access_token(uid=res.username)
             response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
-            return templates.TemplateResponse('authuser.html',
-                                              {"request": request,
-                                               "response": response,
-                                               "username": credentials.username,
-                                               "password": credentials.password
-                                               })
+            return templates.TemplateResponse(
+                'authuser.html',
+                {
+                    "request": request,
+                    "response": response,
+                    "username": credentials.username,
+                    "password": credentials.password
+                    })
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
 
 
