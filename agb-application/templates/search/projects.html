@@ -78,77 +78,87 @@
                 <li><a href="/search_purchasedhydro" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
             </ul>
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Войти
-            </button>
-            <!--            MODAL-->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Вход: </h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="/auth/autorize_me" method="POST">
-                                <div class="container">
-                                    <label> Введите имя пользователя</label>
-                                    <br>
-                                    <input class="form-control" type="text" name="username" placeholder="username">
-                                </div>
-                                <div class="container">
-                                    <label> Введите пароль</label>
-                                    <br>
-                                    <input class="form-control" type="password" name="password" placeholder="password">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Отправить</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
-        <!--            <div class="dropdown text-end">-->
-        <!--                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"-->
-        <!--                   data-bs-toggle="dropdown" aria-expanded="false">-->
-        <!--                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">-->
-        <!--                </a>-->
-        <!--                <ul class="dropdown-menu text-small">-->
-        <!--                    <li><a class="dropdown-item" href="#">New project...</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Settings</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Profile</a></li>-->
-        <!--                    <li>-->
-        <!--                        <hr class="dropdown-divider">-->
-        <!--                    </li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Sign out</a></li>-->
-        <!--                </ul>-->
-        <!--            </div>-->
-    </div>
     </div>
 </header>
-<div class="container" id="search">
-    <div class="wrapper">
-        <h1 class="page-header text-center" style="margin-top: 200px;">
-            Поиск по проектам
-        </h1>
-    </div>
-    <br><br>
-    <div class="wrapper">
-        <form action="/metizes/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
-            <input id="main_input" name="main_input" type="text" class="form-control"
-                   placeholder="Введите название или артикул"
-                   aria-label="Recipient's username" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="submit" id="button-addon2">Поиск</button>
-        </form>
+<div class="row" style="margin:20px;">
+    <div class="col-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Классификатор</th>
+                <th>Проект</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>ПСВ</td>
+                <td>RS-90. RS-90D. RS-230. RU-75/90 Nitrox. ESD. CS-14</td>
+            </tr>
+            <tr>
+                <td>2БРН</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>4ПТХ</td>
+                <td>JCB трактора</td>
+            </tr>
+            <tr>
+                <td>5ПБУ</td>
+                <td>DML</td>
+            </tr>
+            <tr>
+                <td>6МФС</td>
+                <td>Симба/Сила</td>
+            </tr>
+            <tr>
+                <td>7ВПД</td>
+                <td>Boomer</td>
+            </tr>
+            <tr>
+                <td>8Ф</td>
+                <td>гидроперфораторы</td>
+            </tr>
+            <tr>
+                <td>9КИТ</td>
+                <td>Caterpillar</td>
+            </tr>
+            <tr>
+                <td>11ТКБ</td>
+                <td>Boltec</td>
+            </tr>
+            <tr>
+                <td>12ДП</td>
+                <td>Scooptram</td>
+            </tr>
+            <tr>
+                <td>13ПТВ</td>
+                <td>Pit Viper</td>
+            </tr>
+            <tr>
+                <td>14СДК</td>
+                <td>Sandvik</td>
+            </tr>
+            <tr>
+                <td>15НМД</td>
+                <td>Normet</td>
+            </tr>
+            <tr>
+                <td>16СДЕ</td>
+                <td>ESD-9 / RD9DT</td>
+            </tr>
+            <tr>
+                <td>17БЗ</td>
+                <td>Буровые здания
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
     </div>
 </div>
-<br><br><br><br><br><br><br><br>
+<br><br><br>
 <div class="container" id="footer">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
