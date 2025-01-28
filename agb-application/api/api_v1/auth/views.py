@@ -1,8 +1,8 @@
 import uuid
 from typing import Annotated
 from time import time
-
-from fastapi import  APIRouter, Depends, HTTPException, status, Response, Request
+from dns.edns import COOKIE
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Request, Form, Cookie
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,9 +14,9 @@ from api.api_v1.schemas.users import UserCreate
 from authx import AuthX, AuthXConfig
 
 config = AuthXConfig()
-config.JWT_SECRET_KEY = "PIZDEC SECRET"
-config.JWT_ACCESS_COOKIE_NAME = "agb-app-token"
-config.JWT_TOKEN_LOCATION = ['cookies']
+config.JWT_SECRET_KEY = "PIZDEC_KAK_SECRETNO"
+config.JWT_ACCESS_COOKIE_NAME = "agb_app_token"
+config.JWT_TOKEN_LOCATION = ["cookies"]
 
 security = AuthX(config=config)
 
@@ -24,6 +24,13 @@ router = APIRouter(prefix="/auth", tags=['Auth'])
 templates = Jinja2Templates('templates')
 
 security_log = HTTPBasic()
+COOKIES = {}
+COOKIE_SESSION_ID_KEY = "agb-app-token"
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
 
 
 def generate_session_id():
@@ -31,17 +38,25 @@ def generate_session_id():
 
 
 @router.post("/login")
-async def auth_login_cookie(
+async def auth_login_with_set_cookie(
+        credentials: Annotated[UserLogin, Form()],
         response: Response,
         request: Request,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        credentials: Annotated[HTTPBasicCredentials, Depends(security_log)]
+
 ):
+    # print(credentials, request.__dict__, response.__dict__)
     res = await search_by_request(request=credentials.username, session=session)
     if res:
         if credentials.password == res.password:
-            token = security.create_access_token(uid=res.username)
-            response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
+            token = generate_session_id()
+
+            COOKIES[token] = {
+                "username": res.username,
+                "super_user": res.super_user,
+                "login_at": int(time())
+            }
+            response.set_cookie(COOKIE_SESSION_ID_KEY, token)
             return templates.TemplateResponse(
                 'authuser.html',
                 {
@@ -49,8 +64,18 @@ async def auth_login_cookie(
                     "response": response,
                     "username": credentials.username,
                     "password": credentials.password
-                    })
+                })
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+
+
+@router.get("/check_cookie", response_model=None)
+async def check_cookie_base(
+        session_id: str = Cookie(alias=COOKIE_SESSION_ID_KEY)
+):
+    if session_id not in COOKIES:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail='not authenticated')
+    return {'data':COOKIES[session_id]}
 
 
 @router.post("/register")

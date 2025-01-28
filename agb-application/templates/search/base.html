@@ -1,17 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta name="robots" content="noindex,nofollow">
+    <meta http-equiv="Cache-Control" content="no-store">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-    <!--    <link href="main.css" rel="stylesheet">-->
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Almaz-Geo-Bur</title>
+    <title>Document</title>
+
 </head>
 <body>
 <header class="p-3 mb-3 border-bottom" id="header">
@@ -69,68 +71,56 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/search_metizes" class="nav-link px-2 link-body-emphasis">Метизы</a></li>
+                <li><a href="/search_metizes" class="nav-link px-2 link-secondary">Метизы</a></li>
                 <li><a href="/search_rwd" class="nav-link px-2 link-body-emphasis">РВД</a></li>
-                <li><a href="{{ url_for('/search_drawing', data={'user': 'username'}) }}" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
-                <li><a href=" {{ url_for('/search_adapters', data={'user': 'username'}) }}" class="nav-link px-2 link-secondary">Адаптеры</a></li>
+                <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
+                <li><a href="/search_adapters" class="nav-link px-2 link-body-emphasis">Адаптеры</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
                 <li><a href="/search_purchasedhydro" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
             </ul>
+            <div>
+            </div>
 
-<!--            {% if user.authorize %}-->
-<!--                            <svg viewBox="0 0 200 200" id="Layer_1" version="1.1" xml:space="preserve" width="3em" height="3em"-->
-<!--                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>-->
-<!--                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>-->
-<!--                                <g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#71A517;} .st1{fill:#FAD50A;} .st2{fill:#FAD50A;stroke:#2B2B2B;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st3{fill:#FFFFFF;stroke:#2B2B2B;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st4{fill:#7B3D72;} .st5{fill:#F2433B;} .st6{fill:#F2433B;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st7{fill:#FFFFFF;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st8{fill:#DE3727;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st9{fill:#8EBF04;} .st10{fill:#8EBF04;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st11{fill:#003A52;} .st12{fill:#7B3D72;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st13{fill:#2B2B2B;} .st14{fill:none;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st15{fill:#F78D0F;} .st16{fill:#F78D0F;stroke:#2B2B2B;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style>-->
-<!--                                    <g> <circle class="st15" cx="100" cy="100" r="75.4"></circle>-->
-<!--                                        <g> <path class="st7"-->
-<!--                                                  d="M107.1,116.6c-14.3,19.7-33.7,36.3-39.8,31.9c-6-4.4,3.6-28.1,17.9-47.8s20.4-17.9,26.4-13.5 C117.7,91.7,121.4,96.9,107.1,116.6z"></path>-->
-<!--                                            <path class="st16" d="M111.7,87.3c0,0,18.1-20.2,33.8-11S132.2,96.9,111.7,87.3z"></path>-->
-<!--                                            <path class="st16" d="M111.1,86.9c0,0,13.5-23.5-0.1-35.5S95.6,70.4,111.1,86.9z"></path>-->
-<!--                                            <path class="st16" d="M111.9,85.7c0,0,26.4-6.5,25.6-24.6S113.1,63,111.9,85.7z"></path> </g>-->
-<!--                                        <line class="st7" x1="81" x2="90.9" y1="127.5" y2="135.6"></line>-->
-<!--                                        <line class="st7" x1="78.9" x2="85.9" y1="110.3" y2="114.4"></line>-->
-<!--                                        <line class="st7" x1="103.2" x2="110.6" y1="107.4" y2="111.5"></line> </g> </g></svg>-->
-<!--                            <p>Вы авторизованы как: {{user.username}}</p>-->
-<!--                            {% endif %}-->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Вход: </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/auth/autorize_me" method="POST">
+                                <div class="container">
+                                    <label> Введите имя пользователя</label>
+                                    <br>
+                                    <input class="form-control" type="text" name="username" placeholder="username">
+                                </div>
+                                <div class="container">
+                                    <label> Введите пароль</label>
+                                    <br>
+                                    <input class="form-control" type="password" name="password" placeholder="password">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Отправить</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-        <!--            <div class="dropdown text-end">-->
-        <!--                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"-->
-        <!--                   data-bs-toggle="dropdown" aria-expanded="false">-->
-        <!--                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">-->
-        <!--                </a>-->
-        <!--                <ul class="dropdown-menu text-small">-->
-        <!--                    <li><a class="dropdown-item" href="#">New project...</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Settings</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Profile</a></li>-->
-        <!--                    <li>-->
-        <!--                        <hr class="dropdown-divider">-->
-        <!--                    </li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Sign out</a></li>-->
-        <!--                </ul>-->
-        <!--            </div>-->
-    </div>
     </div>
 </header>
-<div class="container" id="search">
-    <div class="wrapper">
-        <h1 class="page-header text-center" style="margin-top: 200px;">
-            Поиск по "Адаптеры и заглушки"
-        </h1>
-    </div>
-    <br><br>
-    <div class="wrapper">
-        <form action="/adapter/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
-            <input id="main_input" name="main_input" type="text" class="form-control"
-                   placeholder="Введите название или артикул"
-                   aria-label="Recipient's username" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="submit" id="button-addon2">Поиск</button>
-        </form>
-    </div>
-</div>
-<br><br><br><br><br><br><br><br>
+
+{% block content %}
+
+{% endblock content %}
+
 <div class="container" id="footer">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
@@ -161,10 +151,53 @@
         </ul>
     </footer>
 </div>
+
+<script>
+    window.onload = function() {
+      document.addEventListener("contextmenu", function(e){
+        e.preventDefault();
+      }, false);
+
+      document.addEventListener("keydown", function(e) {
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+          e.preventDefault();
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+          e.preventDefault();
+        }
+        if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+          e.preventDefault();
+        }
+        if (e.ctrlKey && e.keyCode == 85) {
+          e.preventDefault();
+        }
+        if (e.keyCode == 123) {
+          e.preventDefault();
+        }
+      }, false);
+
+      function disabledEvent(e){
+        if (e.stopPropagation){
+          e.stopPropagation();
+        } else if (window.event){
+          window.event.cancelBubble = true;
+        }
+        e.preventDefault();
+        return false;
+      }
+    };
+</script>
+
 </body>
 <style>
+    #header {
+        background: rgb(52,52,60);
+        background: linear-gradient(90deg, rgba(52,52,60,1) 0%, rgba(80,72,72,1) 41%, rgba(77,81,82,1) 100%);
+    }
     body{
-    background-color: #D3D3D3;
+    background: rgb(144,148,153);
+    background: linear-gradient(138deg, rgba(144,148,153,1) 0%, rgba(183,186,189,1) 100%);
+
     }
 </style>
 </html>

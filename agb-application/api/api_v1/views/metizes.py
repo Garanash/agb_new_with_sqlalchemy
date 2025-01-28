@@ -1,36 +1,89 @@
 from typing import Annotated
-
-from asyncpg import UniqueViolationError
-from fastapi import APIRouter, Depends, HTTPException, status
+from datetime import datetime
+from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, Depends, HTTPException, status, Form
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from fastapi import Request
+from watchfiles import awatch
+from fastapi.responses import RedirectResponse, PlainTextResponse
 from api.api_v1.schemas.metizes import MetizRead, MetizCreate, MetizUpdatePartial, MetizBase, MetizDelete, MetizUpdate
 from core.models import db_helper, Metiz
 from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
     search_by_request
+
+templates = Jinja2Templates('templates')
 
 router = APIRouter(
     tags=['MetizBases'],
 )
 
 
-@router.get('/', response_model_by_alias=True)
+@router.get('/metizes', response_model_by_alias=True)
 async def get_metizes(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request
 ):
+    """
+    вывод всех метизов в таблице
+    :parameter:
+    session: сессия в асинхронную базу данных
+    request: запрос от пользователя
+    """
     metiz = await get_all_objects(session=session, model=Metiz)
-    return metiz
+    return templates.TemplateResponse('/search/metizes.html', {"request": request, "metizes": metiz})
 
 
-@router.post("/new_metiz", response_model=None, response_model_by_alias=True)
+@router.get("/addnew")
+async def add_new_metiz(request: Request):
+    return templates.TemplateResponse("/addnew/add_new_metiz.html",
+                                      {"request": request,
+                                       "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M")})
+
+
+@router.get("/patch/{item_id}")
+async def patch_metiz_by_id(request: Request, item_id: int,
+                            session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+    patch_item = await get_object_by_id(session=session, model=Metiz, request_id=item_id)
+    print(request.cookies.items())
+    return templates.TemplateResponse("/patch/patch_metiz.html",
+                                      {"request": request,
+                                       "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M"),
+                                       "item": patch_item})
+
+
+@router.post("/patch", response_class= RedirectResponse)
+async def patch_metizes(
+        patch_item: Annotated[MetizUpdatePartial, Form()],
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request):
+    object_for_update = await get_object_by_id(request_id=patch_item.id, session=session, model=Metiz)
+    await update_object(session=session, object_for_update=object_for_update, object_updating=patch_item, partial=True)
+    return RedirectResponse("/metiz/metizes", status_code=301)
+
+
+@router.post("/create", response_model=None, response_model_by_alias=True, response_class=RedirectResponse)
 async def create_metiz(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        metiz_create: MetizCreate):
+        metiz_create: Annotated[MetizCreate, Form()],
+        request: Request):
     try:
         metiz = await create_new_object(session=session, object_create=metiz_create, model=Metiz)
-        return metiz
+        return RedirectResponse("/metiz/metizes", status_code=301)
+
     except BaseException:
-        return HTTPException(status_code=status.HTTP_409_CONFLICT, detail="metiz already exists")
+        return templates.TemplateResponse("/search/metizes.html",
+                                          {'request': request, "message": "Такая деталь уже существует"})
+        # return HTTPException(status_code=status.HTTP_409_CONFLICT, detail="metiz already exists")
+
+
+@router.get('/search')
+async def search_metiz_by_request(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request
+):
+    search_item = request.query_params.get('main_input')
+    res_search = await search_by_request(request=search_item, session=session, model=Metiz)
+    return templates.TemplateResponse("/search/metizes.html", {'request': request, "metizes": res_search})
 
 
 @router.get('/{object_id}', response_model=None, response_model_by_alias=True)
@@ -69,11 +122,3 @@ async def update_metiz_by_id(
         object_updating=metiz_updated,
         object_for_update=metiz,
     )
-
-
-@router.get('/s/{request_item}')
-async def search_metiz_by_request(
-        request_item: str,
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
-):
-    return await search_by_request(request=request_item, session=session, model=Metiz)

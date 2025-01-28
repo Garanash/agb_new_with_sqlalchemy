@@ -23,7 +23,22 @@ class MetizBase(BaseModel):
 
 
 class MetizCreate(MetizBase):
-    pass
+    name_in_catalog: str | None = None
+    name_in_KD: str | None = None
+    name_in_catalog_agb: str | None = None
+    standard: str | None = None
+    hardware_type: str | None = None
+    thread_profile: str | None = None
+    nominal_diameter: str | None = None
+    thread_pitch: str | None = None
+    length: str | None = None
+    strength_class: str | None = None
+    Material_or_coating: str | None = None
+    assigned: str | None = None
+    note: str | None = None
+    applicability: str | None = None
+    date: str | None = None
+    marked_for_deletion: bool | None = None
 
 
 class MetizRead(MetizBase):
