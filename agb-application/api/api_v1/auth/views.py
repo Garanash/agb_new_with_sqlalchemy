@@ -12,6 +12,7 @@ from core.models import db_helper, User
 from api.api_v1.crud.CRUD import create_new_object
 from api.api_v1.schemas.users import UserCreate
 from authx import AuthX, AuthXConfig
+from fastapi.responses import RedirectResponse
 
 config = AuthXConfig()
 config.JWT_SECRET_KEY = "PIZDEC_KAK_SECRETNO"
@@ -37,7 +38,7 @@ def generate_session_id():
     return uuid.uuid4().hex
 
 
-@router.post("/login")
+@router.post("/login", response_class=RedirectResponse)
 async def auth_login_with_set_cookie(
         credentials: Annotated[UserLogin, Form()],
         response: Response,
@@ -65,7 +66,7 @@ async def auth_login_with_set_cookie(
                     "username": credentials.username,
                     "password": credentials.password
                 })
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+    return RedirectResponse("/auth/registration", status_code=301)
 
 
 @router.get("/check_cookie", response_model=None)
@@ -75,7 +76,12 @@ async def check_cookie_base(
     if session_id not in COOKIES:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='not authenticated')
-    return {'data':COOKIES[session_id]}
+    return {'data': COOKIES[session_id]}
+
+
+@router.get('/registration')
+async def dont_registration_new_user(request: Request):
+    return templates.TemplateResponse("adm.html", {'request': request})
 
 
 @router.post("/register")

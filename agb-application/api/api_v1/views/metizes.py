@@ -83,7 +83,7 @@ async def search_metiz_by_request(
 ):
     search_item = request.query_params.get('main_input')
     res_search = await search_by_request(request=search_item, session=session, model=Metiz)
-    return templates.TemplateResponse("/search/metizes.html", {'request': request, "metizes": res_search})
+    return templates.TemplateResponse("/finded/metizes.html", {'request': request, "metizes": res_search})
 
 
 @router.get('/{object_id}', response_model=None, response_model_by_alias=True)
