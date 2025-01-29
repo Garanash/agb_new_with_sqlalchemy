@@ -1,6 +1,9 @@
+from datetime import datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.api_v1.schemas.purchased_hydroperforator import PurchasedHydroperforatorRead, PurchasedHydroperforatorCreate, \
@@ -9,30 +12,76 @@ from core.models import db_helper, PurchasedHydroperforator
 from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
     search_by_request
 
+templates = Jinja2Templates("templates")
+
 router = APIRouter(
     tags=['PurchasedHydroperforatorBases'],
 )
 
 
-@router.get('/', response_model_by_alias=True)
-async def get_purchased_hydroperforator(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
-):
-    purchased_hydroperforator = await get_all_objects(session=session, model=PurchasedHydroperforator)
-    return purchased_hydroperforator
-
-
-@router.post("/new_purchased_hydroperforator", response_model=None, response_model_by_alias=True)
-async def create_purchased_hydroperforator(
+@router.get('/hydroperfs', response_model_by_alias=True)
+async def get_hydroperforators(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        purchased_hydroperforator_create: PurchasedHydroperforatorCreate):
-    purchased_hydroperforator = await create_new_object(session=session, object_create=purchased_hydroperforator_create,
-                                                        model=PurchasedHydroperforator)
-    return purchased_hydroperforator
+        request: Request
+):
+    hydroperfs = await get_all_objects(session=session, model=PurchasedHydroperforator)
+    return templates.TemplateResponse('/search/hydroperfs.html', {"request": request, "hyfroperfs": hydroperfs})
+
+
+@router.get("/addnew")
+async def add_new_hydroperforator(request: Request):
+    return templates.TemplateResponse("/addnew/add_new_hydroperf.html",
+                                      {"request": request,
+                                       "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M")})
+
+
+@router.get("/patch/{item_id}")
+async def patch_hydroperf_by_id(request: Request, item_id: int,
+                            session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+    patch_item = await get_object_by_id(session=session, model=PurchasedHydroperforator, request_id=item_id)
+    print(request.cookies.items())
+    return templates.TemplateResponse("/patch/patch_hydroperf.html",
+                                      {"request": request,
+                                       "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M"),
+                                       "item": patch_item})
+
+
+@router.post("/patch", response_class= RedirectResponse)
+async def patch_hydroperforators(
+        patch_item: Annotated[PurchasedHydroperforatorUpdatePartial, Form()],
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request):
+    object_for_update = await get_object_by_id(request_id=patch_item.id, session=session, model=PurchasedHydroperforator)
+    await update_object(session=session, object_for_update=object_for_update, object_updating=patch_item, partial=True)
+    return RedirectResponse("/hydroperfs/hydroperfs", status_code=301)
+
+
+@router.post("/create", response_model=None, response_model_by_alias=True, response_class=RedirectResponse)
+async def create_hydroperforator(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        adapter_create: Annotated[PurchasedHydroperforatorCreate, Form()],
+        request: Request):
+    try:
+        adapter = await create_new_object(session=session, object_create=adapter_create, model=PurchasedHydroperforator)
+        return RedirectResponse("/hydroperfs/hydroperfs", status_code=301)
+
+    except BaseException:
+        return templates.TemplateResponse("/search/hydroperfs.html",
+                                          {'request': request, "message": "Такая деталь уже существует"})
+
+
+@router.get('/search')
+async def search_hydroperforator_by_request(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request
+):
+    search_item = request.query_params.get('main_input')
+    res_search = await search_by_request(request=search_item, session=session, model=PurchasedHydroperforator)
+    return templates.TemplateResponse("/finded/hydroperfs.html", {'request': request, "hydroperfs": res_search})
 
 
 @router.get('/{object_id}', response_model=None, response_model_by_alias=True)
-async def search_purchased_hydroperforator_by_id(
+async def search_hydroperforator_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
 ):
@@ -42,38 +91,28 @@ async def search_purchased_hydroperforator_by_id(
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"object with {object_id} not found")
 
 
-@router.delete('/{purchased_hydroperforator_id}')
-async def delete_purchased_hydroperforator(
+@router.delete('/{hydroperf_id}')
+async def delete_hydroperforator(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
 ):
-    delete_purchased_hydroperforator = await get_object_by_id(session=session, request_id=delete_id,
-                                                              model=PurchasedHydroperforator)
-    if not delete_purchased_hydroperforator:
-        raise HTTPException(status_code=404, detail="PurchasedHydroperforator not found")
-    await session.delete(delete_purchased_hydroperforator)
+    delete_hydroperf = await get_object_by_id(session=session, request_id=delete_id, model=PurchasedHydroperforator)
+    if not delete_hydroperf:
+        raise HTTPException(status_code=404, detail="Hydroperforator not found")
+    await session.delete(delete_hydroperf)
     await session.commit()
-    return {"message": f"purchased_hydroperforator with id={delete_id} was deleted"}
+    return {"message": f"Hydroperforator with id={delete_id} was deleted"}
 
 
-@router.put('/{purchased_hydroperforator_id}')
-async def update_purchased_hydroperforator_by_id(
-        purchased_hydroperforator_updated: PurchasedHydroperforatorUpdatePartial,
+@router.put('/{hydroperf_id}')
+async def update_hydroperforator_by_id(
+        hydroperf_updated: PurchasedHydroperforatorUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        purchased_hydroperforator_id: int,
+        hydroperf_id: int,
 ):
-    purchased_hydroperforator = await get_object_by_id(request_id=purchased_hydroperforator_id, session=session,
-                                                       model=PurchasedHydroperforator)
+    hydroperf = await get_object_by_id(request_id=hydroperf_id, session=session, model=PurchasedHydroperforator)
     return await update_object(
         session=session,
-        object_updating=purchased_hydroperforator_updated,
-        object_for_update=purchased_hydroperforator,
+        object_updating=hydroperf_updated,
+        object_for_update=hydroperf,
     )
-
-
-@router.get('/s/{request_item}')
-async def search_purchasedhydro_by_request(
-        request_item: str,
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
-):
-    return await search_by_request(request=request_item, session=session, model=PurchasedHydroperforator)
