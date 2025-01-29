@@ -44,7 +44,7 @@ async def add_new_metiz(request: Request):
 async def patch_metiz_by_id(request: Request, item_id: int,
                             session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     patch_item = await get_object_by_id(session=session, model=Metiz, request_id=item_id)
-    print(request.cookies.items())
+
     return templates.TemplateResponse("/patch/patch_metiz.html",
                                       {"request": request,
                                        "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M"),
