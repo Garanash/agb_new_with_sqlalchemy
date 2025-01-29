@@ -5,7 +5,6 @@ class AccordingToTheDrawBase(BaseModel):
     name: str | None = None
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
-    name_in_KD: str | None = None
     name_in_catalog: str | None = None
     first_applicability: str | None = None
     note: str | None = None
@@ -17,7 +16,15 @@ class AccordingToTheDrawBase(BaseModel):
 
 
 class AccordingToTheDrawCreate(AccordingToTheDrawBase):
-    pass
+    name: str | None = None
+    number_in_catalog: str | None = None
+    number_in_catalog_agb: str | None = None
+    name_in_catalog: str | None = None
+    first_applicability: str | None = None
+    note: str | None = None
+    developed: str | None = None
+    KD: str | None = None
+    date: str | None = None
 
 
 class AccordingToTheDrawRead(AccordingToTheDrawBase):

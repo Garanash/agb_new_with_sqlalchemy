@@ -25,7 +25,7 @@ async def get_hydroperforators(
         request: Request
 ):
     hydroperfs = await get_all_objects(session=session, model=PurchasedHydroperforator)
-    return templates.TemplateResponse('/search/hydroperfs.html', {"request": request, "hyfroperfs": hydroperfs})
+    return templates.TemplateResponse('/search/hydroperfs.html', {"request": request, "hydroperfs": hydroperfs})
 
 
 @router.get("/addnew")

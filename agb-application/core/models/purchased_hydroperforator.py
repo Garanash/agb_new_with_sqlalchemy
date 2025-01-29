@@ -9,7 +9,6 @@ class PurchasedHydroperforator(Base):
     name_in_catalog_agb = Column(String(50), default='-')
     name_in_OEM = Column(String(50), default='-')
     assigned = Column(String(50), default='-', nullable=False)  # присвоил
-    date = Column(String(50), default='-')
     applicability = Column(String(50), default='-')  # применяемость
     note = Column(String(50), default='-')  # примечание
 

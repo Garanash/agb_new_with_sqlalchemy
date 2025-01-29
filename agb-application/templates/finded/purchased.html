@@ -62,7 +62,7 @@
                 <li><a href="/search_adapters" class="nav-link px-2 link-body-emphasis">Адаптеры</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-secondary">Покупные</a></li>
-                <li><a href="/search_purchasedhydro" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
             </ul>
 
         </div>
@@ -90,6 +90,7 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th class="rotated">Номер в каталоге</th>
                     <th class="rotated">Номер в каталоге АГБ</th>
                     <th class="rotated">Имя в каталоге</th>
                     <th class="rotated">Имя в КД</th>
@@ -105,6 +106,7 @@
                 <tbody>
             {% for item in purchased %}
             <tr>
+                <td>{{ item.number_in_catalog }}</td>
                 <td>{{ item.number_in_catalog_agb }}</td>
                 <td>{{ item.name_in_catalog }}</td>
                 <td>{{ item.name_in_KD }}</td>

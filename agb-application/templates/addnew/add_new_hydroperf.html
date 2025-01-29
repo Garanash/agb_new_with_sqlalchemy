@@ -1,7 +1,6 @@
 {% extends '/addnew/base.html' %}
 
 {% block content %}
-
 <div class="container">
     <form action="/hydroperfs/create" method="POST">
         <div class="container text-center">
@@ -56,11 +55,6 @@
                 <div class="col">
                     <label>Применяемость</label>
                     <input type="text" name="applicability" placeholder="applicability" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Дата</label>
-                    <input type="datetime-local" name="date" placeholder="date"
-                           class="form-control" value="{{ current_datetime }}" readonly/>
                 </div>
             </div>
         </div>
