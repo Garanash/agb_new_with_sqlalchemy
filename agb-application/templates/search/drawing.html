@@ -77,42 +77,6 @@
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
                 <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
             </ul>
-
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Войти
-            </button>
-            <!--            MODAL-->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Вход: </h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="/auth/autorize_me" method="POST">
-                                <div class="container">
-                                    <label> Введите имя пользователя</label>
-                                    <br>
-                                    <input class="form-control" type="text" name="username" placeholder="username">
-                                </div>
-                                <div class="container">
-                                    <label> Введите пароль</label>
-                                    <br>
-                                    <input class="form-control" type="password" name="password" placeholder="password">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Отправить</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
         <!--            <div class="dropdown text-end">-->
         <!--                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"-->
