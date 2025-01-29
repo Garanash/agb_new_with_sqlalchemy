@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Boolean
 from .base import Base
 
 
-class PurchasedHydroperforator(Base):
+class Purchased(Base):
     number_in_catalog = Column(String(50), unique=True, default='-')
     number_in_catalog_agb = Column(String(50), unique=True, default='-')
     name_in_catalog = Column(String(50), default='-')
