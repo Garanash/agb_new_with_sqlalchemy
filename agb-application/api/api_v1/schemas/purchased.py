@@ -16,7 +16,15 @@ class PurchasedBase(BaseModel):
 
 
 class PurchasedCreate(PurchasedBase):
-    pass
+    number_in_catalog_agb: str | None = None
+    name_in_catalog: str | None = None
+    name_in_KD: str | None = None
+    name_in_catalog_agb: str | None = None
+    name_in_OEM: str | None = None
+    assigned: str | None = None
+    date: str | None = None
+    applicability: str | None = None
+    note: str | None = None
 
 
 class PurchasedRead(PurchasedBase):
@@ -28,6 +36,7 @@ class PurchasedUpdate(PurchasedBase):
 
 
 class PurchasedUpdatePartial(PurchasedBase):
+    id: int | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None
     name_in_KD: str | None = None
