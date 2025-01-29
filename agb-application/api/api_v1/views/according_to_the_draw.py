@@ -49,6 +49,17 @@ async def patch_drawing(
     return RedirectResponse("/draw/drawings", status_code=301)
 
 
+@router.get('/search')
+async def search_drawing_by_request(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request
+):
+    search_item = request.query_params.get('main_input')
+    res_search = await search_by_request(request=search_item, session=session, model=AccordingToTheDrawing)
+    return templates.TemplateResponse("/finded/drawing.html", {'request': request, "drawings": res_search})
+
+
+
 @router.get("/patch/{item_id}")
 async def patch_drawing_by_id(request: Request, item_id: int,
                               session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
@@ -74,15 +85,6 @@ async def create_drawing(
                                           {'request': request, "message": "Такая деталь уже существует"})
         # return HTTPException(status_code=status.HTTP_409_CONFLICT, detail="metiz already exists")
 
-
-@router.get('/search')
-async def search_drawing_by_request(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
-):
-    search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(request=search_item, session=session, model=AccordingToTheDrawing)
-    return templates.TemplateResponse("/finded/drawing.html", {'request': request, "drawings": res_search})
 
 
 @router.get('/', response_model_by_alias=True)
