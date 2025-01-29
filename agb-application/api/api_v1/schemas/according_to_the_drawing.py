@@ -2,15 +2,16 @@ from pydantic import BaseModel, Field
 
 
 class AccordingToTheDrawBase(BaseModel):
-    name: str = Field(min_length=3, max_length=50)
-    number_in_catalog: str = Field(min_length=3, max_length=50)
-    number_in_catalog_agb: str = Field(min_length=3, max_length=50)
-    name_in_catalog: str = Field(min_length=3, max_length=50)
-    applicability: str = Field(min_length=3, max_length=50)
-    note: str = Field(min_length=3, max_length=50)
-    developed: str = Field(min_length=3, max_length=50)
-    KD: str = Field(min_length=3, max_length=50)
-    date: str = Field(min_length=3, max_length=50)
+    name: str | None = None
+    number_in_catalog: str | None = None
+    number_in_catalog_agb: str | None = None
+    name_in_KD: str | None = None
+    name_in_catalog: str | None = None
+    first_applicability: str | None = None
+    note: str | None = None
+    developed: str | None = None
+    KD: str | None = None
+    date: str | None = None
 
     marked_for_deletion: bool = Field(default=False)
 
@@ -28,6 +29,7 @@ class AccordingToTheDrawUpdate(AccordingToTheDrawBase):
 
 
 class AccordingToTheDrawUpdatePartial(AccordingToTheDrawBase):
+    id: int | None = None
     name: str | None = None
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None

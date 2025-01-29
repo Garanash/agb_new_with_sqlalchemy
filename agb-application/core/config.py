@@ -15,7 +15,7 @@ class ApiV1Prefix(BaseModel):
     project: str = "/project"
     purchased: str = '/purchased'
     purchasedHydro: str = '/purchased_hydroperforator'
-    according: str = '/according_to_the_draw'
+    according: str = '/draw'
     adaptersAndPlugs: str = '/adapters'
 
 

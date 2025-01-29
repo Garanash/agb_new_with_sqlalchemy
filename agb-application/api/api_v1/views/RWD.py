@@ -54,7 +54,7 @@ async def patch_rwd_by_id(request: Request, item_id: int,
 
 
 @router.post("/patch", response_class= RedirectResponse)
-async def patch_metizes(
+async def patch_rwd(
         patch_item: Annotated[RWDUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request):
@@ -66,10 +66,10 @@ async def patch_metizes(
 @router.post("/create", response_model=None, response_model_by_alias=True, response_class=RedirectResponse)
 async def create_rwd(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        metiz_create: Annotated[RWDCreate, Form()],
+        rwd_create: Annotated[RWDCreate, Form()],
         request: Request):
     try:
-        rwd = await create_new_object(session=session, object_create=metiz_create, model=RWD)
+        rwd = await create_new_object(session=session, object_create=rwd_create, model=RWD)
         return RedirectResponse("/RWD/RWDs", status_code=301)
 
     except BaseException:
@@ -79,7 +79,7 @@ async def create_rwd(
 
 
 @router.get('/search')
-async def search_metiz_by_request(
+async def search_rwd_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
 ):
