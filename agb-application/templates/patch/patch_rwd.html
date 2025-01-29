@@ -84,30 +84,30 @@
                     <div class="container text-left">
                         <div class="row">
 
-                            <label>id</label>
-                            <input type="text" name="id" placeholder="id" class="form-control"
+                            <label style="display:none;">id</label>
+                            <input style="display:none;" type="text" name="id" placeholder="id" class="form-control"
                                    value="{{ item.id }}" readonly/>
 
-                            <label>Дата</label>
-                            <input type="datetime-local" name="date" placeholder="date"
+                            <label style="display:none;">Дата</label>
+                            <input style="display:none;" type="datetime-local" name="date" placeholder="date"
                                    class="form-control" value="{{ current_datetime }}" readonly/>
 
                             <label>Номер</label>
-                            <input type="text" name="number" placeholder="номер" class="form-control"
+                            <input required type="text" name="number" placeholder="(обязательное поле)Пример: АГБ 12 345 543 32 001" class="form-control"
                                    value="{{ item.number }}"/>
 
                             <label>номер АГБ</label>
-                            <input type="text" name="article_number_agb" placeholder="номер АГБ"
+                            <input type="text" name="article_number_agb" required placeholder="(обязательное поле)Пример: АГБ РВД 21 345"
                                    class="form-control"
                                    value="{{ item.article_number_agb }}"/>
 
                             <label>Номенклатура</label>
-                            <input type="text" name="nomenclature" placeholder="Номенклатура" class="form-control"
+                            <input type="text" name="nomenclature" required placeholder="(обязательное поле)Пример: РВД 1 тра та та" class="form-control"
                                    value="{{ item.nomenclature }}"/>
 
 
                             <label>Комментарий</label>
-                            <input type="text" name="note" placeholder="Комментарий"
+                            <input type="text" name="note" placeholder="Комментарий минимум 3 символа" required
                                    class="form-control" value="{{ item.note }}"/>
                         </div>
                         <br>
