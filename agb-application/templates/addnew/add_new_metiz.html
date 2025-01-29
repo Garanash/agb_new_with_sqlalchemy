@@ -74,132 +74,132 @@
 </header>
 
 
-<div class="container">
-    <form action="/metiz/create" method="POST">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Номер в каталоге</label>
-                    <input required type="text" name="number_in_catalog" placeholder="number_in_katalog" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Номер в каталоге АГБ</label>
-                    <input required type="text" name="number_in_catalog_agb" placeholder="number_in_katalog_agb"
-                           class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Название в КД</label>
-                    <input type="text" name="name_in_KD" placeholder="name_in_kd" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Название в каталоге</label>
-                    <input type="text" name="name_in_catalog" placeholder="name_in_katalog" class="form-control"/>
-                </div>
+<form action="/metiz/create" method="POST">
 
-                <div class="col">
-                    <label>Название в каталоге АГБ</label>
-                    <input type="text" name="name_in_catalog_agb" placeholder="name_in_katalog_agb"
-                           class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Стандарт
-                        <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
-                    <input type="text" name="standard" placeholder="standard" class="form-control"/>
-                </div>
+    <div class="container text-center">
+        <h1> Форма создания метиза </h1>
+        <div class="row">
+            <div class="col">
+                <label>Номер в каталоге</label>
+                <input required type="text" name="number_in_catalog" placeholder="(обязательное поле)Номер в каталоге"
+                       class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Номер в каталоге АГБ</label>
+                <input required type="text" name="number_in_catalog_agb"
+                       placeholder="(обязательное поле)Номер в каталоге АГБ"
+                       class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Тип</label>
-                    <select class="form-select" aria-label="Default select example" id="type" name="hardware_type" typeof="text">
-                        <option value="-">-- Выберите тип --</option>
-                        <option value="Болт">Болт</option>
-                        <option value="Болт доработанный">Болт доработанный</option>
-                        <option value="Винт">Винт</option>
-                        <option value="Винт с шестигранной головкой">Винт с шестигранной головкой</option>
-                        <option value="Винт установочный">Винт установочный</option>
-                        <option value="Втулка">Втулка</option>
-                        <option value="Гайка">Гайка</option>
-                        <option value="Гайка-барашек">Гайка-барашек</option>
-                        <option value="Заглушка">Заглушка</option>
-                        <option value="Заклепка">Заклепка</option>
-                        <option value="Заклепка вытяжная">Заклепка вытяжная</option>
-                        <option value="Заклепка резьбовая">Заклепка резьбовая</option>
-                        <option value="Кольцо">Кольцо</option>
-                        <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ</option>
-                        <option value="Ось">Ось</option>
-                        <option value="Саморез">Саморез</option>
-                        <option value="Скоба U-образная">Скоба U-образная</option>
-                        <option value="Шайба">Шайба</option>
-                        <option value="Шпилька">Шпилька</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label>Профиль</label>
-                    <input type="text" name="thread_profile" placeholder="profile" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Диаметр <small>(Номинальный)</small></label>
-                    <input type="text" name="nominal_diameter" placeholder="diameter" class="form-control"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <label>Название в каталоге</label>
+        <input type="text" name="name_in_catalog" placeholder="Название в каталоге" class="form-control"/>
+
+
+        <label>Название в каталоге АГБ</label>
+        <input type="text" name="name_in_catalog_agb" placeholder="Название в каталоге АГБ"
+               class="form-control"/>
+
+        <label>Название по КД</label>
+        <input type="text" name="name_in_kd" placeholder="Название по конструкторской документации"
+               class="form-control"/>
+    </div>
+    <div class="container text-center">
+
+        <div class="row">
+            <div class="col">
+                <label>Стандарт
+                    <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
+                <input type="text" name="standard" placeholder="Пример: ASME B18.2.1" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Тип</label>
+                <select class="form-select" aria-label="Default select example" id="type" name="hardware_type"
+                        typeof="text">
+                    <option value="-">-- Выберите тип --</option>
+                    <option value="Болт">Болт</option>
+                    <option value="Болт доработанный">Болт доработанный</option>
+                    <option value="Винт">Винт</option>
+                    <option value="Винт с шестигранной головкой">Винт с шестигранной головкой</option>
+                    <option value="Винт установочный">Винт установочный</option>
+                    <option value="Втулка">Втулка</option>
+                    <option value="Гайка">Гайка</option>
+                    <option value="Гайка-барашек">Гайка-барашек</option>
+                    <option value="Заглушка">Заглушка</option>
+                    <option value="Заклепка">Заклепка</option>
+                    <option value="Заклепка вытяжная">Заклепка вытяжная</option>
+                    <option value="Заклепка резьбовая">Заклепка резьбовая</option>
+                    <option value="Кольцо">Кольцо</option>
+                    <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/
+                        ТипСМ.ПРИМЕЧАНИЕ
+                    </option>
+                    <option value="Ось">Ось</option>
+                    <option value="Саморез">Саморез</option>
+                    <option value="Скоба U-образная">Скоба U-образная</option>
+                    <option value="Шайба">Шайба</option>
+                    <option value="Шпилька">Шпилька</option>
+                </select>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Шаг резьбы</label>
-                    <input type="text" name="thread_pitch" placeholder="step" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Длинна</label>
-                    <input type="text" name="length" placeholder="length" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Класс прочности</label>
-                    <input type="text" name="strength_class" placeholder="accuracy" class="form-control"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Профиль</label>
+                <input type="text" name="thread_profile" placeholder="Пример: UNC" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Диаметр <small>(Номинальный)</small></label>
+                <input type="text" name="nominal_diameter" placeholder="Пример: #10" class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Материал покрытия</label>
-                    <input type="text" name="Material_or_coating" placeholder="material" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Присвоил</label>
-                    <input required type="text" name="assigned" placeholder="assigned"
-                           class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Примечание</label>
-                    <input type="text" name="note" placeholder="note" class="form-control"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Шаг резьбы</label>
+                <input type="text" name="thread_pitch" placeholder="Пример: 24" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Длинна</label>
+                <input type="text" name="length" placeholder="Пример: 1/2" class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Применяемость</label>
-                    <input type="text" name="applicability" placeholder="applicability" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Дата</label>
-                    <input type="datetime-local" name="date" placeholder="date"
-                           class="form-control" value="{{ current_datetime }}" readonly/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Материал покрытия</label>
+                <input type="text" name="Material_or_coating" placeholder="Пример: Zn" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Класс прочности</label>
+                <input type="text" name="strength_class" placeholder="Пример: G5" class="form-control"/>
             </div>
         </div>
-        <br>
-        <div class="container">
-            <button class="btn btn-primary" style="width: 400px">Создать</button>
-        </div>
-    </form>
-</div>
+    </div>
+    <div class="container text-center">
+        <label>Присвоил</label>
+        <input required type="text" name="assigned" placeholder="(Обязательное поле)Ваша Фамилия"
+               class="form-control"/>
+
+        <label>Примечание</label>
+        <input type="text" name="note" placeholder="Любое примечание по детали" class="form-control"/>
+
+        <label>Применяемость</label>
+        <input type="text" name="applicability" placeholder="В каком проекте применяется данная деталь" class="form-control"/>
+
+        <label style="display: none;">Дата</label>
+        <input type="datetime-local" name="date" placeholder="date" style="display: none;"
+               class="form-control" value="{{ current_datetime }}" readonly/>
+
+    </div>
+    <br>
+    <div class="container text-center">
+        <button class="btn btn-primary" style="width: 400px">Создать</button>
+    </div>
+</form>
+
 
 {% endblock content %}
