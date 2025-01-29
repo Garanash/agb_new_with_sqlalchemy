@@ -73,150 +73,132 @@
 </header>
 
 
-<div class="container">
-    <form action="/metiz/patch" method="POST">
-        <input type="text" name="id" placeholder="id" class="form-control"
-               value="{{ item.id }}" readonly/>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Номер в каталоге</label>
-                    <input type="text" name="number_in_catalog" placeholder="number_in_katalog" class="form-control"
-                           value="{{ item.number_in_catalog }}"/>
-                </div>
-                <div class="col">
-                    <label>Номер в каталоге АГБ</label>
-                    <input type="text" name="number_in_catalog_agb" placeholder="number_in_katalog_agb"
-                           class="form-control" value="{{ item.number_in_catalog_agb }}"/>
-                </div>
-                <div class="col">
-                    <label>Название в КД</label>
-                    <input type="text" name="name_in_KD" placeholder="name_in_KD" class="form-control"
-                           value="{{ item.name_in_KD }}"/>
-                </div>
+<form action="/metiz/patch" method="POST">
+    <input style="display: none;" name="id" type="text" readonly value="{{item.id}}">
+    <div class="container text-center">
+        <h1> Форма создания метиза </h1>
+        <div class="row">
+            <div class="col">
+                <label>Номер в каталоге</label>
+                <input value="{{item.number_in_catalog}}" required type="text" name="number_in_catalog" placeholder="(обязательное поле)Номер в каталоге"
+                       class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Номер в каталоге АГБ</label>
+                <input value="{{item.number_in_catalog_agb}}" required type="text" name="number_in_catalog_agb"
+                       placeholder="(обязательное поле)Номер в каталоге АГБ"
+                       class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Название в каталоге</label>
-                    <input type="text" name="name_in_catalog" placeholder="name_in_katalog" class="form-control"
-                           value="{{ item.name_in_catalog }}"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <label>Название в каталоге</label>
+        <input type="text" value="{{item.name_in_catalog}}" name="name_in_catalog" placeholder="Название в каталоге" class="form-control"/>
 
-                <div class="col">
-                    <label>Название в каталоге АГБ</label>
-                    <input type="text" name="name_in_catalog_agb" placeholder="name_in_katalog_agb"
-                           class="form-control" value="{{ item.name_in_catalog_agb }}"/>
-                </div>
-                <div class="col">
-                    <label>Стандарт
-                        <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
-                    <input type="text" name="standard" placeholder="standard" class="form-control"
-                           value="{{ item.standard }}"/>
-                </div>
+
+        <label>Название в каталоге АГБ</label>
+        <input type="text" value="{{item.name_in_catalog_agb}}" name="name_in_catalog_agb" placeholder="Название в каталоге АГБ"
+               class="form-control"/>
+
+        <label>Название по КД</label>
+        <input type="text" value="{{item.name_in_kd}}" name="name_in_kd" placeholder="Название по конструкторской документации"
+               class="form-control"/>
+    </div>
+    <div class="container text-center">
+
+        <div class="row">
+            <div class="col">
+                <label>Стандарт
+                    <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
+                <input type="text" value="{{item.standard}}" name="standard" placeholder="Пример: ASME B18.2.1" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Тип</label>
+                <select class="form-select" aria-label="Default select example" id="type" name="hardware_type"
+                        typeof="text">
+                    <option value="{{item.hardware_type}}">{{item.hardware_type}}</option>
+                    <option value="Болт">Болт</option>
+                    <option value="Болт доработанный">Болт доработанный</option>
+                    <option value="Винт">Винт</option>
+                    <option value="Винт с шестигранной головкой">Винт с шестигранной головкой</option>
+                    <option value="Винт установочный">Винт установочный</option>
+                    <option value="Втулка">Втулка</option>
+                    <option value="Гайка">Гайка</option>
+                    <option value="Гайка-барашек">Гайка-барашек</option>
+                    <option value="Заглушка">Заглушка</option>
+                    <option value="Заклепка">Заклепка</option>
+                    <option value="Заклепка вытяжная">Заклепка вытяжная</option>
+                    <option value="Заклепка резьбовая">Заклепка резьбовая</option>
+                    <option value="Кольцо">Кольцо</option>
+                    <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/
+                        ТипСМ.ПРИМЕЧАНИЕ
+                    </option>
+                    <option value="Ось">Ось</option>
+                    <option value="Саморез">Саморез</option>
+                    <option value="Скоба U-образная">Скоба U-образная</option>
+                    <option value="Шайба">Шайба</option>
+                    <option value="Шпилька">Шпилька</option>
+                </select>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Тип</label>
-                    <select class="form-select" aria-label="Default select example" id="hardware_type" name="hardware_type" typeof="text">
-                        <option value="{{ item.hardware_type }}" selected>{{ item.hardware_type }}</option>
-                        <option value="Болт">Болт</option>
-                        <option value="Болт доработанный">Болт доработанный</option>
-                        <option value="Винт">Винт</option>
-                        <option value="Винт с шестигранной головкой">Винт с шестигранной головкой</option>
-                        <option value="Винт установочный">Винт установочный</option>
-                        <option value="Втулка">Втулка</option>
-                        <option value="Гайка">Гайка</option>
-                        <option value="Гайка-барашек">Гайка-барашек</option>
-                        <option value="Заглушка">Заглушка</option>
-                        <option value="Заклепка">Заклепка</option>
-                        <option value="Заклепка вытяжная">Заклепка вытяжная</option>
-                        <option value="Заклепка резьбовая">Заклепка резьбовая</option>
-                        <option value="Кольцо">Кольцо</option>
-                        <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/
-                            ТипСМ.ПРИМЕЧАНИЕ
-                        </option>
-                        <option value="Ось">Ось</option>
-                        <option value="Саморез">Саморез</option>
-                        <option value="Скоба U-образная">Скоба U-образная</option>
-                        <option value="Шайба">Шайба</option>
-                        <option value="Шпилька">Шпилька</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label>Профиль</label>
-                    <select class="form-select" aria-label="Default select example" id="thread_profile" name="thread_profile"
-                            typeof="text">
-                        <option value="{{ item.thread_profile }}" selected> {{ item.thread_profile }}</option>
-                        <option value="UNC">UNC</option>
-                        <option value="M">M</option>
-                        <option value="ПСВ.711141.001">ПСВ.711141.001</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label>Диаметр <small>(Номинальный)</small></label>
-                    <input type="nominal_diameter" name="nominal_diameter" placeholder="diameter" class="form-control"
-                           value="{{item.nominal_diameter}}"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Профиль</label>
+                <input type="text" value="{{item.thread_profile}}" name="thread_profile" placeholder="Пример: UNC" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Диаметр <small>(Номинальный)</small></label>
+                <input type="text" value="{{item.nominal_diameter}}" name="nominal_diameter" placeholder="Пример: #10" class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Шаг резьбы</label>
-                    <input type="text" name="thread_pitch" placeholder="thread_pitch" class="form-control" value="{{item.thread_pitch}}"/>
-                </div>
-                <div class="col">
-                    <label>Длинна</label>
-                    <input type="text" name="length" placeholder="length" class="form-control" value="{{item.length}}"/>
-                </div>
-                <div class="col">
-                    <label>Класс прочности</label>
-                    <input type="text" name="accuracy" placeholder="accuracy" class="form-control"
-                           value="{{item.accuracy}}"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Шаг резьбы</label>
+                <input type="text" value="{{item.thread_pitch}}" name="thread_pitch" placeholder="Пример: 24" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Длинна</label>
+                <input type="text" value="{{item.length}}" name="length" placeholder="Пример: 1/2" class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Материал покрытия</label>
-                    <input type="text" name="Material_or_coating" placeholder="material" class="form-control"
-                           value="{{item.Material_or_coating}}"/>
-                </div>
-                <div class="col">
-                    <label>Присвоил</label>
-                    <input required type="text" name="assigned" placeholder="assigned"
-                           class="form-control" value="{{item.assigned}}"/>
-                </div>
-                <div class="col">
-                    <label>Примечание</label>
-                    <input type="text" name="note" placeholder="note" class="form-control" value="{{item.note}}"/>
-                </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Материал покрытия</label>
+                <input type="text" value="{{item.Material_or_coating}}" name="Material_or_coating" placeholder="Пример: Zn" class="form-control"/>
+            </div>
+            <div class="col">
+                <label>Класс прочности</label>
+                <input type="text" value="{{item.strength_class}}" name="strength_class" placeholder="Пример: G5" class="form-control"/>
             </div>
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Применяемость</label>
-                    <input type="text" name="applicability" placeholder="applicability" class="form-control"
-                           value="{{item.applicability}}"/>
-                </div>
-                <div class="col">
-                    <label>Дата</label>
-                    <input type="datetime-local" name="date" placeholder="date"
-                           class="form-control" value="{{ current_datetime }}" readonly/>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="container">
-            <button class="btn btn-primary" style="width: 400px">Изменить</button>
-        </div>
-    </form>
-</div>
+    </div>
+    <div class="container text-center">
+        <label>Присвоил</label>
+        <input required type="text" value="{{item.assigned}}" name="assigned" placeholder="(Обязательное поле)Ваша Фамилия"
+               class="form-control"/>
+
+        <label>Примечание</label>
+        <input type="text" value="{{item.note}}" name="note" placeholder="Любое примечание по детали" class="form-control"/>
+
+        <label>Применяемость</label>
+        <input type="text" value="{{item.applicability}}" name="applicability" placeholder="В каком проекте применяется данная деталь" class="form-control"/>
+
+        <label style="display: none;">Дата</label>
+        <input type="datetime-local" name="date" placeholder="date" style="display: none;"
+               class="form-control" value="{{ current_datetime }}" readonly/>
+
+    </div>
+    <br>
+    <div class="container text-center">
+        <button class="btn btn-primary" style="width: 400px">Создать</button>
+    </div>
+</form>
+
 
 {% endblock content %}
