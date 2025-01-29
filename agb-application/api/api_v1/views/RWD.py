@@ -42,6 +42,17 @@ async def add_new_rwd(request: Request):
                                        "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M")})
 
 
+@router.get("/patch/{item_id}")
+async def patch_rwd_by_id(request: Request, item_id: int,
+                            session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+    patch_item = await get_object_by_id(session=session, model=RWD, request_id=item_id)
+
+    return templates.TemplateResponse("/patch/patch_rwd.html",
+                                      {"request": request,
+                                       "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M"),
+                                       "item": patch_item})
+
+
 @router.post("/patch", response_class= RedirectResponse)
 async def patch_metizes(
         patch_item: Annotated[RWDUpdatePartial, Form()],
@@ -74,7 +85,7 @@ async def search_metiz_by_request(
 ):
     search_item = request.query_params.get('main_input')
     res_search = await search_by_request(request=search_item, session=session, model=RWD)
-    return templates.TemplateResponse("/finded/rwds.html", {'request': request, "metizes": res_search})
+    return templates.TemplateResponse("/finded/rwds.html", {'request': request, "rwds": res_search})
 
 
 

@@ -1,7 +1,6 @@
-{% extends '/finded/base.html' %}
+{% extends '/patch/base.html' %}
 
 {% block content %}
-
 <header class="p-3 mb-3 border-bottom" id="header">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -65,6 +64,9 @@
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
                 <li><a href="/search_purchasedhydro" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
             </ul>
+            <div>
+            </div>
+
 
         </div>
     </div>
@@ -72,115 +74,52 @@
 
 
 <div class="container">
-    <h1 class="page-header text-center">
-        Поиск
-    </h1>
-    <div class="wrapper">
-        <form action="/RWD/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
-            <input id="main_input" name="main_input" type="text" class="form-control"
-                   placeholder="Введите название или артикул"
-                   aria-label="Recipient's username" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="submit" id="button-addon2">Поиск</button>
-        </form>
+
+
+    <div class="container my-5">
+        <div class="row align-items-center rounded-3 border shadow-lg">
+            <div>
+                <form action="/RWD/patch" method="POST">
+                    <h1 style="text-align: center;"> Форма изменения РВД</h1>
+                    <div class="container text-left">
+                        <div class="row">
+
+                            <label>id</label>
+                            <input type="text" name="id" placeholder="id" class="form-control"
+                                   value="{{ item.id }}" readonly/>
+
+                            <label>Дата</label>
+                            <input type="datetime-local" name="date" placeholder="date"
+                                   class="form-control" value="{{ current_datetime }}" readonly/>
+
+                            <label>Номер</label>
+                            <input type="text" name="number" placeholder="номер" class="form-control"
+                                   value="{{ item.number }}"/>
+
+                            <label>номер АГБ</label>
+                            <input type="text" name="article_number_agb" placeholder="номер АГБ"
+                                   class="form-control"
+                                   value="{{ item.article_number_agb }}"/>
+
+                            <label>Номенклатура</label>
+                            <input type="text" name="nomenclature" placeholder="Номенклатура" class="form-control"
+                                   value="{{ item.nomenclature }}"/>
+
+
+                            <label>Комментарий</label>
+                            <input type="text" name="note" placeholder="Комментарий"
+                                   class="form-control" value="{{ item.note }}"/>
+                        </div>
+                        <br>
+                        <button class="btn btn-success" type="submit">Отправить</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
     </div>
-</div>
-<div class="row" style="margin:20px;">
-    <div class="col-12">
-        <a href="/RWD/addnew" class="btn btn-primary">Добавить</a>
-        <br><br>
-        <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th>Номер</th>
-                <th>Дата присвоения</th>
-                <th>Артикул АГБ</th>
-                <th>Номенклатура</th>
-                <th>Комментарий</th>
-                <th width="250px"> Действия</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in rwds %}
-            <tr>
-                <td>{{ item.number }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.article_number_agb }}</td>
-                <td>{{ item.nomenclature }}</td>
-                <td>{{ item.note }}</td>
-                <td>
-                    <a id="patchLink{{item.id}}"
-                       href="/RWD/patch/{{item.id}}"
-                       class="btn btn-success"
-                       data-id="{{item.id}}"
-                       data-method="patch"
-                    >Изменить
-                    </a>
-<!--                    |-->
-<!--                    <a id="deleteLink{{item.id}}"-->
-<!--                       data-id="{{item.id}}"-->
-<!--                       href="/RWD/delete/{{item.id}}"-->
-<!--                       data-method="delete"-->
-<!--                       class="btn btn-danger"-->
-<!--                    >Удалить-->
-<!--                    </a>-->
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+
+
 </div>
 
-<style>
-    .rotated {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-    }
-</style>
-<script>
-    document.getElementById('deleteLink').addEventListener('click', function(e) {
-      e.preventDefault();
-
-      const id = this.getAttribute('data-id');
-
-      fetch('/rwdes/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: id }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Обновите UI после успешного удаления
-        this.remove(); // Удаляем сам элемент ссылки
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    });
-    document.getElementById('patchLink').addEventListener('click', function(e) {
-          e.preventDefault();
-
-          const id = this.getAttribute('data-id');
-
-          fetch('/rwdes/patch', {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: id }),
-          })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data);
-            // Обновите UI после успешного удаления
-            this.remove(); // Удаляем сам элемент ссылки
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-        });
-</script>
 {% endblock content %}

@@ -51,7 +51,7 @@ async def patch_metiz_by_id(request: Request, item_id: int,
                                        "item": patch_item})
 
 
-@router.post("/patch", response_class= RedirectResponse)
+@router.post("/patch", response_class=RedirectResponse)
 async def patch_metizes(
         patch_item: Annotated[MetizUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
