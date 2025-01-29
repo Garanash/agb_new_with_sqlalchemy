@@ -22,7 +22,21 @@ class AdapterAndPlugsBase(BaseModel):
 
 
 class AdapterAndPlugsCreate(AdapterAndPlugsBase):
-    pass
+    number_in_catalog: str | None = None
+    number_in_catalog_agb: str | None = None
+    name_in_catalog: str | None = None
+    name_in_KD: str | None = None
+    name_in_catalog_agb: str | None = None
+    adapter_type: str | None = None
+    adapter_angle: str | None = None
+    exit_first: str | None = None
+    exit_second: str | None = None
+    center_exit: str | None = None
+    name_in_OEM: str | None = None
+    assigned: str | None = None
+    note: str | None = None
+    applicability: str | None = None
+    date: str | None = None
 
 
 class AdapterAndPlugsRead(AdapterAndPlugsBase):
