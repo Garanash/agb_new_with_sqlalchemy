@@ -90,12 +90,9 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="rotated">Номер в каталоге</th>
                     <th class="rotated">Номер в каталоге АГБ</th>
                     <th class="rotated">Имя в каталоге</th>
-                    <th class="rotated">Имя в КД</th>
                     <th class="rotated">Имя в каталоге АГБ</th>
-                    <th class="rotated">Имя в ОЕМ</th>
                     <th class="rotated">Присвоил</th>
                     <th class="rotated">Примечание</th>
                     <th class="rotated">Применяемость</th>
@@ -106,12 +103,9 @@
                 <tbody>
             {% for item in purchased %}
             <tr>
-                <td>{{ item.number_in_catalog }}</td>
                 <td>{{ item.number_in_catalog_agb }}</td>
                 <td>{{ item.name_in_catalog }}</td>
-                <td>{{ item.name_in_KD }}</td>
                 <td>{{ item.name_in_catalog_agb }}</td>
-                <td>{{ item.name_in_OEM }}</td>
                 <td>{{ item.assigned }}</td>
                 <td>{{ item.note }}</td>
                 <td>{{ item.applicability }}</td>
