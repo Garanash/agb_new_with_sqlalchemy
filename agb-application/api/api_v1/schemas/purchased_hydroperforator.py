@@ -15,7 +15,15 @@ class PurchasedHydroperforatorBase(BaseModel):
 
 
 class PurchasedHydroperforatorCreate(PurchasedHydroperforatorBase):
-    pass
+    number_in_catalog: str | None = None
+    number_in_catalog_agb: str | None = None
+    name_in_catalog: str | None = None
+    name_in_KD: str | None = None
+    name_in_catalog_agb: str | None = None
+    name_in_OEM: str | None = None
+    assigned: str | None = None
+    note: str | None = None
+    applicability: str | None = None
 
 
 class PurchasedHydroperforatorRead(PurchasedHydroperforatorBase):
@@ -27,6 +35,7 @@ class PurchasedHydroperforatorUpdate(PurchasedHydroperforatorBase):
 
 
 class PurchasedHydroperforatorUpdatePartial(PurchasedHydroperforatorBase):
+    id: int | None = None
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None

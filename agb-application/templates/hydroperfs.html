@@ -7,7 +7,7 @@
         Поиск
     </h1>
     <div class="wrapper">
-        <form action="/adapters/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
+        <form action="/hydroperfs/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
             <input id="main_input" name="main_input" type="text" class="form-control"
                    placeholder="Введите название или артикул"
                    aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -27,11 +27,6 @@
                 <th class="rotated">Имя в каталоге</th>
                 <th class="rotated">Имя в КД</th>
                 <th class="rotated">Имя в каталоге АГБ</th>
-                <th class="rotated">Тип адаптера</th>
-                <th class="rotated">Угол адаптера</th>
-                <th class="rotated">Выход 1</th>
-                <th class="rotated">Выход 2</th>
-                <th class="rotated">Выход 3</th>
                 <th class="rotated">Имя в ОЕМ</th>
                 <th class="rotated">Присвоил</th>
                 <th class="rotated">Примечание</th>
@@ -41,18 +36,13 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in adapters %}
+            {% for item in hydroperfs %}
             <tr>
                 <td>{{ item.number_in_catalog }}</td>
                 <td>{{ item.number_in_catalog_agb }}</td>
                 <td>{{ item.name_in_catalog }}</td>
                 <td>{{ item.name_in_KD }}</td>
                 <td>{{ item.name_in_catalog_agb }}</td>
-                <td>{{ item.adapter_type }}</td>
-                <td>{{ item.adapter_angle }}</td>
-                <td>{{ item.exit_first }}</td>
-                <td>{{ item.exit_second }}</td>
-                <td>{{ item.center_exit }}</td>
                 <td>{{ item.name_in_OEM }}</td>
                 <td>{{ item.assigned }}</td>
                 <td>{{ item.note }}</td>
@@ -60,7 +50,7 @@
                 <td>{{ item.date }}</td>
                 <td>
                     <a id="patchLink{{item.id}}"
-                       href="/adapters/patch/{{item.id}}"
+                       href="/hydroperfs/patch/{{item.id}}"
                        class="btn btn-success"
                        data-id="{{item.id}}"
                        data-method="patch"
@@ -71,7 +61,7 @@
                     |
                     <a id="deleteLink{{item.id}}"
                        data-id="{{item.id}}"
-                       href="/adapters/delete/{{item.id}}"
+                       href="/hydroperfs/delete/{{item.id}}"
                        data-method="delete"
                        class="btn btn-danger"
                     >Удалить
@@ -97,7 +87,7 @@
 
       const id = this.getAttribute('data-id');
 
-      fetch('/adapters/delete', {
+      fetch('/hydroperfs/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +109,7 @@
 
           const id = this.getAttribute('data-id');
 
-          fetch('/adapters/patch', {
+          fetch('/hydroperfs/patch', {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
