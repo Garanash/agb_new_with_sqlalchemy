@@ -40,7 +40,7 @@ async def patch_adapter_by_id(request: Request, item_id: int,
                             session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     patch_item = await get_object_by_id(session=session, model=AdaptersAndPlugs, request_id=item_id)
     print(request.cookies.items())
-    return templates.TemplateResponse("/patch/patch_adapter.html",
+    return templates.TemplateResponse("/patch/patch_adapters.html",
                                       {"request": request,
                                        "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M"),
                                        "item": patch_item})
@@ -53,7 +53,21 @@ async def patch_adapters(
         request: Request):
     object_for_update = await get_object_by_id(request_id=patch_item.id, session=session, model=AdaptersAndPlugs)
     await update_object(session=session, object_for_update=object_for_update, object_updating=patch_item, partial=True)
-    return RedirectResponse("/adapter/adapters", status_code=301)
+    return RedirectResponse("/adapters/adapters", status_code=301)
+
+
+@router.post("/create", response_model=None, response_model_by_alias=True, response_class=RedirectResponse)
+async def create_adapter(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        adapter_create: Annotated[AdapterAndPlugsCreate, Form()],
+        request: Request):
+    try:
+        adapter = await create_new_object(session=session, object_create=adapter_create, model=AdaptersAndPlugs)
+        return RedirectResponse("/adapters/adapters", status_code=301)
+
+    except BaseException:
+        return templates.TemplateResponse("/search/adapters.html",
+                                          {'request': request, "message": "Такая деталь уже существует"})
 
 
 @router.get('/search')

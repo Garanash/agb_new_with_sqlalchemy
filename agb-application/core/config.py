@@ -6,6 +6,7 @@ class RunConfig(BaseModel):
     host: str = '127.0.0.1'
     port: int = 8907
 
+
 class ApiV1Prefix(BaseModel):
     prefix: str = '/v1'
     users: str = '/users'
@@ -15,12 +16,12 @@ class ApiV1Prefix(BaseModel):
     purchased: str = '/purchased'
     purchasedHydro: str = '/purchased_hydroperforator'
     according: str = '/according_to_the_draw'
-    adaptersAndPlugs: str = '/adapter_and_plugs'
+    adaptersAndPlugs: str = '/adapters'
+
 
 class ApiPrefix(BaseModel):
     prefix: str = '/api'
     v1: ApiV1Prefix = ApiV1Prefix()
-
 
 
 class DatabaseConfig(BaseModel):

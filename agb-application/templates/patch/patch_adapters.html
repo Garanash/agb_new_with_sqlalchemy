@@ -1,0 +1,128 @@
+{% extends '/patch/base.html' %}
+
+{% block content %}
+<div class="container">
+    <form action="/adapters/patch" method="POST">
+        <input type="text" name="id" placeholder="id" class="form-control"
+               value="{{ item.id }}" readonly/>
+            <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Номер в каталоге</label>
+                    <input type="text" name="number_in_catalog" placeholder="number_in_katalog" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Номер в каталоге АГБ</label>
+                    <input type="text" name="number_in_catalog_agb" placeholder="number_in_katalog_agb"
+                            class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Название в КД</label>
+                    <input type="text" name="name_in_KD" placeholder="name_in_kd" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Название в каталоге</label>
+                    <input type="text" name="name_in_catalog" placeholder="name_in_katalog" class="form-control"/>
+                </div>
+
+                <div class="col">
+                    <label>Название в каталоге АГБ</label>
+                    <input type="text" name="name_in_catalog_agb" placeholder="name_in_katalog_agb"
+                            class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Тип адаптера</label>
+                    <input type="text" name="adapter_type" placeholder="adapter_type" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Тип</label>
+                    <select class="form-select" aria-label="Default select example" id="type" name="hardware_type" typeof="text">
+                        <option value="-">-- Выберите тип --</option>
+                        <option value="Болт">Болт</option>
+                        <option value="Болт доработанный">Болт доработанный</option>
+                        <option value="Винт">Винт</option>
+                        <option value="Винт с шестигранной головкой">Винт с шестигранной головкой</option>
+                        <option value="Винт установочный">Винт установочный</option>
+                        <option value="Втулка">Втулка</option>
+                        <option value="Гайка">Гайка</option>
+                        <option value="Гайка-барашек">Гайка-барашек</option>
+                        <option value="Заглушка">Заглушка</option>
+                        <option value="Заклепка">Заклепка</option>
+                        <option value="Заклепка вытяжная">Заклепка вытяжная</option>
+                        <option value="Заклепка резьбовая">Заклепка резьбовая</option>
+                        <option value="Кольцо">Кольцо</option>
+                        <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ</option>
+                        <option value="Ось">Ось</option>
+                        <option value="Саморез">Саморез</option>
+                        <option value="Скоба U-образная">Скоба U-образная</option>
+                        <option value="Шайба">Шайба</option>
+                        <option value="Шпилька">Шпилька</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Угол адаптера</label>
+                    <input type="text" name="adapter_angle" placeholder="adapter_angle" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Выход 1</label>
+                    <input type="text" name="exit_first" placeholder="exit_first" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Выход 2</label>
+                    <input type="text" name="exit_second" placeholder="exit_second" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Выход 3</label>
+                    <input type="text" name="center_exit" placeholder="center_exit" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Имя в ОЕМ</label>
+                    <input type="text" name="name_in_OEM" placeholder="name_in_OEM" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+                <div class="col">
+                    <label>Присвоил</label>
+                    <input required type="text" name="assigned" placeholder="assigned"
+                            class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Примечание</label>
+                    <input type="text" name="note" placeholder="note" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <label>Применяемость</label>
+                    <input type="text" name="applicability" placeholder="applicability" class="form-control"/>
+                </div>
+                <div class="col">
+                    <label>Дата</label>
+                    <input type="datetime-local" name="date" placeholder="date"
+                            class="form-control" value="{{ current_datetime }}" readonly/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <button class="btn btn-primary" style="width: 400px">Создать</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
