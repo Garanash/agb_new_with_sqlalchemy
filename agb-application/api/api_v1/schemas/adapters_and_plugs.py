@@ -34,6 +34,7 @@ class AdapterAndPlugsUpdate(AdapterAndPlugsBase):
 
 
 class AdapterAndPlugsUpdatePartial(AdapterAndPlugsBase):
+    id: int | None = None
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None
