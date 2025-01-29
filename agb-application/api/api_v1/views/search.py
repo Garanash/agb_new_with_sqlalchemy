@@ -34,9 +34,9 @@ def purchased_search(request: Request):
     return templates.TemplateResponse('/search/purchased.html', {'request': request})
 
 
-@router.get('/search_purchasedhydro')
+@router.get('/search_hydroperfs')
 def purchasedhydro_search(request: Request):
-    return templates.TemplateResponse('/search/purchhydro.html', {'request': request})
+    return templates.TemplateResponse('/search/hydroperfs.html', {'request': request})
 
 
 @router.get('/search_adapters')
