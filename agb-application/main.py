@@ -7,6 +7,7 @@ from api import router as api_router
 from core.config import settings
 from fastapi.templating import Jinja2Templates
 
+
 templates = Jinja2Templates(directory="templates")  # регистрируем папку как папку с шаблонами джинджа
 
 @asynccontextmanager
@@ -23,7 +24,7 @@ main_app.include_router(
     api_router,
     # prefix=settings.api.prefix # убрать при деплое
 )
-
+# main_app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @main_app.get('/')
 def main(request: Request):
