@@ -10,13 +10,13 @@ from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="templates")  # регистрируем папку как папку с шаблонами джинджа
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
     yield
     print("dispose engine")
     await db_helper.dispose()
-
 
 
 main_app = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
