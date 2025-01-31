@@ -71,55 +71,48 @@
         </div>
     </div>
 </header>
+<form action="/RWD/patch" method="POST">
+    <h1 style="text-align: center;"> Форма изменения РВД</h1>
+    <div class="container text-center">
+        <div class="row">
+
+            <label style="display:none;">id</label>
+            <input style="display:none;" type="text" name="id" placeholder="id" class="form-control"
+                   value="{{ item.id }}" readonly/>
+
+            <label style="display:none;">Дата</label>
+            <input style="display:none;" type="datetime-local" name="date" placeholder="date"
+                   class="form-control" value="{{ current_datetime }}" readonly/>
+
+            <label>Номер</label>
+            <input required type="text" name="number" placeholder="(обязательное поле)Пример: АГБ 12 345 543 32 001"
+                   class="form-control"
+                   value="{{ item.number }}"/>
+
+            <label>номер АГБ</label>
+            <input type="text" name="article_number_agb" required
+                   placeholder="(обязательное поле)Пример: АГБ РВД 21 345"
+                   class="form-control"
+                   value="{{ item.article_number_agb }}"/>
+
+            <label>Номенклатура</label>
+            <input type="text" name="nomenclature" required placeholder="(обязательное поле)Пример: РВД 1 тра та та"
+                   class="form-control"
+                   value="{{ item.nomenclature }}"/>
 
 
-<div class="container">
-
-
-    <div class="container my-5">
-        <div class="row align-items-center rounded-3 border shadow-lg">
-            <div>
-                <form action="/RWD/patch" method="POST">
-                    <h1 style="text-align: center;"> Форма изменения РВД</h1>
-                    <div class="container text-left">
-                        <div class="row">
-
-                            <label>id</label>
-                            <input type="text" name="id" placeholder="id" class="form-control"
-                                   value="{{ item.id }}" readonly/>
-
-                            <label>Дата</label>
-                            <input type="datetime-local" name="date" placeholder="date"
-                                   class="form-control" value="{{ current_datetime }}" readonly/>
-
-                            <label>Номер</label>
-                            <input type="text" name="number" placeholder="номер" class="form-control"
-                                   value="{{ item.number }}"/>
-
-                            <label>номер АГБ</label>
-                            <input type="text" name="article_number_agb" placeholder="номер АГБ"
-                                   class="form-control"
-                                   value="{{ item.article_number_agb }}"/>
-
-                            <label>Номенклатура</label>
-                            <input type="text" name="nomenclature" placeholder="Номенклатура" class="form-control"
-                                   value="{{ item.nomenclature }}"/>
-
-
-                            <label>Комментарий</label>
-                            <input type="text" name="note" placeholder="Комментарий"
-                                   class="form-control" value="{{ item.note }}"/>
-                        </div>
-                        <br>
-                        <button class="btn btn-success" type="submit">Отправить</button>
-                    </div>
-                </form>
-
-            </div>
+            <label>Комментарий</label>
+            <input type="text" name="note" placeholder="Комментарий минимум 3 символа" required
+                   class="form-control" value="{{ item.note }}"/>
         </div>
+
+        <br>
+        <div class="container text-center">
+            <button class="btn btn-primary" type="submit">Отправить</button>
+        </div>
+
     </div>
+</form>
 
-
-</div>
 
 {% endblock content %}

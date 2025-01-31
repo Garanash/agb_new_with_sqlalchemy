@@ -72,78 +72,65 @@
 </header>
 
 
-<div class="container">
-    <form action="/draw/create" method="POST">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Обозначение</label>
-                    <input required type="text" name="name" placeholder="Обозначение" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Номер в каталоге</label>
-                    <input required type="text" name="number_in_catalog" placeholder="number_in_catalog"
-                           class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Номер по каталогу АГБ</label>
-                    <input type="text" name="number_in_catalog_agb" required placeholder="Номер по каталогу АГБ" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Наименование по КД</label>
-                    <input type="text" name="name_in_KD" placeholder="Наименование по КД" class="form-control"/>
-                </div>
+<form action="/draw/create" method="POST">
+    <div class="container text-center">
 
-                <div class="col">
-                    <label>Название в каталоге АГБ</label>
-                    <input type="text" name="name_in_catalog" placeholder="name_in_katalog_agb"
-                           class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Первичное применение</label>
-                    <input type="text" name="first_applicability" placeholder="Первичное применение" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Примечание</label>
-                    <input type="text" name="note" placeholder="Примечание" class="form-control"/>
-                </div>
-                <div class="col">
-                    <label>Разработал</label>
-                    <input type="text" name="developed" required placeholder="Разработал" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>КД</label>
-                    <input type="text" required name="KD" placeholder="кд" class="form-control"/>
-                </div>
-            </div>
-        </div>
+        <label>Обозначение</label>
+        <input required type="text" name="name" placeholder="(Обязательное поле)Пример: Обозначение" class="form-control"/>
 
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <label>Дата</label>
-                    <input type="datetime-local" name="date" placeholder="date"
-                           class="form-control" value="{{ current_datetime }}" readonly/>
-                </div>
+        <label>Номер в каталоге</label>
+        <input required type="text" name="number_in_catalog" placeholder="(Обязательное поле)Пример: АГБ 123 432 001 0001"
+               class="form-control"/>
+
+        <label>Номер по каталогу АГБ</label>
+        <input type="text" name="number_in_catalog_agb" required placeholder="(Обязательное поле)Пример: АГБ 123 432 001 0001"
+               class="form-control"/>
+
+    </div>
+    <div class="container text-center">
+
+        <label>Наименование по КД</label>
+        <input type="text" name="name_in_KD" placeholder="Пример: КД АГБ 21 345 543 001" class="form-control"/>
+
+        <label>Название в каталоге АГБ</label>
+        <input type="text" name="name_in_catalog" placeholder="Пример: АГБ 234 543 0001"
+               class="form-control"/>
+        <label>Первичное применение</label>
+        <input type="text" name="first_applicability" placeholder="Пример: первичного применения" class="form-control"/>
+
+    </div>
+    <div class="container text-center">
+
+        <label>Примечание</label>
+        <input type="text" name="note" placeholder="Любые примечание" class="form-control"/>
+
+        <label>Разработал</label>
+        <input type="text" name="developed" required placeholder="(Обязательное поле)Пример: Иванов И.И." class="form-control"/>
+
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>КД</label>
+                <input type="text" required name="KD" placeholder="Вообще хз что это" class="form-control"/>
             </div>
         </div>
-        <br>
-        <div class="container">
-            <button class="btn btn-primary" style="width: 400px">Создать</button>
+    </div>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label style="display:none;">Дата</label>
+                <input style="display:none;" type="datetime-local" name="date" placeholder="date"
+                       class="form-control" value="{{ current_datetime }}" readonly/>
+            </div>
         </div>
-    </form>
-</div>
+    </div>
+    <br>
+    <div class="container text-center">
+        <button class="btn btn-primary" style="width: 400px">Создать</button>
+    </div>
+</form>
+
 
 {% endblock content %}

@@ -3,6 +3,7 @@ from .base import Base
 
 
 class PurchasedHydroperforator(Base):
+    number_in_catalog = Column(String(50), unique=True, default='-')
     number_in_catalog_agb = Column(String(50), unique=True, default='-')
     name_in_catalog = Column(String(50), default='-')
     name_in_KD = Column(String(50), default='-')
