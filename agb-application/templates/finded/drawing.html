@@ -62,7 +62,7 @@
                 <li><a href="/search_adapters" class="nav-link px-2 link-body-emphasis">Адаптеры</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
-                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
             </ul>
 
         </div>
@@ -72,7 +72,7 @@
 
 <div class="container">
     <h1 class="page-header text-center">
-        Поиск по изделиям по чертежу
+        Поиск по "Изделия по чертежам"
     </h1>
     <div class="wrapper">
         <form action="/draw/search" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
@@ -89,21 +89,21 @@
         <br><br>
         <table class="table table-bordered table-striped">
             <thead>
-            <tr>
-                <th>Обозначение</th>
-                <th>Номер по каталогу</th>
-                <th>Номер по каталогу АГБ</th>
-                <th>Наименование по КД</th>
-                <th>Наименование по каталогу</th>
-                <th>Первичное применение</th>
-                <th>Примечание</th>
-                <th>Разработал</th>
-                <th>КД</th>
-                <th>Дата внесения</th>
-                <th width="250px"> Действия</th>
-            </tr>
-            </thead>
-            <tbody>
+              <tr>
+                  <th>Обозначение</th>
+                  <th>Номер по каталогу</th>
+                  <th>Номер по каталогу АГБ</th>
+                  <th>Наименование по КД</th>
+                  <th>Наименование по каталогу</th>
+                  <th>Первичное применение</th>
+                  <th>Примечание</th>
+                  <th>Разработал</th>
+                  <th>КД</th>
+                  <th>Дата внесения</th>
+                  <th width="250px"> Действия</th>
+              </tr>
+              </thead>
+              <tbody>
             {% for item in drawings %}
             <tr>
                 <td>{{ item.name }}</td>
@@ -119,7 +119,7 @@
                 <td>
                     <a id="patchLink{{item.id}}"
                        href="/draw/patch/{{item.id}}"
-                       class="btn btn-success"
+                       class="btn btn-danger"
                        data-id="{{item.id}}"
                        data-method="patch"
                     >Изменить
@@ -152,7 +152,7 @@
 
       const id = this.getAttribute('data-id');
 
-      fetch('/metizes/delete', {
+      fetch('/draw/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -174,7 +174,7 @@
 
           const id = this.getAttribute('data-id');
 
-          fetch('/metizes/patch', {
+          fetch('/draw/patch', {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
