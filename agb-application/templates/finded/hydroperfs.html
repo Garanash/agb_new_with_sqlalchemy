@@ -22,7 +22,6 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="rotated">Номер в каталоге</th>
                     <th class="rotated">Номер в каталоге АГБ</th>
                     <th class="rotated">Имя в каталоге</th>
                     <th class="rotated">Имя в КД</th>
@@ -38,7 +37,6 @@
                 <tbody>
             {% for item in hydroperfs %}
             <tr>
-                <td>{{ item.number_in_catalog }}</td>
                 <td>{{ item.number_in_catalog_agb }}</td>
                 <td>{{ item.name_in_catalog }}</td>
                 <td>{{ item.name_in_KD }}</td>
@@ -54,6 +52,7 @@
                        class="btn btn-danger"
                        data-id="{{item.id}}"
                        data-method="patch"
+                       style="width:100%; height:100%;"
                     >Изменить
                     </a>
 <!--                    |-->
