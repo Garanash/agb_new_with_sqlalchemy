@@ -69,19 +69,22 @@ async def auth_login_with_set_cookie(
     return RedirectResponse("/auth/registration", status_code=301)
 
 
-@router.get("/check_cookie", response_model=None)
-async def check_cookie_base(
+def get_session_id(
         session_id: str = Cookie(alias=COOKIE_SESSION_ID_KEY)
 ):
     if session_id not in COOKIES:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='not authenticated')
-    return {'data': COOKIES[session_id]}
+    return COOKIES[session_id]
 
 
-@router.get('/registration')
-async def dont_registration_new_user(request: Request):
-    return templates.TemplateResponse("adm.html", {'request': request})
+@router.get('/check_cookie')
+async def check_cookie_base(
+    user_session_data: dict = Depends(get_session_id)
+):
+    username = user_session_data.get('username')
+    role = user_session_data.get('super_user')
+    return {"username": username, "role": role}
 
 
 @router.post("/register")
@@ -97,10 +100,3 @@ async def register_user(
     # Создаем нового пользователя
     await create_new_object(session=session, object_create=user, model=User)
     return {"message": "User registered successfully"}
-
-
-# Эндпоинт для выхода из системы
-@router.post("/logout")
-async def logout_user(response: Response):
-    response.delete_cookie(config.JWT_ACCESS_COOKIE_NAME)
-    return {"message": "Successfully logged out"}
