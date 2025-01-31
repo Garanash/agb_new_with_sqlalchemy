@@ -37,7 +37,7 @@ async def add_new_hydroperforator(request: Request):
 
 @router.get("/patch/{item_id}")
 async def patch_hydroperf_by_id(request: Request, item_id: int,
-                            session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+                                session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     patch_item = await get_object_by_id(session=session, model=PurchasedHydroperforator, request_id=item_id)
     print(request.cookies.items())
     return templates.TemplateResponse("/patch/patch_hydroperf.html",
@@ -46,12 +46,13 @@ async def patch_hydroperf_by_id(request: Request, item_id: int,
                                        "item": patch_item})
 
 
-@router.post("/patch", response_class= RedirectResponse)
+@router.post("/patch", response_class=RedirectResponse)
 async def patch_hydroperforators(
         patch_item: Annotated[PurchasedHydroperforatorUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request):
-    object_for_update = await get_object_by_id(request_id=patch_item.id, session=session, model=PurchasedHydroperforator)
+    object_for_update = await get_object_by_id(request_id=patch_item.id, session=session,
+                                               model=PurchasedHydroperforator)
     await update_object(session=session, object_for_update=object_for_update, object_updating=patch_item, partial=True)
     return RedirectResponse("/hydroperfs/hydroperfs", status_code=301)
 
@@ -63,9 +64,11 @@ async def create_hydroperforator(
         request: Request):
     try:
         adapter = await create_new_object(session=session, object_create=adapter_create, model=PurchasedHydroperforator)
+
         return RedirectResponse("/hydroperfs/hydroperfs", status_code=301)
 
-    except BaseException:
+    except BaseException as ex:
+        print(ex)
         return templates.TemplateResponse("/search/hydroperfs.html",
                                           {'request': request, "message": "Такая деталь уже существует"})
 

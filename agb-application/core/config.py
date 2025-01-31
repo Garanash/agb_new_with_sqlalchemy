@@ -14,7 +14,7 @@ class ApiV1Prefix(BaseModel):
     RWD: str = '/RWD'
     project: str = "/project"
     purchased: str = '/purchased'
-    purchasedHydro: str = '/purchased_hydroperforator'
+    purchasedHydro: str = '/hydroperfs'
     according: str = '/draw'
     adaptersAndPlugs: str = '/adapters'
 
