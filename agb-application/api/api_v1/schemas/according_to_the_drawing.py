@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class AccordingToTheDrawBase(BaseModel):
+    id: int | None = None
     name: str | None = None
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None

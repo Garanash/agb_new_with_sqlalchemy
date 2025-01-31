@@ -45,6 +45,8 @@ async def patch_drawing(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request):
     object_for_update = await get_object_by_id(request_id=patch_item.id, session=session, model=AccordingToTheDrawing)
+    print(object_for_update.__dict__)
+
     await update_object(session=session, object_for_update=object_for_update, object_updating=patch_item, partial=True)
     return RedirectResponse("/draw/drawings", status_code=301)
 
