@@ -92,8 +92,10 @@
                 <tr>
                     <th>Номер в каталоге</th>
                     <th>Номер в каталоге АГБ</th>
-                    <th>Имя в каталоге</th>
-                    <th>Имя в каталоге АГБ</th>
+                    <th>Название в КД</th>
+                    <th>Название в каталоге</th>
+                    <th>Название в каталоге АГБ</th>
+                    <th>Название в ОЕМ</th>
                     <th>Присвоил</th>
                     <th>Примечание</th>
                     <th>Применяемость</th>
@@ -106,8 +108,10 @@
             <tr>
                 <td>{{ item.number_in_catalog }}</td>
                 <td>{{ item.number_in_catalog_agb }}</td>
+                <td>{{ item.name_in_KD }}</td>
                 <td>{{ item.name_in_catalog }}</td>
                 <td>{{ item.name_in_catalog_agb }}</td>
+                <td>{{ item.name_in_OEM }}</td>
                 <td>{{ item.assigned }}</td>
                 <td>{{ item.note }}</td>
                 <td>{{ item.applicability }}</td>

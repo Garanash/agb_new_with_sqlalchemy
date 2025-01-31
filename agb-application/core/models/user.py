@@ -4,7 +4,7 @@ from .base import Base
 
 class User(Base):
     username = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
+    password = Column(String(50), nullable=False, default="-")
     role = Column(String(50), nullable=False)
 
     is_active = Column(Boolean)

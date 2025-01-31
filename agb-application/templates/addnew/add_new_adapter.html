@@ -79,21 +79,21 @@
             <div class="row">
                 <div class="col">
                     <label>Номер в каталоге</label>
-                    <input required type="text" name="number_in_catalog" placeholder="number_in_katalog"
+                    <input required type="text" name="number_in_catalog" placeholder="(обязательное поле) Пример: АГБ 123 456 001"
                            class="form-control"/>
                 </div>
                 <div class="col">
                     <label>Номер в каталоге АГБ</label>
-                    <input required type="text" name="number_in_catalog_agb" placeholder="number_in_katalog_agb"
+                    <input required type="text" name="number_in_catalog_agb" placeholder="(обязательное поле) Пример: АГБ 123 456 001"
                            class="form-control"/>
                 </div>
             </div>
             <label>Название в КД</label>
-            <input required type="text" name="name_in_KD" placeholder="name_in_kd" class="form-control"/>
+            <input required type="text" name="name_in_KD" placeholder="Пример: АГБ 123 456 001" class="form-control"/>
             <label>Название в каталоге</label>
-            <input type="text" name="name_in_catalog" placeholder="name_in_katalog" class="form-control"/>
+            <input type="text" name="name_in_catalog" placeholder="Пример: АГБ 123 456 001" class="form-control"/>
             <label>Название в каталоге АГБ</label>
-            <input type="text" name="name_in_catalog_agb" placeholder="name_in_katalog_agb"
+            <input type="text" name="name_in_catalog_agb" placeholder="Пример: АГБ 123 456 001"
                    class="form-control"/>
         </div>
 
@@ -101,7 +101,7 @@
             <div class="row">
                 <div class="col">
                     <label>Тип</label>
-                    <select class="form-select" aria-label="Default select example" id="type" name="hardware_type"
+                    <select class="form-select" aria-label="Default select example" id="type" name="adapter_type"
                             typeof="text">
                         <option value="-">-- Выберите тип --</option>
                         <option value="Диск-топ">Диск-топ</option>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="col">
                     <label>Угол адаптера</label>
-                    <input max="360" min="0" type="number" name="adapter_angle" placeholder="adapter_angle" class="form-control"/>
+                    <input max="360" min="0" type="number" name="adapter_angle" placeholder="Пример: 90" class="form-control"/>
                 </div>
             </div>
         </div>
@@ -124,37 +124,37 @@
             <div class="row">
                 <div class="col">
                     <label>Выход 1</label>
-                    <input type="text" name="exit_first" placeholder="exit_first" class="form-control"/>
+                    <input type="text" name="exit_first" placeholder="Пример: 12" class="form-control"/>
                 </div>
                 <div class="col">
                     <label>Выход 2</label>
-                    <input type="text" name="exit_second" placeholder="exit_second" class="form-control"/>
+                    <input type="text" name="exit_second" placeholder="Пример: 12" class="form-control"/>
                 </div>
                 <div class="col">
                     <label>Выход 3</label>
-                    <input type="text" name="center_exit" placeholder="center_exit" class="form-control"/>
+                    <input type="text" name="center_exit" placeholder="Пример: 12" class="form-control"/>
                 </div>
 
             </div>
             <label>Имя в ОЕМ</label>
-                                <input type="text" name="name_in_OEM" placeholder="name_in_OEM" class="form-control"/>
+                                <input type="text" name="name_in_OEM" placeholder="Пример: АГБ 123 456 001" class="form-control"/>
         </div>
         <div class="container text-center">
             <div class="col">
                 <label>Присвоил</label>
-                <input required type="text" name="assigned" placeholder="assigned"
+                <input required type="text" name="assigned" placeholder="(Обязательное поле)Пример: Иванов И.И."
                        class="form-control"/>
             </div>
             <div class="col">
                 <label>Примечание</label>
-                <input type="text" name="note" placeholder="note" class="form-control"/>
+                <input type="text" name="note" placeholder="Любое примечание по детали" class="form-control"/>
             </div>
         </div>
         <div class="container text-center">
             <div class="row">
                 <div class="col">
                     <label>Применяемость</label>
-                    <input type="text" name="applicability" placeholder="applicability" class="form-control"/>
+                    <input type="text" name="applicability" placeholder="Где применимо" class="form-control"/>
                 </div>
             </div>
             <label style="display:none;">Дата</label>

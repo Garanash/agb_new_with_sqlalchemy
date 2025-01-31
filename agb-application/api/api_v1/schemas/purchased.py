@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class PurchasedBase(BaseModel):
+    number_in_catalog: str = Field(min_length=3, max_length=50)
     number_in_catalog_agb: str = Field(min_length=3, max_length=50)
     name_in_catalog: str = Field(min_length=3, max_length=50)
     name_in_KD: str = Field(min_length=3, max_length=50)
@@ -16,6 +17,7 @@ class PurchasedBase(BaseModel):
 
 
 class PurchasedCreate(PurchasedBase):
+    number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None
     name_in_KD: str | None = None
@@ -37,6 +39,7 @@ class PurchasedUpdate(PurchasedBase):
 
 class PurchasedUpdatePartial(PurchasedBase):
     id: int | None = None
+    number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None
     name_in_KD: str | None = None

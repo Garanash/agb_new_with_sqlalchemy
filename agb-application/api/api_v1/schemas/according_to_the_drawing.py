@@ -6,6 +6,7 @@ class AccordingToTheDrawBase(BaseModel):
     number_in_catalog: str | None = None
     number_in_catalog_agb: str | None = None
     name_in_catalog: str | None = None
+    name_in_KD: str | None = None
     first_applicability: str | None = None
     note: str | None = None
     developed: str | None = None
