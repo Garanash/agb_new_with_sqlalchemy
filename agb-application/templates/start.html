@@ -87,15 +87,14 @@
 </header>
 <div class="container text-center" style="width: 600px;">
     <form action="/auth/login" method="post">
-<!--        <img src="{{ url_for('static', filename='images/123.png') }}">-->
         <h1 class="h3 mb-3 fw-normal"><b>Вместе, мы свернем горы!</b></h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Ваш логин">
+            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Ваш логин">
             <label for="floatingInput">Ваш логин:</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Ваш пароль:">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Ваш пароль:">
             <label for="floatingPassword">Ваш пароль:</label>
         </div>
 
