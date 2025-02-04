@@ -48,7 +48,7 @@ async def re_login(
         {
             "request": request,
             "response": response,
-            "message" : "Не верное имя пользователя или пароль"
+            "message" : "Неверное имя пользователя или пароль"
         })
 
 
