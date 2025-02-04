@@ -2,6 +2,8 @@ services:
 
   postgres:
     image: postgres:17
+    networks:
+      - agb-network
     environment:
       POSTGRES_DB: agb
       POSTGRES_USER: user
@@ -32,7 +34,9 @@ services:
 
   app:
     build: agb-application/
-    command:  python3 main.py
+    networks:
+      - agb-network
+    command: python3 main.py
     depends_on:
       - postgres
     ports:
@@ -40,4 +44,8 @@ services:
       - "443:443"
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@host.docker.internal:5432/agb
+        - DATABASE_URL=postgresql+asyncpg://user:password@host.docker.internal:5432/agb
+
+networks:
+  agb-network:
+    driver: bridge
