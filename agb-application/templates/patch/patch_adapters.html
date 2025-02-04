@@ -61,7 +61,7 @@
                 <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
                 <li><a href="/search_adapters" class="nav-link px-2 link-secondary">Адаптеры</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
-                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
             </ul>
             <div>
@@ -74,6 +74,7 @@
 
 <div class="container">
     <form action="/adapters/patch" method="POST">
+        <h1 style="text-align:center;"> Форма редактирования адаптера или заглушки </h1>
         <input readonly type="text" value="{{item.id}}" name="id" placeholder="id"
                class="form-control" style="display:none;"/>
         <div class="container text-center">
@@ -97,11 +98,11 @@
                    class="form-control"/>
             <label>Название в каталоге</label>
             <input type="text" value="{{item.name_in_catalog}}" name="name_in_catalog"
-                   placeholder="(обязательное поле) Пример: АГБ 123 456 001"
+                   placeholder="Пример: АГБ 123 456 001"
                    class="form-control"/>
             <label>Название в каталоге АГБ</label>
             <input type="text" value="{{item.name_in_catalog_agb}}" name="name_in_catalog_agb"
-                   placeholder="(обязательное поле) Пример: АГБ 123 456 001"
+                   placeholder="Пример: АГБ 123 456 001"
                    class="form-control"/>
         </div>
 
@@ -180,7 +181,7 @@
         </div>
         <br>
         <div class="container text-center">
-            <button class="btn btn-primary" style="width: 400px">Создать</button>
+            <button class="btn btn-success" style="width: 400px">Применить изменения</button>
         </div>
     </form>
 </div>

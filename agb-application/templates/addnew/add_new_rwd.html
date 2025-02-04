@@ -73,35 +73,28 @@
 </header>
 
 
-
-
-    <form action="/RWD/create" method="POST">
+<form action="/RWD/create" method="POST">
+    <div class="container text-center">
         <h1 style="text-align: center;"> Форма создания РВД</h1>
-        <div class="container text-center">
-
-
-                <label style="display:none;">Дата</label>
-                <input style="display:none;" type="datetime-local" name="date" placeholder="date" required
-                       class="form-control" value="{{ current_datetime }}" readonly/>
-
-                <label>Номер</label>
-                <input type="text" name="number" placeholder="(обязательное поле)Пример: АГБ 12 345 543 32 001" required class="form-control"/>
-
-                <label>Артикул АГБ</label>
-                <input type="text" name="article_number_agb" required placeholder="(обязательное поле)Пример: АГБ РВД 21 345"
-                       class="form-control"/>
-
-                <label>Номенклатура</label>
-                <input type="text" name="nomenclature" required placeholder="(обязательное поле)Пример: РВД 1 тра та та" class="form-control"/>
-
-                <label>Комментарий</label>
-                <input type="text" name="note" required placeholder="Комментарий минимум 3 символа"
-                       class="form-control"/>
-
-            <br>
-            <button class="btn btn-primary" type="submit">Отправить</button>
-        </div>
-    </form>
+        <label style="display:none;">Дата</label>
+        <input style="display:none;" type="datetime-local" name="date" placeholder="date" required
+               class="form-control" value="{{ current_datetime }}" readonly/>
+        <label>Номер</label>
+        <input type="text" name="number" placeholder="(обязательное поле)Пример: АГБ 12 345 543 32 001" required
+               class="form-control"/>
+        <label>Артикул АГБ</label>
+        <input type="text" name="article_number_agb" required placeholder="(обязательное поле)Пример: АГБ РВД 21 345"
+               class="form-control"/>
+        <label>Номенклатура</label>
+        <input type="text" name="nomenclature" required placeholder="(обязательное поле)Пример: РВД 1 тра та та"
+               class="form-control"/>
+        <label>Комментарий</label>
+        <input type="text" name="note" required placeholder="Комментарий минимум 3 символа"
+               class="form-control"/>
+        <br>
+        <button class="btn btn-success" type="submit">Добавить</button>
+    </div>
+</form>
 
 
 {% endblock content %}

@@ -62,7 +62,7 @@
                 <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
                 <li><a href="/search_adapters" class="nav-link px-2 link-body-emphasis">Адаптеры</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-secondary">Покупные</a></li>
-                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
             </ul>
             <div>
@@ -75,6 +75,7 @@
 
 <div class="container">
     <form action="/purchased/patch" method="POST">
+        <h1 style="text-align:center;"> Форма редактирования покупного изделия </h1>
         <input name="id" style="display:none;" value="{{item.id}}">
         <div class="container text-center">
             <div class="row">
@@ -128,8 +129,8 @@
                    class="form-control" value="{{ current_datetime }}" readonly/>
         </div>
         <br>
-        <div class="container">
-            <button class="btn btn-primary" style="width: 400px">Создать</button>
+        <div class="container text-center">
+            <button class="btn btn-success" style="width: 400px">Применить изменения</button>
         </div>
     </form>
 </div>

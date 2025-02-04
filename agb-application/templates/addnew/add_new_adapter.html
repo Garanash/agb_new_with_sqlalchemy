@@ -62,7 +62,7 @@
                 <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
                 <li><a href="/search_adapters" class="nav-link px-2 link-secondary">Адаптеры</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
-                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
             </ul>
             <div>
@@ -76,6 +76,7 @@
 <div class="container">
     <form action="/adapters/create" method="POST">
         <div class="container text-center">
+            <h1 style="text-align: center;"> Форма создания адаптеров и заглушек</h1>
             <div class="row">
                 <div class="col">
                     <label>Номер в каталоге</label>
@@ -89,7 +90,7 @@
                 </div>
             </div>
             <label>Название в КД</label>
-            <input required type="text" name="name_in_KD" placeholder="Пример: АГБ 123 456 001" class="form-control"/>
+            <input required type="text" name="name_in_KD" placeholder="(Обязательное поле)Пример: АГБ 123 456 001" class="form-control"/>
             <label>Название в каталоге</label>
             <input type="text" name="name_in_catalog" placeholder="Пример: АГБ 123 456 001" class="form-control"/>
             <label>Название в каталоге АГБ</label>
@@ -163,7 +164,7 @@
         </div>
         <br>
         <div class="container text-center">
-            <button class="btn btn-primary" style="width: 400px">Создать</button>
+            <button class="btn btn-success" style="width: 400px">Добавить</button>
         </div>
     </form>
 </div>

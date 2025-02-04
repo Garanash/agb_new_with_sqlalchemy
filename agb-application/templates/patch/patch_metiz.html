@@ -59,9 +59,9 @@
                 <li><a href="/search_metizes" class="nav-link px-2 link-secondary">Метизы</a></li>
                 <li><a href="/search_rwd" class="nav-link px-2 link-body-emphasis">РВД</a></li>
                 <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
-                <li><a href="/search_adapters" class="nav-link px-2 link-body-emphais">Адаптеры</a></li>
+                <li><a href="/search_adapters" class="nav-link px-2 link-body-emphasis">Адаптеры</a></li>
                 <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
-                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперформаторы</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
                 <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
             </ul>
             <div>
@@ -76,7 +76,7 @@
 <form action="/metiz/patch" method="POST">
     <input style="display: none;" name="id" type="text" readonly value="{{item.id}}">
     <div class="container text-center">
-        <h1> Форма создания метиза </h1>
+        <h1 style="text-align:center;"> Форма редактирования метиза </h1>
         <div class="row">
             <div class="col">
                 <label>Номер в каталоге</label>
@@ -101,7 +101,7 @@
                class="form-control"/>
 
         <label>Название по КД</label>
-        <input type="text" value="{{item.name_in_kd}}" name="name_in_kd" placeholder="Название по конструкторской документации"
+        <input type="text" value="{{item.name_in_KD}}" name="name_in_KD" placeholder="Название по конструкторской документации"
                class="form-control"/>
     </div>
     <div class="container text-center">
@@ -196,7 +196,7 @@
     </div>
     <br>
     <div class="container text-center">
-        <button class="btn btn-primary" style="width: 400px">Создать</button>
+        <button class="btn btn-success" style="width: 400px">Применить изменения</button>
     </div>
 </form>
 
