@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y postgresql-client
 # Копирование приложения
 COPY . .
 
-# Создание директории для миграций
-RUN mkdir -p /agb-application/alembic
 WORKDIR /agb-application
 
 # Добавьте эту команду для проверки готовности PostgreSQL
