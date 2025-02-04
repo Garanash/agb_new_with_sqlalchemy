@@ -11,6 +11,8 @@ from core.config import settings
 from core.models import Base
 from core.models import User
 
+from sqlalchemy.engine import URL
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -30,7 +32,17 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-config.set_main_option("sqlalchemy.url", "postgresql+asyncpg://user:password@host.docker.internal:5432/agb")
+
+DATABASE_URL = URL.create(
+    drivername="postgresql+asyncpg",
+    username="user",
+    password="password",
+    host="postgres",  # имя сервиса из docker-compose.yml
+    port=5432,
+    database="agb"
+)
+
+config.set_main_option("sqlalchemy.url", str(DATABASE_URL))
 
 
 def run_migrations_offline() -> None:
