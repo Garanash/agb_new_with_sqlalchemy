@@ -2,7 +2,7 @@
 
 # Функция для проверки готовности PostgreSQL
 wait_for_postgres() {
-    while ! service_healthy -h postgres -p 5432; do
+    while ! pg_isready -h postgres -p 5432; do
         echo "PostgreSQL не готов, ожидание..."
         sleep 2
     done

@@ -4,6 +4,9 @@ FROM python:3.13-slim
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+# Установка утилит для проверки готовности PostgreSQL
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Копирование приложения
 COPY . .
 
