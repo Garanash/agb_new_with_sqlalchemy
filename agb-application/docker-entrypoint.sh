@@ -14,7 +14,8 @@ wait_for_postgres
 
 # Выполняем миграции
 echo "Выполнение миграций..."
-alembic revision --autogenerate -m "Initial migration"
+#alembic revision --autogenerate -m "Initial migration"
+alembic upgrade head
 
 # Запускаем приложение
 exec "$@"
