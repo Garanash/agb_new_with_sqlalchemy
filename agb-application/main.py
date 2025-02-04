@@ -30,7 +30,13 @@ main_app.include_router(
 def main(request: Request):
     return templates.TemplateResponse('start.html', {'request': request})
 
+@main_app.get('/adminka')
+def main(request: Request):
+    return templates.TemplateResponse('/cabinets/admin.html', {'request': request})
 
+@main_app.get('/cabinet')
+def main(request: Request):
+    return templates.TemplateResponse('/cabinets/user.html', {'request': request})
 
 if __name__ == '__main__':
     uvicorn.run("main:main_app",
