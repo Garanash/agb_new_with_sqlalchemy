@@ -37,6 +37,19 @@ class UserLogin(BaseModel):
 def generate_session_id():
     return uuid.uuid4().hex
 
+@router.get('/relogin')
+async def re_login(
+        response: Response,
+        request: Request
+):
+    return templates.TemplateResponse(
+        'start.html',
+        {
+            "request": request,
+            "response": response,
+            "message" : "Не верное имя пользователя или пароль"
+        })
+
 
 @router.post("/login", response_class=RedirectResponse)
 async def auth_login_with_set_cookie(
@@ -58,6 +71,7 @@ async def auth_login_with_set_cookie(
                 "login_at": int(time())
             }
             response.set_cookie(COOKIE_SESSION_ID_KEY, token)
+            print(response.__dict__)
             return templates.TemplateResponse(
                 'authuser.html',
                 {
@@ -66,7 +80,7 @@ async def auth_login_with_set_cookie(
                     "username": credentials.username,
                     "password": credentials.password
                 })
-    return RedirectResponse("/auth/registration", status_code=301)
+    return RedirectResponse("/auth/relogin", status_code=301)
 
 
 def get_session_id(
