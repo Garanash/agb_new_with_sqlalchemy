@@ -71,13 +71,13 @@ async def auth_login_with_set_cookie(
             }
             print(COOKIES)
             template_response = templates.TemplateResponse(
-                'authuser.html', {"request": request, "response": response})
+                'authuser.html', {"request": request, "response": response, "username": credentials.username})
             template_response.set_cookie(
                 key=COOKIE_SESSION_ID_KEY,
                 value=token
                 )
             return template_response
-    return RedirectResponse("/auth/registration", status_code=301)
+    return RedirectResponse("/auth/relogin", status_code=301)
 
 
 
