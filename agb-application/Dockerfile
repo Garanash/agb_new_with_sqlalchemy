@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y postgresql-client
 # Копирование приложения
 COPY . .
 
-WORKDIR /agb-application
-
 # Добавьте эту команду для проверки готовности PostgreSQL
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
