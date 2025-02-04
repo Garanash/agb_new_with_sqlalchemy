@@ -40,4 +40,6 @@ services:
       - "80:80"
       - "443:443"
     restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+asyncpg://user:password@postgres:5432/agb
 
