@@ -32,7 +32,7 @@ services:
 
   app:
     build: agb-application/
-    command: python3 main.py
+    command: "python3 main.py && alembic upgrade head"
     depends_on:
       postgres:
         condition: service_healthy
