@@ -2,7 +2,8 @@ import uuid
 from typing import Annotated
 from time import time
 from dns.edns import COOKIE
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Request, Form, Cookie
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Form, Cookie
+from fastapi.responses import Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -59,7 +60,6 @@ async def auth_login_with_set_cookie(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 
 ):
-    # print(credentials, request.__dict__, response.__dict__)
     res = await search_by_request(request=credentials.username, session=session)
     if res:
         if credentials.password == res.password:
@@ -68,23 +68,21 @@ async def auth_login_with_set_cookie(
             COOKIES[token] = {
                 "username": res.username,
                 "super_user": res.super_user,
-                "login_at": int(time())
             }
-            response.set_cookie(COOKIE_SESSION_ID_KEY, token)
-            print(response.__dict__)
-            return templates.TemplateResponse(
-                'authuser.html',
-                {
-                    "request": request,
-                    "response": response,
-                    "username": credentials.username,
-                    "password": credentials.password
-                })
-    return RedirectResponse("/auth/relogin", status_code=301)
+            print(COOKIES)
+            template_response = templates.TemplateResponse(
+                'authuser.html', {"request": request, "response": response})
+            template_response.set_cookie(
+                key=COOKIE_SESSION_ID_KEY,
+                value=token
+                )
+            return template_response
+    return RedirectResponse("/auth/registration", status_code=301)
+
 
 
 def get_session_id(
-        session_id: str = Cookie(alias=COOKIE_SESSION_ID_KEY)
+    session_id: str = Cookie(alias=COOKIE_SESSION_ID_KEY)
 ):
     if session_id not in COOKIES:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
