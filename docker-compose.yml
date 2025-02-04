@@ -6,13 +6,19 @@ services:
       POSTGRES_DB: agb
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    hostname: "0.0.0.0"
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    command: postgres -c shared_buffers=128MB -c max_connections=100
 
-  adminer:
-    image: adminer
-    ports:
-      - "8080:8080"
+
+
+#  adminer:
+#    image: adminer
+#    ports:
+#      - "8080:8080"
 
   #  pgadmin:
   #    image: dpage/pgadmin4
@@ -26,7 +32,11 @@ services:
   app:
     build: agb-application/
     command: python3 main.py
+    depends_on:
+      - pg
     ports:
       - "80:80"
       - "443:443"
     restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://user:password@pg/agb
