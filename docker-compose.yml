@@ -1,20 +1,13 @@
 services:
 
   postgres:
-    image: postgres:17
-    networks:
-      - agb-network
+    image: postgres:latest
     environment:
-      POSTGRES_DB: agb
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
-      PGDATA: /var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    command: postgres -c shared_buffers=128MB -c max_connections=100
+      POSTGRES_DB: agb
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U user -d agb" ]
+      test: [ "CMD-SHELL", "pg_isready -d agb -U user" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -39,8 +32,6 @@ services:
 
   app:
     build: agb-application/
-    networks:
-      - agb-network
     command: python3 main.py
     depends_on:
       postgres:
@@ -49,9 +40,4 @@ services:
       - "80:80"
       - "443:443"
     restart: unless-stopped
-    environment:
-        - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/agb
 
-networks:
-  agb-network:
-    driver: bridge
