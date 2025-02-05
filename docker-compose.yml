@@ -2,6 +2,8 @@ services:
 
   postgres:
     container_name: postgres
+    networks:
+      - db-network
     image: postgres:17
     environment:
       POSTGRES_DB: agb
@@ -29,6 +31,8 @@ services:
 
   app:
     container_name: app
+    networks:
+      - db-network
     build: agb-application/
     command: bash -c "alembic upgrade head && python3 main.py"
     depends_on:
@@ -39,3 +43,7 @@ services:
     restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/agb
+
+networks:
+  db-network:
+    driver: bridge
