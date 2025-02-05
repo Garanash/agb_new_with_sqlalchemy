@@ -42,7 +42,7 @@ services:
     networks:
       - db-network
     build: agb-application/
-    command: "alembic upgrade head || python3 main.py"
+    command: bash -c "alembic upgrade head && python3 main.py"
     depends_on:
       postgres:
         condition: service_healthy
