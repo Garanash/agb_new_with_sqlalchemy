@@ -11,7 +11,9 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
-      PGDATA: /var/lib/postgresql/data
+      PGDATA: /var/lib/postgresql/data/pgdata/
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     command: postgres -c shared_buffers=128MB -c max_connections=100
