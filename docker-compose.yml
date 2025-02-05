@@ -1,6 +1,7 @@
 services:
 
   postgres:
+    container_name: postgres
     image: postgres:17
     environment:
       POSTGRES_DB: agb
@@ -11,10 +12,6 @@ services:
     ports:
       - "5432:5432"
     command: postgres -c shared_buffers=128MB -c max_connections=100
-
-
-
-
 
   #  adminer:
   #    image: adminer
@@ -31,8 +28,9 @@ services:
   #      - "5050:80"
 
   app:
+    container_name: app
     build: agb-application/
-    command:  python3 main.py
+    command: python3 main.py
     depends_on:
       - postgres
     ports:
@@ -40,4 +38,4 @@ services:
       - "443:443"
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@host.docker.internal:5432/agb
+      - DATABASE_URL=postgresql+asyncpg://user:password@hlocalhost:5432/agb
