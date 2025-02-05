@@ -37,7 +37,7 @@ services:
     networks:
       - db-network
     build: agb-application/
-    command: bash -c "alembic upgrade head && python3 main.py"
+    command: alembic upgrade head && python3 main.py
     depends_on:
       - postgres
     ports:
