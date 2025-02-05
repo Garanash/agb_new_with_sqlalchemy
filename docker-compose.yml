@@ -47,6 +47,7 @@ services:
       - "443:443"
     restart: always
     environment:
+      - PATH=/usr/local/bin:${PATH}
       - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/agb
 
 networks:
