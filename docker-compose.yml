@@ -37,8 +37,7 @@ services:
     networks:
       - db-network
     build: agb-application/
-    command:
-      - python3 main.py
+    command: python main.py
     depends_on:
       - postgres
     ports:
