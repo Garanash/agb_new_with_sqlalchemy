@@ -38,4 +38,4 @@ services:
       - "443:443"
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@hlocalhost:5432/agb
+      - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/agb
