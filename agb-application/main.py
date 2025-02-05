@@ -6,7 +6,8 @@ from fastapi.responses import ORJSONResponse
 from api import router as api_router
 from core.config import settings
 from fastapi.templating import Jinja2Templates
-
+from alembic import config, command
+import os
 
 templates = Jinja2Templates(directory="templates")  # регистрируем папку как папку с шаблонами джинджа
 
@@ -39,6 +40,9 @@ def main(request: Request):
     return templates.TemplateResponse('/cabinets/user.html', {'request': request})
 
 if __name__ == '__main__':
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    alembic_cfg = config.Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
     uvicorn.run("main:main_app",
                 host=settings.run.host,
                 port=settings.run.port,
