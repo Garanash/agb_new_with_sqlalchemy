@@ -45,7 +45,7 @@ services:
       - "443:443"
     restart: always
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/agb
+      - DATABASE_URL=postgresql+asyncpg://user:password@host.docker.internal:5432/agb
 
 networks:
   db-network:
