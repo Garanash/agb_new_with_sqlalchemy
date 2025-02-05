@@ -12,6 +12,11 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
       PGDATA: /var/lib/postgresql/data/pgdata/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d agb -U user" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./pg-data:/var/lib/postgresql/data
     ports:
@@ -39,7 +44,8 @@ services:
     build: agb-application/
     command: python main.py
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - "80:80"
       - "443:443"
