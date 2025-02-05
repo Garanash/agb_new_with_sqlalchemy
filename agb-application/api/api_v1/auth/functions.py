@@ -10,4 +10,3 @@ async def search_by_request(
     query = select(User).where(User.username == request)
     result = await session.execute(query)
     return result.scalar_one_or_none()
-

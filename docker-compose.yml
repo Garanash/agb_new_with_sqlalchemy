@@ -2,13 +2,23 @@ services:
 
   postgres:
     container_name: postgres
+    restart: always
+    networks:
+      - db-network
     image: postgres:17
     environment:
       POSTGRES_DB: agb
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
-      PGDATA: /var/lib/postgresql/data
+      PGDATA: /var/lib/postgresql/data/pgdata/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d agb -U user" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     command: postgres -c shared_buffers=128MB -c max_connections=100
@@ -29,13 +39,23 @@ services:
 
   app:
     container_name: app
+    networks:
+      - db-network
     build: agb-application/
     command: bash -c "alembic upgrade head && python3 main.py"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - "80:80"
       - "443:443"
-    restart: unless-stopped
+    restart: always
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@hlocalhost:5432/agb
+      - DATABASE_URL=postgresql+asyncpg://user:password@postgres:5432/agb
+
+networks:
+  db-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

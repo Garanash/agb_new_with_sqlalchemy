@@ -10,6 +10,7 @@ from api.api_v1.schemas.metizes import MetizRead, MetizCreate, MetizUpdatePartia
 from core.models import db_helper, Metiz
 from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
     search_by_request
+from api.api_v1.auth.views import check_super_user
 
 templates = Jinja2Templates('templates')
 
@@ -33,14 +34,16 @@ async def get_metizes(
     return templates.TemplateResponse('/search/metizes.html', {"request": request, "metizes": metiz})
 
 
-@router.get("/addnew")
+@router.get("/addnew",
+            dependencies=[Depends(check_super_user)])
 async def add_new_metiz(request: Request):
     return templates.TemplateResponse("/addnew/add_new_metiz.html",
                                       {"request": request,
                                        "current_datetime": datetime.now().strftime("%Y-%m-%dT%H:%M")})
 
 
-@router.get("/patch/{item_id}")
+@router.get("/patch/{item_id}",
+            dependencies=[Depends(check_super_user)])
 async def patch_metiz_by_id(request: Request, item_id: int,
                             session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     patch_item = await get_object_by_id(session=session, model=Metiz, request_id=item_id)
@@ -51,7 +54,9 @@ async def patch_metiz_by_id(request: Request, item_id: int,
                                        "item": patch_item})
 
 
-@router.post("/patch", response_class=RedirectResponse)
+@router.post("/patch", 
+             response_class=RedirectResponse,
+             dependencies=[Depends(check_super_user)])
 async def patch_metizes(
         patch_item: Annotated[MetizUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -61,7 +66,8 @@ async def patch_metizes(
     return RedirectResponse("/metiz/metizes", status_code=301)
 
 
-@router.post("/create", response_model=None, response_model_by_alias=True, response_class=RedirectResponse)
+@router.post("/create", response_model=None, response_model_by_alias=True, response_class=RedirectResponse,
+            dependencies=[Depends(check_super_user)])
 async def create_metiz(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         metiz_create: Annotated[MetizCreate, Form()],
