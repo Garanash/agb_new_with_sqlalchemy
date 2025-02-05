@@ -30,7 +30,7 @@ services:
   app:
     container_name: app
     build: agb-application/
-    command: python3 main.py
+    command: bash -c "alembic upgrade head && python3 main.py"
     depends_on:
       - postgres
     ports:
