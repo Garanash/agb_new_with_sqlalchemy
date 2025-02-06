@@ -123,7 +123,7 @@ async def register_user(
 
 
 async def check_user(
-        cookie_session_id: str = Cookie(alias=COOKIE_SESSION_ID_KEY)
+        cookie_session_id: str = Cookie(None, alias=COOKIE_SESSION_ID_KEY)
         ):
     if cookie_session_id is None or cookie_session_id not in COOKIES:
         raise HTTPException(
@@ -132,7 +132,7 @@ async def check_user(
             )
     try:
         user_data = COOKIES[cookie_session_id]
-    except KeyError:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Not authenticated'
@@ -143,6 +143,8 @@ async def check_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail='Access forbidden: not allowed.'
             )
+    return RedirectResponse('/auth/relogin',
+                            status_code=status.HTTP_401_UNAUTHORIZED)
 
 
 @router.get('/protected-endpoint')
