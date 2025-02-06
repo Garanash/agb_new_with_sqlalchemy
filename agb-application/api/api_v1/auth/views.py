@@ -147,9 +147,20 @@ async def check_user(
                             status_code=status.HTTP_401_UNAUTHORIZED)
 
 
-@router.get('/protected-endpoint')
-async def protected_endpoint(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        super_user: str = Depends(check_user)
-):
-    return {'message': 'Welcome!'}
+@router.get('/logout')
+async def logout(
+        response: Response,
+        request: Request
+        ):
+    cookie_session_id = get_session_id(
+        session_id=request.cookies.get(COOKIE_SESSION_ID_KEY)
+        )
+    ALLOWED_USERS.remove(cookie_session_id['username'])
+    template_response = templates.TemplateResponse(
+        'start.html',
+        {
+            'request': request,
+            'response': response,
+        })
+    template_response.delete_cookie(key=COOKIE_SESSION_ID_KEY)
+    return template_response
