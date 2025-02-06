@@ -1,4 +1,4 @@
-# <p style="text-align: center;"> Поисковое приложение для компании <img src="./agb-application/static/images/123.png" width="35px" >  <b>АлмазГеоБур</b> </p>
+# <p style="text-align: center;"> Поисковое приложение для <img src="./agb-application/static/images/123.png" width="25px" >  <b>АлмазГеоБур</b> </p>
 
 Приложение реализует поиск по базам данных в компании АлмазГеоБур
 <br>
