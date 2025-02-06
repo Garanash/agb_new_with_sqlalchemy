@@ -1,13 +1,15 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Optional
+
 from sqlalchemy import select, Sequence, text, or_
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.inspection import inspect
+
 from api.api_v1.schemas import UserUpdatePartial, UserCreate, MetizCreate, RWDCreate, RWDUpdatePartial, \
     MetizUpdatePartial, ProjectUpdatePartial, ProjectCreate, PurchasedUpdatePartial, PurchasedCreate, \
     PurchasedHydroperforatorCreate, PurchasedHydroperforatorUpdatePartial, AdapterAndPlugsUpdatePartial, \
     AccordingToTheDrawCreate, AccordingToTheDrawUpdatePartial, AdapterAndPlugsCreate
 from core.models import Metiz, User, RWD, Project, AdaptersAndPlugs, AccordingToTheDrawing, Purchased, \
     PurchasedHydroperforator
-from typing import Optional
 
 
 async def get_all_objects(session: AsyncSession, model: Optional[type[

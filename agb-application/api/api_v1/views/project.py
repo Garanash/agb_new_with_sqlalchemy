@@ -21,7 +21,7 @@ async def get_project(
     return project
 
 
-@router.post("/new_project", response_model=None, response_model_by_alias=True)
+@router.post('/new_project', response_model=None, response_model_by_alias=True)
 async def create_project(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         project_create: ProjectCreate):
@@ -37,7 +37,7 @@ async def search_project_by_id(
     object_search = await get_object_by_id(session=session, request_id=object_id, model=Project)
     if object_search:
         return object_search
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"object with {object_id} not found")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'object with {object_id} not found')
 
 
 @router.delete('/{project_id}')
@@ -47,10 +47,10 @@ async def delete_project(
 ):
     delete_project = await get_object_by_id(session=session, request_id=delete_id, model=Project)
     if not delete_project:
-        raise HTTPException(status_code=404, detail="Project not found")
+        raise HTTPException(status_code=404, detail='Project not found')
     await session.delete(delete_project)
     await session.commit()
-    return {"message": f"project with id={delete_id} was deleted"}
+    return {'message': f'project with id={delete_id} was deleted'}
 
 
 @router.put('/{project_id}')
@@ -65,6 +65,7 @@ async def update_project_by_id(
         object_updating=project_updated,
         object_for_update=project,
     )
+
 
 @router.get('/s/{request_item}')
 async def search_project_by_request(
