@@ -12,6 +12,28 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Almaz-Geo-Bur</title>
+    <script src="https://www.google.com/jsapi"></script>
+    <script>
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+         var data = google.visualization.arrayToDataTable([
+          ['Год', 'Nitrox', 'Simba'],
+          ['2022', 1567, 3270],
+          ['2023', 2000, 3120],
+          ['2024', 12170, 9920]
+         ]);
+         var options = {
+          title: 'Кол-во запросов',
+          hAxis: {title: 'Год'},
+          vAxis: {title: 'Запросов'}
+         };
+         var chart1 = new google.visualization.ColumnChart(document.getElementById('oil1'));
+         var chart2 = new google.visualization.ColumnChart(document.getElementById('oil2'));
+         chart1.draw(data, options);
+         chart2.draw(data, options);
+        }
+    </script>
 </head>
 <body>
 <header class="p-3 mb-3 border-bottom" id="header">
@@ -68,31 +90,113 @@
                 </svg>
             </a>
         </div>
-        <!--            <div class="dropdown text-end">-->
-        <!--                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"-->
-        <!--                   data-bs-toggle="dropdown" aria-expanded="false">-->
-        <!--                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">-->
-        <!--                </a>-->
-        <!--                <ul class="dropdown-menu text-small">-->
-        <!--                    <li><a class="dropdown-item" href="#">New project...</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Settings</a></li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Profile</a></li>-->
-        <!--                    <li>-->
-        <!--                        <hr class="dropdown-divider">-->
-        <!--                    </li>-->
-        <!--                    <li><a class="dropdown-item" href="#">Sign out</a></li>-->
-        <!--                </ul>-->
-        <!--            </div>-->
     </div>
 </header>
 
 
-<div class="admin_panel">
+<div class="row" style="margin:20px;">
+    <div class="col-4">
+        <h1>Тут будет инфографика</h1>
+        <div id="oil1" style="width: 500px; height: 400px;"></div>
+        <br>
+        <div id="oil2" style="width: 500px; height: 400px;"></div>
+    </div>
 
-
+    <div class="col-8">
+        <div class="row fluid">
+            <h1 class="col">Тут будут пользователи</h1>
+            <a href="#" class="btn btn-primary btn-lg col">Добавить Пользователя</a>
+        </div>
+        <br><br>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>username</th>
+                <th>password</th>
+                <th>is_active</th>
+                <th>super_user</th>
+                <th>Дата внесения</th>
+                <th width="250px"> Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in users %}
+            <tr>
+                <td>{{ item.username }}</td>
+                <td>{{ item.password }}</td>
+                <td>{{ item.is_active }}</td>
+                <td>{{ item.super_user }}</td>
+                <td>{{ item.data }}</td>
+                <td>
+                    <a id="new1_patch{{item.id}}"
+                       href="#"
+                       class="btn btn-primary"
+                       data-id="{{item.id}}"
+                       data-method="patch"
+                    >Изменить
+                    </a>
+                    |
+                    <a id="new1_delete{{item.id}}"
+                       data-id="{{item.id}}"
+                       href="#"
+                       data-method="delete"
+                       class="btn btn-danger"
+                    >Удалить
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br><br>
+        <div class="row fluid">
+                    <h1 class="col">Элементы на удаление</h1>
+                    <a href="#" class="btn btn-primary btn-lg col">Удалить</a>
+                </div>
+                <br><br>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>username</th>
+                        <th>password</th>
+                        <th>is_active</th>
+                        <th>super_user</th>
+                        <th>Дата внесения</th>
+                        <th width="250px"> Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in users %}
+                    <tr>
+                        <td>{{ item.username }}</td>
+                        <td>{{ item.password }}</td>
+                        <td>{{ item.is_active }}</td>
+                        <td>{{ item.super_user }}</td>
+                        <td>{{ item.data }}</td>
+                        <td>
+                            <a id="new2_patch{{item.id}}"
+                               href="#"
+                               class="btn btn-primary"
+                               data-id="{{item.id}}"
+                               data-method="patch"
+                            >Изменить
+                            </a>
+                            |
+                            <a id="new2_delete{{item.id}}"
+                               data-id="{{item.id}}"
+                               href="#"
+                               data-method="delete"
+                               class="btn btn-danger"
+                            >Удалить
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+    </div>
 
 </div>
-
 
 <br><br><br><br><br><br><br><br>
 <div class="container" id="footer">
