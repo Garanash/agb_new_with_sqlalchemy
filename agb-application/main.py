@@ -25,6 +25,8 @@ main_app.include_router(
     api_router,
     # prefix=settings.api.prefix # убрать при деплое
 )
+
+
 # main_app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -41,6 +43,11 @@ def admin(request: Request):
 @main_app.get('/cabinet')
 def cabinet(request: Request):
     return templates.TemplateResponse('/cabinets/user.html', {'request': request})
+
+
+@main_app.get('/starter')
+def re_start(request: Request):
+    return templates.TemplateResponse("/authuser.html", {"request": request})
 
 
 if __name__ == '__main__':
