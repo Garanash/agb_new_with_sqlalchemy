@@ -132,7 +132,7 @@ async def check_user(
             )
     try:
         user_data = COOKIES[cookie_session_id]
-    except Exception:
+    except Exception: # ???????? какая ошибка обрабатывается?
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Not authenticated'
