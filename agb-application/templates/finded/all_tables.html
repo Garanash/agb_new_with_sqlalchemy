@@ -98,13 +98,56 @@
 </header>
 <div class="container wrapper text-center">
     <h1>Поиск по всем таблицам</h1>
-        <form action="/search_all_tables" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
-            <input id="main_input" name="main_input" type="text" class="form-control"
-                   placeholder="Введите номер для поиска по всем таблицам"
-                   aria-label="Recipient's username" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="submit" id="button-addon2">Поиск</button>
-        </form>
+    <form action="/search_all_tables" method="GET" class="input-group mb-3" style="width:100%; margin-bottom: 200px;">
+        <input id="main_input" name="main_input" type="text" class="form-control"
+               placeholder="Введите номер для поиска по всем таблицам"
+               aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-primary" type="submit" id="button-addon2">Поиск</button>
+    </form>
+</div>
+
+
+<div class="row" style="margin:20px;">
+    <div class="col-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Найдено в таблицах</th>
+                <th>Кол-во совпадений</th>
+                <th width="250px"> Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in result_search %}
+            {% if item.count_res > 0 %}
+            <tr>
+                <td>{{ item.table_name }}</td>
+                <td>{{ item.count_res }}</td>
+                <td>
+                    <a
+                            href="http://localhost{{ item.prefix }}/search?main_input={{ main_input }}"
+                            class="btn btn-success"
+                            data-method="get"
+                            style="width:100%; height:100%;"
+                    >Посмотреть
+                    </a>
+                    <!--                    |-->
+                    <!--                    <a id="deleteLink{{item.id}}"-->
+                    <!--                       data-id="{{item.id}}"-->
+                    <!--                       href="/metizes/delete/{{item.id}}"-->
+                    <!--                       data-method="delete"-->
+                    <!--                       class="btn btn-danger"-->
+                    <!--                    >Удалить-->
+                    <!--                    </a>-->
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
+
 <div class="container px-4 py-5" id="icon-grid">
     <h2 class="pb-2 border-bottom">Выбор по категории</h2>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">

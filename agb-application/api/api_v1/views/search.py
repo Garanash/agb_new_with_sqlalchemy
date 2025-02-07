@@ -1,14 +1,14 @@
 from typing import Annotated
-
+from api.api_v1.auth.views import check_user
 from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import (RWD, Metiz, Purchased, PurchasedHydroperforator,
                          AdaptersAndPlugs, AccordingToTheDrawing)
 from api.api_v1.crud.crud_base import CRUDBase
 from core.models import db_helper
-
 
 templates = Jinja2Templates('templates')
 
@@ -19,6 +19,15 @@ MODELS = {
     PurchasedHydroperforator: 'Гидравлические перфораторы',
     AdaptersAndPlugs: 'Адаптеры',
     AccordingToTheDrawing: 'Чертежи',
+}
+
+MODELS_PREFIX = {
+    "РВД": '/RWD',
+    'Метизы': '/metiz',
+    'Покупные детали': '/purchased',
+    'Гидравлические перфораторы': '/hydroperfs',
+    'Адаптеры': '/adapters',
+    'Чертежи': '/draw',
 }
 
 router = APIRouter(
@@ -68,16 +77,28 @@ def adapter_search(request: Request):
                                       {'request': request})
 
 
-@router.get('/search_all')
+@router.get('/search_all_tables', dependencies=[Depends(check_user)])
 async def search_all_tables(
-    request_item: str,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        request: Request
+
 ):
+    search_item = request.query_params.get('main_input')
     search_results = {}
     for model in MODELS.keys():
         result = await CRUDBase(model).search(
-            request=request_item,
+            request=search_item,
             session=session
-            )
-        search_results[MODELS[model]] = len(result)
-    return search_results
+        )
+        search_results[MODELS[model]] = (len(result), model.__name__)
+
+    class ReturnData:
+        def __init__(self, table_name, count_res, prefix):
+            self.table_name: str = table_name
+            self.count_res: int = count_res
+            self.prefix:str = prefix
+    print(search_results)
+    result_data = [ReturnData(key, val[0], MODELS_PREFIX[key]) for key, val in search_results.items()]
+    print(result_data)
+    return templates.TemplateResponse('/finded/all_tables.html',
+                                      {"request": request, "result_search": result_data, "main_input":search_item})
