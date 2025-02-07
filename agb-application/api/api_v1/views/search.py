@@ -97,9 +97,10 @@ async def search_all_tables(
         def __init__(self, table_name, count_res, prefix):
             self.table_name: str = table_name
             self.count_res: int = count_res
-            self.prefix: str = prefix
-    print(search_results)
+            self.prefix: str = prefi
+
+    server_url = request.url.scheme + "://" + request.url.netloc
     result_data = [ReturnData(key, val[0], MODELS_PREFIX[key]) for key, val in search_results.items()]
-    print(result_data)
     return templates.TemplateResponse('/finded/all_tables.html',
-                                      {"request": request, "result_search": result_data, "main_input":search_item})
+                                      {"request": request, "result_search": result_data, "main_input": search_item,
+                                       "server_url": server_url})
