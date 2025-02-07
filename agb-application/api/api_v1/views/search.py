@@ -97,7 +97,7 @@ async def search_all_tables(
         def __init__(self, table_name, count_res, prefix):
             self.table_name: str = table_name
             self.count_res: int = count_res
-            self.prefix:str = prefix
+            self.prefix: str = prefix
     print(search_results)
     result_data = [ReturnData(key, val[0], MODELS_PREFIX[key]) for key, val in search_results.items()]
     print(result_data)
