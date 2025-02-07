@@ -6,10 +6,9 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.api_v1.schemas.RWD import RWDCreate, RWDUpdatePartial
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
-    search_by_request
 from api.api_v1.auth.views import check_user
+from api.api_v1.crud.RWD import rwd_crud
+from api.api_v1.schemas.RWD import RWDCreate, RWDUpdatePartial
 from core.models import db_helper, RWD
 
 
@@ -32,10 +31,9 @@ async def get_rwd(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    rwd = await get_all_objects(
-        session=session,
-        model=RWD
-        )
+    rwd = await rwd_crud.get_multi(
+        session=session
+    )
     return templates.TemplateResponse('/search/rwd.html',
                                       {'request': request,
                                        'rwd': rwd})
@@ -53,10 +51,9 @@ async def get_rwd_item(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    rwd_item = await get_all_objects(
-        session=session,
-        model=RWD
-        )
+    rwd_item = await rwd_crud.get_multi(
+        session=session
+    )
     return rwd_item
 
 
@@ -85,12 +82,10 @@ async def patch_rwd_by_id(request: Request,
     request: запрос от пользователя
     item_id: id РВД для редактирования
     """
-    patch_item = await get_object_by_id(
+    patch_item = await check_rwd_exists(
         session=session,
-        model=RWD,
-        request_id=item_id
-        )
-
+        rwd_id=item_id
+    )
     return templates.TemplateResponse('/patch/patch_rwd.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -111,17 +106,15 @@ async def patch_rwd(
     patch_item: данные для редактирования
     session: сессия в асинхронную базу данных
     """
-    object_for_update = await get_object_by_id(
-        request_id=patch_item.id,
+    object_for_update = await check_rwd_exists(
         session=session,
-        model=RWD
-        )
-    await update_object(
+        rwd_id=patch_item.id
+    )
+    await rwd_crud.update(
         session=session,
-        object_for_update=object_for_update,
-        object_updating=patch_item,
-        partial=True
-        )
+        db_obj=object_for_update,
+        obj_in=patch_item
+    )
     return RedirectResponse('/RWD/RWDs',
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -143,10 +136,9 @@ async def create_rwd(
     session: сессия в асинхронную базу данных
     """
     try:
-        rwd = await create_new_object(
+        await rwd_crud.create(
             session=session,
-            object_create=rwd_create,
-            model=RWD
+            obj_in=rwd_create
             )
         return RedirectResponse('/RWD/RWDs',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
@@ -170,10 +162,9 @@ async def search_rwd_by_request(
     request: запрос от пользователя
     """
     search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(
+    res_search = await rwd_crud.search(
         request=search_item,
-        session=session,
-        model=RWD
+        session=session
         )
     return templates.TemplateResponse('/finded/rwds.html',
                                       {'request': request,
@@ -194,17 +185,11 @@ async def search_rwd_item_by_id(
     session: сессия в асинхронную базу данных
     rwd_item_id: id РВД для поиска
     """
-    object_search = await get_object_by_id(
-        session=session,
-        request_id=rwd_item_id,
-        model=RWD
-        )
-    if object_search:
-        return object_search
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'object with {rwd_item_id} not found'
-        )
+    object_search = await check_rwd_exists(
+        rwd_id=rwd_item_id,
+        session=session
+    )
+    return object_search
 
 
 @router.delete('/{rwd_item_id}',
@@ -219,44 +204,36 @@ async def delete_rwd_item(
     session: сессия в асинхронную базу данных
     delete_id: id РВД для удаления
     """
-    delete_rwd_item = await get_object_by_id(
+    delete_rwd_item = await check_rwd_exists(
+        rwd_id=delete_id,
+        session=session)
+
+    deleted_rwd = await rwd_crud.remove(
         session=session,
-        request_id=delete_id,
-        model=RWD
-        )
-    if not delete_rwd_item:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='RWD not found'
-            )
-    await session.delete(delete_rwd_item)
-    await session.commit()
-    return {'message': f'rwd_item with id={delete_id} was deleted'}
+        db_obj=delete_rwd_item
+    )
+    return deleted_rwd
 
 
 @router.put('/{rwd_item_id}',
             dependencies=[Depends(check_user)])
 async def update_rwd_item_by_id(
-        rwd_item_updated: RWDUpdatePartial,
+        rwd_item_update: RWDUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         rwd_item_id: int,
 ):
     """
     Редактирование РВД по его id
     :parameter:
-    rwd_item_updated: данные для редактирования
+    rwd_item_update: данные для редактирования
     session: сессия в асинхронную базу данных
     rwd_item_id: id РВД для редактирования
     """
-    rwd_item = await get_object_by_id(
-        request_id=rwd_item_id,
+    rwd_item = await check_rwd_exists(rwd_item_id, session)
+    return await rwd_crud.update(
         session=session,
-        model=RWD
-        )
-    return await update_object(
-        session=session,
-        object_updating=rwd_item_updated,
-        object_for_update=rwd_item,
+        db_obj=rwd_item,
+        obj_in=rwd_item_update
     )
 
 
@@ -266,3 +243,25 @@ async def update_rwd_item_by_id(
 #         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
 # ):
 #     return await search_by_request(request=request_item, session=session, model=RWD)
+
+
+async def check_rwd_exists(
+    rwd_id: int,
+    session: AsyncSession
+) -> RWD:
+    """
+    Проверка существования детали по id
+    :parameter:
+    rwd_id: id детали
+    session: сессия в асинхронную базу данных
+    """
+    rwd = await rwd_crud.get(
+        rwd_id, session
+    )
+    match rwd:
+        case None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Не найдено!'
+            )
+    return rwd

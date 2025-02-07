@@ -7,11 +7,11 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.api_v1.auth.views import check_user
-from api.api_v1.schemas.adapters_and_plugs import AdapterAndPlugsRead, AdapterAndPlugsCreate, \
-    AdapterAndPlugsUpdatePartial, AdapterAndPlugsBase, AdapterAndPlugsDelete
+from api.api_v1.crud.adapter import adapter_crud
+from api.api_v1.schemas.adapters_and_plugs import (AdapterAndPlugsCreate,
+                                                   AdapterAndPlugsUpdatePartial)
 from core.models import db_helper, AdaptersAndPlugs
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
-    search_by_request
+
 
 templates = Jinja2Templates('templates')
 
@@ -33,10 +33,9 @@ async def get_adapters_and_plugss(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    adapters_and_plugs = await get_all_objects(
-        session=session,
-        model=AdaptersAndPlugs
-        )
+    adapters_and_plugs = await adapter_crud.get_multi(
+        session=session
+    )
     return templates.TemplateResponse('/search/adapters.html',
                                       {'request': request,
                                        'adapters': adapters_and_plugs})
@@ -69,11 +68,10 @@ async def patch_adapter_by_id(
     item_id: id изменяемого адаптера и разъема
     session: сессия в асинхронную базу данных
     """
-    patch_item = await get_object_by_id(
+    patch_item = await check_adapter_exists(
         session=session,
-        model=AdaptersAndPlugs,
-        request_id=item_id
-        )
+        adapter_id=item_id
+    )
     return templates.TemplateResponse('/patch/patch_adapters.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -86,7 +84,6 @@ async def patch_adapter_by_id(
 async def patch_adapters(
         patch_item: Annotated[AdapterAndPlugsUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
 ):
     """
     Изменение адаптера и разъема по его id
@@ -95,17 +92,15 @@ async def patch_adapters(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    object_for_update = await get_object_by_id(
-        request_id=patch_item.id,
+    object_for_update = await check_adapter_exists(
         session=session,
-        model=AdaptersAndPlugs
-        )
-    await update_object(
+        adapter_id=patch_item.id
+    )
+    await adapter_crud.update(
         session=session,
-        object_for_update=object_for_update,
-        object_updating=patch_item,
-        partial=True
-        )
+        db_obj=object_for_update,
+        obj_in=patch_item
+    )
     return RedirectResponse("/adapters/adapters",
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -128,10 +123,9 @@ async def create_adapter(
     request: запрос от пользователя
     """
     try:
-        adapter = await create_new_object(
+        await adapter_crud.create(
             session=session,
-            object_create=adapter_create,
-            model=AdaptersAndPlugs
+            obj_in=adapter_create,
             )
         return RedirectResponse('/adapters/adapters',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
@@ -155,10 +149,9 @@ async def search_adapter_by_request(
     request: запрос от пользователя
     """
     search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(
+    res_search = await adapter_crud.search(
         request=search_item,
-        session=session,
-        model=AdaptersAndPlugs
+        session=session
         )
     return templates.TemplateResponse('/finded/adapters.html',
                                       {'request': request,
@@ -180,17 +173,11 @@ async def search_adapter_by_id(
     object_id: id адаптера и разъема
     :return: найденный адаптер и разъем или ошибка 404 если не найден
     """
-    object_search = await get_object_by_id(
+    adapter = await check_adapter_exists(
         session=session,
-        request_id=object_id,
-        model=AdaptersAndPlugs
-        )
-    if object_search:
-        return object_search
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'object with {object_id} not found'
-        )
+        adapter_id=object_id,
+    )
+    return adapter
 
 
 @router.delete('/{adapter_id}',
@@ -206,25 +193,17 @@ async def delete_adapter(
     delete_id: id удаляемого адаптера и разъема
     :return: сообщение об успешном удалении адаптера и разъема или ошибка 404 если адаптер не найден  # noqa: E501
     """
-    delete_adapter = await get_object_by_id(
+    delete_adapter = await check_adapter_exists(
+        adapter_id=delete_id,
         session=session,
-        request_id=delete_id,
-        model=AdaptersAndPlugs
-        )
-    if not delete_adapter:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='adapter not found'
-            )
-    await session.delete(delete_adapter)
-    await session.commit()
-    return {'message': f'Adapter with id={delete_id} was deleted'}
+    )
+    return delete_adapter
 
 
 @router.put('/{adapter_id}',
             dependencies=[Depends(check_user)])
 async def update_adapter_by_id(
-        adapter_updated: AdapterAndPlugsUpdatePartial,
+        adapter_update: AdapterAndPlugsUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         adapter_id: int,
 ):
@@ -234,15 +213,36 @@ async def update_adapter_by_id(
     adapter_updated: данные для изменения
     session: сессия в асинхронную базу данных
     adapter_id: id адаптера и разъема
-    :return: сообщение об успешном изменении адаптера и разъема или ошибка 404 если адаптер не найден
+    :return: сообщение об успешном изменении адаптера и разъема или ошибка 404 если адаптер не найден  # noqa: E501
     """
-    adapter = await get_object_by_id(
-        request_id=adapter_id,
-        session=session,
-        model=AdaptersAndPlugs
-        )
-    return await update_object(
-        session=session,
-        object_updating=adapter_updated,
-        object_for_update=adapter,
+    adapter = await check_adapter_exists(
+        adapter_id=adapter_id,
+        session=session
     )
+    return await adapter_crud.update(
+        session=session,
+        db_obj=adapter,
+        obj_in=adapter_update,
+    )
+
+
+async def check_adapter_exists(
+    adapter_id: int,
+    session: AsyncSession
+) -> AdaptersAndPlugs:
+    """
+    Проверка существования детали по id
+    :parameter:
+    adapter_id: id детали
+    session: сессия в асинхронную базу данных
+    """
+    adapter = await adapter_crud.get(
+        adapter_id, session
+    )
+    match adapter:
+        case None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Не найдено!'
+            )
+    return adapter

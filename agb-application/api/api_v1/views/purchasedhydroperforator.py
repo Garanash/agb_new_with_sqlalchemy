@@ -7,11 +7,11 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.api_v1.auth.views import check_user
-from api.api_v1.schemas.purchased_hydroperforator import PurchasedHydroperforatorRead, PurchasedHydroperforatorCreate, \
-    PurchasedHydroperforatorUpdatePartial, PurchasedHydroperforatorBase, PurchasedHydroperforatorDelete
+from api.api_v1.crud.hydroperf import hydroperf_crud
+from api.api_v1.schemas.purchased_hydroperforator import PurchasedHydroperforatorCreate, \
+    PurchasedHydroperforatorUpdatePartial
 from core.models import db_helper, PurchasedHydroperforator
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
-    search_by_request
+
 
 templates = Jinja2Templates('templates')
 
@@ -33,12 +33,11 @@ async def get_hydroperforators(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    hydroperfs = await get_all_objects(
-        session=session,
-        model=PurchasedHydroperforator
-        )
+    hydroperfs = await hydroperf_crud.get_multi(
+        session=session
+    )
     return templates.TemplateResponse('/search/hydroperfs.html',
-                                      {'request': request, 
+                                      {'request': request,
                                        'hydroperfs': hydroperfs})
 
 
@@ -69,11 +68,10 @@ async def patch_hydroperf_by_id(
     item_id: ID гидроперфоратора
     session: сессия в асинхронную базу данных
     """
-    patch_item = await get_object_by_id(
+    patch_item = await check_hydroperf_exists(
         session=session,
-        model=PurchasedHydroperforator,
-        request_id=item_id
-        )
+        hydroperf_id=item_id
+    )
     print(request.cookies.items())
     return templates.TemplateResponse('/patch/patch_hydroperf.html',
                                       {'request': request,
@@ -87,7 +85,6 @@ async def patch_hydroperf_by_id(
 async def patch_hydroperforators(
         patch_item: Annotated[PurchasedHydroperforatorUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
         ):
     """
     Обновление гидроперфоратора по его ID
@@ -96,17 +93,15 @@ async def patch_hydroperforators(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    object_for_update = await get_object_by_id(
-        request_id=patch_item.id,
+    object_for_update = await check_hydroperf_exists(
         session=session,
-        model=PurchasedHydroperforator
-        )
-    await update_object(
+        hydroperf_id=patch_item.id
+    )
+    await hydroperf_crud.update(
         session=session,
-        object_for_update=object_for_update,
-        object_updating=patch_item,
-        partial=True
-        )
+        db_obj=object_for_update,
+        obj_in=patch_item
+    )
     return RedirectResponse('/hydroperfs/hydroperfs',
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -118,7 +113,7 @@ async def patch_hydroperforators(
              dependencies=[Depends(check_user)])
 async def create_hydroperforator(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        adapter_create: Annotated[PurchasedHydroperforatorCreate, Form()],
+        hydroperf_create: Annotated[PurchasedHydroperforatorCreate, Form()],
         request: Request
         ):
     """
@@ -128,11 +123,10 @@ async def create_hydroperforator(
     adapter_create: данные для создания гидроперфоратора
     """
     try:
-        adapter = await create_new_object(
+        await hydroperf_crud.create(
             session=session,
-            object_create=adapter_create,
-            model=PurchasedHydroperforator
-            )
+            obj_in=hydroperf_create
+        )
 
         return RedirectResponse('/hydroperfs/hydroperfs',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
@@ -157,10 +151,9 @@ async def search_hydroperforator_by_request(
     request: запрос от пользователя
     """
     search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(
+    res_search = await hydroperf_crud.search(
         request=search_item,
-        session=session,
-        model=PurchasedHydroperforator
+        session=session
         )
     return templates.TemplateResponse('/finded/hydroperfs.html',
                                       {'request': request,
@@ -181,17 +174,11 @@ async def search_hydroperforator_by_id(
     session: сессия в асинхронную базу данных
     object_id: ID гидроперфоратора
     """
-    object_search = await get_object_by_id(
-        session=session,
-        request_id=object_id,
-        model=PurchasedHydroperforator
-        )
-    if object_search:
-        return object_search
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'object with {object_id} not found'
-        )
+    object_search = await check_hydroperf_exists(
+        hydroperf_id=object_id,
+        session=session
+    )
+    return object_search
 
 
 @router.delete('/{hydroperf_id}',
@@ -206,25 +193,21 @@ async def delete_hydroperforator(
     session: сессия в асинхронную базу данных
     delete_id: ID гидроперфоратора
     """
-    delete_hydroperf = await get_object_by_id(
+    delete_hydroperf = await check_hydroperf_exists(
+        hydroperf_id=delete_id,
+        session=session
+    )
+    deleted_hydroperf = await hydroperf_crud.remove(
         session=session,
-        request_id=delete_id,
-        model=PurchasedHydroperforator
-        )
-    if not delete_hydroperf:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='Hydroperforator not found'
-            )
-    await session.delete(delete_hydroperf)
-    await session.commit()
-    return {'message': f'Hydroperforator with id={delete_id} was deleted'}
+        db_obj=delete_hydroperf
+    )
+    return deleted_hydroperf
 
 
 @router.put('/{hydroperf_id}',
             dependencies=[Depends(check_user)])
 async def update_hydroperforator_by_id(
-        hydroperf_updated: PurchasedHydroperforatorUpdatePartial,
+        hydroperf_update: PurchasedHydroperforatorUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         hydroperf_id: int,
 ):
@@ -235,13 +218,34 @@ async def update_hydroperforator_by_id(
     session: сессия в асинхронную базу данных
     hydroperf_id: ID гидроперфоратора
     """
-    hydroperf = await get_object_by_id(
-        request_id=hydroperf_id,
-        session=session,
-        model=PurchasedHydroperforator
-        )
-    return await update_object(
-        session=session,
-        object_updating=hydroperf_updated,
-        object_for_update=hydroperf,
+    hydroperf = await check_hydroperf_exists(
+        hydroperf_id=hydroperf_id,
+        session=session
     )
+    return await hydroperf_crud.update(
+        session=session,
+        db_obj=hydroperf,
+        obj_in=hydroperf_update,
+    )
+
+
+async def check_hydroperf_exists(
+    hydroperf_id: int,
+    session: AsyncSession
+) -> PurchasedHydroperforator:
+    """
+    Проверка существования детали по id
+    :parameter:
+    hydroperf_id: id детали
+    session: сессия в асинхронную базу данных
+    """
+    hydroperf = await hydroperf_crud.get(
+        hydroperf_id, session
+    )
+    match hydroperf:
+        case None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Не найдено!'
+            )
+    return hydroperf

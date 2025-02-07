@@ -6,10 +6,9 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.api_v1.schemas.metizes import MetizCreate, MetizUpdatePartial
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
-    search_by_request
 from api.api_v1.auth.views import check_user
+from api.api_v1.crud.metiz import metiz_crud
+from api.api_v1.schemas.metizes import MetizCreate, MetizUpdatePartial
 from core.models import db_helper, Metiz
 
 templates = Jinja2Templates('templates')
@@ -32,10 +31,9 @@ async def get_metizes(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    metiz = await get_all_objects(
-        session=session,
-        model=Metiz
-        )
+    metiz = await metiz_crud.get_multi(
+        session=session
+    )
     return templates.TemplateResponse('/search/metizes.html',
                                       {'request': request,
                                        'metizes': metiz})
@@ -59,12 +57,10 @@ async def add_new_metiz(request: Request):
 async def patch_metiz_by_id(request: Request,
                             item_id: int,
                             session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
-    patch_item = await get_object_by_id(
+    patch_item = await check_metiz_exists(
         session=session,
-        model=Metiz,
-        request_id=item_id
-        )
-
+        metiz_id=item_id
+    )
     return templates.TemplateResponse('/patch/patch_metiz.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -76,8 +72,7 @@ async def patch_metiz_by_id(request: Request,
              dependencies=[Depends(check_user)])
 async def patch_metizes(
         patch_item: Annotated[MetizUpdatePartial, Form()],
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
         ):
     """
     Обновление детали
@@ -85,17 +80,15 @@ async def patch_metizes(
     patch_item: данные для изменения
     session: сессия в асинхронную базу данных
     """
-    object_for_update = await get_object_by_id(
-        request_id=patch_item.id,
+    object_for_update = await check_metiz_exists(
         session=session,
-        model=Metiz
-        )
-    await update_object(
+        metiz_id=patch_item.id
+    )
+    await metiz_crud.update(
         session=session,
-        object_for_update=object_for_update,
-        object_updating=patch_item,
-        partial=True
-        )
+        db_obj=object_for_update,
+        obj_in=patch_item
+    )
     return RedirectResponse('/metiz/metizes',
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -116,22 +109,11 @@ async def create_metiz(
     metiz_create: данные для создания
     request: запрос от пользователя
     """
-    metiz_check = await get_all_objects(
-        session=session,
-        model=Metiz,
-        filter_by=Metiz.name == metiz_create.name
-        )
-    if metiz_check:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail='Такая деталь уже существует'
-            )
     try:
-        metiz = await create_new_object(
+        await metiz_crud.create(
             session=session,
-            object_create=metiz_create,
-            model=Metiz
-            )
+            obj_in=metiz_create
+        )
         return RedirectResponse('/metiz/metizes',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -154,10 +136,9 @@ async def search_metiz_by_request(
     request: запрос от пользователя
     """
     search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(
+    res_search = await metiz_crud.search(
         request=search_item,
-        session=session,
-        model=Metiz
+        session=session
         )
     return templates.TemplateResponse('/finded/metizes.html',
                                       {'request': request,
@@ -178,24 +159,18 @@ async def search_metiz_by_id(
     session: сессия в асинхронную базу данных
     object_id: id детали
     """
-    object_search = await get_object_by_id(
+    object_search = await check_metiz_exists(
         session=session,
-        request_id=object_id,
-        model=Metiz
-        )
-    if object_search:
-        return object_search
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'object with {object_id} not found'
-        )
+        metiz_id=object_id
+    )
+    return object_search
 
 
 @router.delete('/{metiz_id}',
                dependencies=[Depends(check_user)])
 async def delete_metiz(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
     """
     Удаление детали
@@ -203,19 +178,12 @@ async def delete_metiz(
     session: сессия в асинхронную базу данных
     delete_id: id детали
     """
-    delete_metiz = await get_object_by_id(
+    metiz = await check_metiz_exists(
         session=session,
-        request_id=delete_id,
-        model=Metiz
-        )
-    if not delete_metiz:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='Metiz not found'
-            )
-    await session.delete(delete_metiz)
-    await session.commit()
-    return {'message': f'metiz with id={delete_id} was deleted'}
+        metiz_id=delete_id
+    )
+    metiz_deleted = await metiz_crud.remove(metiz, session)
+    return metiz_deleted
 
 
 @router.put('/{metiz_id}',
@@ -232,13 +200,35 @@ async def update_metiz_by_id(
     session: сессия в асинхронную базу данных
     metiz_id: id детали
     """
-    metiz = await get_object_by_id(
-        request_id=metiz_id,
+    metiz = await check_metiz_exists(
         session=session,
-        model=Metiz
-        )
-    return await update_object(
-        session=session,
-        object_updating=metiz_updated,
-        object_for_update=metiz,
+        metiz_id=metiz_id
     )
+    metiz_updated = await metiz_crud.update(
+        session=session,
+        db_obj=metiz,
+        obj_in=metiz_updated
+        )
+    return metiz_updated
+
+
+async def check_metiz_exists(
+    metiz_id: int,
+    session: AsyncSession
+) -> Metiz:
+    """
+    Проверка существования детали по id
+    :parameter:
+    metiz_id: id детали
+    session: сессия в асинхронную базу данных
+    """
+    metiz = await metiz_crud.get(
+        metiz_id, session
+    )
+    match metiz:
+        case None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Метиз не найден!'
+            )
+    return metiz
