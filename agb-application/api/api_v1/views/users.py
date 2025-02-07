@@ -66,6 +66,7 @@ async def update_user_by_id(
         object_for_update=user,
     )
 
+
 @router.get('/s/{request_item}')
 async def search_user_by_request(
         request_item: str,
