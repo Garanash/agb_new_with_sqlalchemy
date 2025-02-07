@@ -85,15 +85,14 @@ async def auth_login_with_set_cookie(
                 value=token
                 )
             return template_response
-    return RedirectResponse('/auth/relogin',
-                            status_code=status.HTTP_401_UNAUTHORIZED)
+    return RedirectResponse("/auth/relogin", status_code=301)
 
 
 def get_session_id(
     session_id: str = Cookie(alias=COOKIE_SESSION_ID_KEY)
 ):
     if session_id not in COOKIES:
-        raise HTTPException(
+        raise Exception(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Not authenticated'
             )
@@ -110,7 +109,7 @@ async def register_user(
         session=session
         )
     if existing_user:
-        raise HTTPException(
+        raise Exception(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Username already registered'
             )
@@ -126,23 +125,14 @@ async def check_user(
         cookie_session_id: str = Cookie(None, alias=COOKIE_SESSION_ID_KEY)
         ):
     if cookie_session_id is None or cookie_session_id not in COOKIES:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Access forbidden: no valid cookie found.'
-            )
+        return RedirectResponse("/auth/relogin", status_code=301)
     try:
         user_data = COOKIES[cookie_session_id]
     except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Not authenticated'
-            )
+        return RedirectResponse("/auth/relogin", status_code=301)
     username = user_data.get('username')
     if username not in ALLOWED_USERS:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Access forbidden: not allowed.'
-            )
+        return RedirectResponse("/auth/relogin", status_code=301)
     return RedirectResponse('/auth/relogin',
                             status_code=status.HTTP_401_UNAUTHORIZED)
 
