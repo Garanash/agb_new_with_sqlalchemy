@@ -85,8 +85,7 @@ async def auth_login_with_set_cookie(
                 value=token
                 )
             return template_response
-    return RedirectResponse('/auth/relogin',
-                            status_code=status.HTTP_401_UNAUTHORIZED)
+    return RedirectResponse('/auth/relogin', status_code=301)
 
 
 def get_session_id(
@@ -132,11 +131,9 @@ async def check_user(
             )
     try:
         user_data = COOKIES[cookie_session_id]
-    except Exception: # ???????? какая ошибка обрабатывается?
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Not authenticated'
-            )
+    except Exception:
+        return RedirectResponse('/auth/relogin', status_code=301)
+
     username = user_data.get('username')
     if username not in ALLOWED_USERS:
         raise HTTPException(
@@ -144,7 +141,7 @@ async def check_user(
             detail='Access forbidden: not allowed.'
             )
     return RedirectResponse('/auth/relogin',
-                            status_code=status.HTTP_401_UNAUTHORIZED)
+                            status_code=301)
 
 
 @router.get('/logout')
