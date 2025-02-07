@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import or_, select
 from sqlalchemy.inspection import inspect
@@ -83,21 +81,6 @@ class CRUDBase:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
-
-    # async def get_by_attribute(
-    #     self,
-    #     attr_name: str,
-    #     attr_value: str,
-    #     session: AsyncSession,
-    # ):
-    #     """
-    #     Производит поиск элемента по заданному атрибуту.
-    #     """
-    #     attr = getattr(self.model, attr_name)
-    #     db_obj = await session.execute(
-    #         select(self.model).where(attr == attr_value)
-    #     )
-    #     return db_obj.scalars().all()
 
     async def search(
         self,
