@@ -133,6 +133,7 @@ async def check_user(
         user_data = COOKIES[cookie_session_id]
     except Exception:
         return RedirectResponse('/auth/relogin', status_code=301)
+
     username = user_data.get('username')
     if username not in ALLOWED_USERS:
         raise HTTPException(
