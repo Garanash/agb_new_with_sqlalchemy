@@ -4,9 +4,10 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
+from api.api_v1.crud.crud_base import CRUDBase
 from core.models import (RWD, Metiz, Purchased, PurchasedHydroperforator,
                          AdaptersAndPlugs, AccordingToTheDrawing)
-from api.api_v1.crud.crud_base import CRUDBase
 from core.models import db_helper
 
 
