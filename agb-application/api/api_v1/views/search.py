@@ -5,9 +5,10 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
+from api.api_v1.crud.crud_base import CRUDBase
 from core.models import (RWD, Metiz, Purchased, PurchasedHydroperforator,
                          AdaptersAndPlugs, AccordingToTheDrawing)
-from api.api_v1.crud.crud_base import CRUDBase
 from core.models import db_helper
 
 templates = Jinja2Templates('templates')
@@ -96,7 +97,7 @@ async def search_all_tables(
         def __init__(self, table_name, count_res, prefix):
             self.table_name: str = table_name
             self.count_res: int = count_res
-            self.prefix: str = prefix
+            self.prefix: str = prefi
 
     server_url = request.url.scheme + "://" + request.url.netloc
     result_data = [ReturnData(key, val[0], MODELS_PREFIX[key]) for key, val in search_results.items()]
