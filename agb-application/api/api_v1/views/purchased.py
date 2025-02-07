@@ -7,10 +7,11 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.api_v1.auth.views import check_user
-from api.api_v1.schemas.purchased import PurchasedRead, PurchasedCreate, PurchasedUpdatePartial, PurchasedBase, PurchasedDelete
+from api.api_v1.crud.purchased import purchased_crud
+from api.api_v1.schemas.purchased import (PurchasedCreate,
+                                          PurchasedUpdatePartial)
 from core.models import db_helper, Purchased
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
-    search_by_request
+
 
 templates = Jinja2Templates('templates')
 
@@ -32,10 +33,9 @@ async def get_purchases(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    purchases = await get_all_objects(
-        session=session,
-        model=Purchased
-        )
+    purchases = await purchased_crud.get_multi(
+        session=session
+    )
     return templates.TemplateResponse('/search/purchased.html',
                                       {'request': request,
                                        'purchased': purchases})
@@ -67,11 +67,10 @@ async def patch_purchase_by_id(
     request: запрос от пользователя
     item_id: идентификатор покупной позиции
     """
-    patch_item = await get_object_by_id(
-        session=session,
-        model=Purchased,
-        request_id=item_id
-        )
+    patch_item = await check_purchase_exists(
+        purchase_id=item_id,
+        session=session
+    )
     print(request.cookies.items())
     return templates.TemplateResponse('/patch/patch_purchase.html',
                                       {'request': request,
@@ -94,17 +93,16 @@ async def patch_purchases(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    object_for_update = await get_object_by_id(
-        request_id=patch_item.id,
+    object_for_update = await check_purchase_exists(
+        purchase_id=patch_item.id,
+        session=session
+    )
+
+    await purchased_crud.update(
         session=session,
-        model=Purchased
-        )
-    await update_object(
-        session=session,
-        object_for_update=object_for_update,
-        object_updating=patch_item,
-        partial=True
-        )
+        db_obj=object_for_update,
+        obj_in=patch_item
+    )
     return RedirectResponse('/purchased/purchased',
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -126,11 +124,10 @@ async def create_purchase(
     session: сессия в асинхронную базу данных
     """
     try:
-        purchase = await create_new_object(
+        await purchased_crud.create(
             session=session,
-            object_create=purchase_create,
-            model=Purchased
-            )
+            obj_in=purchase_create
+        )
         return RedirectResponse('/purchased/purchased',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -153,10 +150,9 @@ async def search_purchase_by_request(
     request: запрос от пользователя
     """
     search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(
+    res_search = await purchased_crud.search(
         request=search_item,
-        session=session,
-        model=Purchased
+        session=session
         )
     return templates.TemplateResponse('/finded/purchased.html',
                                       {'request': request,
@@ -177,17 +173,11 @@ async def search_purchase_by_id(
     session: сессия в асинхронную базу данных
     object_id: идентификатор покупной позиции
     """
-    object_search = await get_object_by_id(
-        session=session,
-        request_id=object_id,
-        model=Purchased
-        )
-    if object_search:
-        return object_search
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'object with {object_id} not found'
-        )
+    purchase = await check_purchase_exists(
+        purchase_id=object_id,
+        session=session
+    )
+    return purchase
 
 
 @router.delete('/{purchase_id}',
@@ -202,27 +192,23 @@ async def delete_purchase(
     session: сессия в асинхронную базу данных
     delete_id: идентификатор покупной позиции
     """
-    delete_purchase = await get_object_by_id(
-        session=session,
-        request_id=delete_id,
-        model=Purchased
-        )
-    if not delete_purchase:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='Purchase not found'
-            )
-    await session.delete(delete_purchase)
-    await session.commit()
-    return {'message': f'Purchase with id={delete_id} was deleted'}
+    purchase = await check_purchase_exists(
+        purchase_id=delete_id,
+        session=session
+    )
+    delete_purchase = await purchased_crud.remove(
+        db_obj=purchase,
+        session=session
+    )
+    return delete_purchase
 
 
 @router.put('/{purchase_id}',
             dependencies=[Depends(check_user)])
 async def update_purchase_by_id(
-        purchase_updated: PurchasedUpdatePartial,
+        purchase_update: PurchasedUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        metiz_id: int,
+        purchase_id: int,
 ):
     """
     Обновление покупной позиции по её идентификатору
@@ -231,13 +217,34 @@ async def update_purchase_by_id(
     session: сессия в асинхронную базу данных
     metiz_id: идентификатор покупной позиции
     """
-    purchase = await get_object_by_id(
-        request_id=metiz_id,
-        session=session,
-        model=Purchased
-        )
-    return await update_object(
-        session=session,
-        object_updating=purchase_updated,
-        object_for_update=purchase,
+    purchase = await check_purchase_exists(
+        purchase_id=purchase_id,
+        session=session
     )
+    return await purchased_crud.update(
+        session=session,
+        db_obj=purchase,
+        obj_in=purchase_update
+    )
+
+
+async def check_purchase_exists(
+    purchase_id: int,
+    session: AsyncSession
+) -> Purchased:
+    """
+    Проверка существования детали по id
+    :parameter:
+    purchase_id: id детали
+    session: сессия в асинхронную базу данных
+    """
+    purchased = await purchased_crud.get(
+        purchase_id, session
+    )
+    match purchased:
+        case None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Не найдено!'
+            )
+    return purchased

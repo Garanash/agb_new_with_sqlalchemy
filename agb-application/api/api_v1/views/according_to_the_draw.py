@@ -7,10 +7,10 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.api_v1.auth.views import check_user
-from api.api_v1.schemas.according_to_the_drawing import AccordingToTheDrawRead, AccordingToTheDrawCreate, \
-    AccordingToTheDrawUpdatePartial, AccordingToTheDrawBase, AccordingToTheDrawDelete
-from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
-    search_by_request
+from api.api_v1.crud.drawing import drawing_crud
+from api.api_v1.schemas.according_to_the_drawing import AccordingToTheDrawCreate, \
+    AccordingToTheDrawUpdatePartial
+
 from core.models import db_helper, AccordingToTheDrawing
 
 templates = Jinja2Templates('templates')
@@ -32,10 +32,9 @@ async def get_drawings(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    drawings = await get_all_objects(
-        session=session,
-        model=AccordingToTheDrawing
-        )
+    drawings = await drawing_crud.get_multi(
+        session=session
+    )
     return templates.TemplateResponse('/search/drawing.html',
                                       {'request': request,
                                        'drawings': drawings})
@@ -69,19 +68,15 @@ async def patch_drawing(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    object_for_update = await get_object_by_id(
-        request_id=patch_item.id,
+    object_for_update = await check_drawing_exists(
         session=session,
-        model=AccordingToTheDrawing
-        )
-    print(object_for_update.__dict__)
-
-    await update_object(
+        drawing_id=patch_item.id
+    )
+    await drawing_crud.update(
         session=session,
-        object_for_update=object_for_update,
-        object_updating=patch_item,
-        partial=True
-        )
+        obj_in=patch_item,
+        db_obj=object_for_update
+    )
     return RedirectResponse('/draw/drawings',
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
@@ -99,11 +94,10 @@ async def search_drawing_by_request(
     request: запрос от пользователя
     """
     search_item = request.query_params.get('main_input')
-    res_search = await search_by_request(
+    res_search = await drawing_crud.search(
         request=search_item,
-        session=session,
-        model=AccordingToTheDrawing
-        )
+        session=session
+    )
     return templates.TemplateResponse('/finded/drawing.html',
                                       {'request': request,
                                        'drawings': res_search})
@@ -111,7 +105,8 @@ async def search_drawing_by_request(
 
 @router.get('/patch/{item_id}',
             dependencies=[Depends(check_user)])
-async def patch_drawing_by_id(request: Request, item_id: int,
+async def patch_drawing_by_id(request: Request,
+                              item_id: int,
                               session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     """
     Страница редактирования конкретного чертежа
@@ -119,11 +114,10 @@ async def patch_drawing_by_id(request: Request, item_id: int,
     item_id: id чертежа
     session: сессия в асинхронную базу данных
     """
-    patch_item = await get_object_by_id(
+    patch_item = await check_drawing_exists(
         session=session,
-        model=AccordingToTheDrawing,
-        request_id=item_id
-        )
+        drawing_id=item_id
+    )
     return templates.TemplateResponse('/patch/patch_drawing.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -147,10 +141,9 @@ async def create_drawing(
     drawing_create: данные для создания чертежа
     """
     try:
-        drawing = await create_new_object(
+        await drawing_crud.create(
             session=session,
-            object_create=drawing_create,
-            model=AccordingToTheDrawing
+            db_obj=drawing_create
             )
         return RedirectResponse('/draw/drawings',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
@@ -172,10 +165,9 @@ async def get_according_to_the_draws(
     :parameter:
     session: сессия в асинхронную базу данных
     """
-    according_to_the_draws = await get_all_objects(
-        session=session,
-        model=AccordingToTheDrawing
-        )
+    according_to_the_draws = await drawing_crud.get_multi(
+        session=session
+    )
     return according_to_the_draws
 
 
@@ -194,11 +186,10 @@ async def create_according_to_the_draw(
     according_to_the_draw_create: данные для создания чертежа
     :return: созданный чертеж или сообщение об ошибке, если такая деталь уже существует
     """
-    according_to_the_draw = await create_new_object(
+    according_to_the_draw = await drawing_crud.create(
         session=session,
-        object_create=according_to_the_draw_create,
-        model=AccordingToTheDrawing
-        )
+        db_obj=according_to_the_draw_create
+    )
     return according_to_the_draw
 
 
@@ -217,17 +208,11 @@ async def search_according_to_the_draw_by_id(
     object_id: id чертежа
     :return: найденный чертеж или сообщение об ошибке, если чертеж не найден
     """
-    object_search = await get_object_by_id(
-        session=session,
-        request_id=object_id,
-        model=AccordingToTheDrawing
-        )
-    if object_search:
-        return object_search
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'object with {object_id} not found'
-        )
+    object_search = await check_drawing_exists(
+        drawing_id=object_id,
+        session=session
+    )
+    return object_search
 
 
 @router.delete('/{according_to_the_draw_id}',
@@ -244,25 +229,21 @@ async def delete_according_to_the_draw(
     :return: сообщение об успешном удалении или сообщение об ошибке, если чертеж не найден
     :raises HTTPException: если чертеж не найден
     """
-    delete_according_to_the_draw = await get_object_by_id(
+    delete_according_to_the_draw = await check_drawing_exists(
+        drawing_id=delete_id,
+        session=session
+    )
+    deleted_drawing = await drawing_crud.remove(
         session=session,
-        request_id=delete_id,
-        model=AccordingToTheDrawing
-        )
-    if not delete_according_to_the_draw:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='AccordingToTheDraw not found'
-            )
-    await session.delete(delete_according_to_the_draw)
-    await session.commit()
-    return {'message': f'according_to_the_draw with id={delete_id} was deleted'}
+        db_obj=delete_according_to_the_draw
+    )
+    return deleted_drawing
 
 
 @router.put('/{according_to_the_draw_id}',
             dependencies=[Depends(check_user)])
 async def update_according_to_the_draw_by_id(
-        according_to_the_draw_updated: AccordingToTheDrawUpdatePartial,
+        according_to_the_draw_update: AccordingToTheDrawUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         according_to_the_draw_id: int,
 ):
@@ -275,15 +256,14 @@ async def update_according_to_the_draw_by_id(
     :return: измененный чертеж или сообщение об ошибке, если чертеж не найден
     :raises HTTPException: если чертеж не найден
     """
-    according_to_the_draw = await get_object_by_id(
-        request_id=according_to_the_draw_id,
+    according_to_the_draw = await check_drawing_exists(
+        drawing_id=according_to_the_draw_id,
+        session=session
+    )
+    return await drawing_crud.update(
         session=session,
-        model=AccordingToTheDrawing
-        )
-    return await update_object(
-        session=session,
-        object_updating=according_to_the_draw_updated,
-        object_for_update=according_to_the_draw,
+        db_obj=according_to_the_draw,
+        obj_in=according_to_the_draw_update
     )
 
 
@@ -292,8 +272,29 @@ async def search_according_by_request(
         request_item: str,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
 ):
-    return await search_by_request(
+    return await drawing_crud.search(
         request=request_item,
-        session=session,
-        model=AccordingToTheDrawing
-        )
+        session=session
+    )
+
+
+async def check_drawing_exists(
+    drawing_id: int,
+    session: AsyncSession
+) -> AccordingToTheDrawing:
+    """
+    Проверка существования детали по id
+    :parameter:
+    drawing_id: id детали
+    session: сессия в асинхронную базу данных
+    """
+    drawing = await drawing_crud.get(
+        drawing_id, session
+    )
+    match drawing:
+        case None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Не найдено!'
+            )
+    return drawing
