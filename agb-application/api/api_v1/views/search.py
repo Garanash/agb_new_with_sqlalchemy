@@ -38,43 +38,50 @@ router = APIRouter(
 
 
 @router.get('/search_rwd')
-def rwd_search(request: Request):
+def rwd_search(request: Request,
+               user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/rwd.html',
                                       {'request': request})
 
 
 @router.get('/search_metizes')
-def metizes_search(request: Request):
+def metizes_search(request: Request,
+                   user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/metizes.html',
                                       {'request': request})
 
 
 @router.get('/search_drawing')
-def drawing_search(request: Request):
+def drawing_search(request: Request,
+                   user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/drawing.html',
                                       {'request': request})
 
 
 @router.get('/search_projects')
-def project_search(request: Request):
+def project_search(request: Request,
+                   user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/projects.html',
                                       {'request': request})
 
 
 @router.get('/search_purchased')
-def purchased_search(request: Request):
+def purchased_search(request: Request,
+                     user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/purchased.html',
                                       {'request': request})
 
 
 @router.get('/search_hydroperfs')
-def purchasedhydro_search(request: Request):
+def purchasedhydro_search(request: Request,
+                          user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/hydroperfs.html',
                                       {'request': request})
 
 
 @router.get('/search_adapters')
-def adapter_search(request: Request):
+def adapter_search(request: Request,
+                   user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/adapters.html',
                                       {'request': request})
 
@@ -82,7 +89,8 @@ def adapter_search(request: Request):
 @router.get('/search_all_tables')
 async def search_all_tables(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 
 ):
     search_item = request.query_params.get('main_input')

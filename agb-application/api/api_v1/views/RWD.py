@@ -23,7 +23,8 @@ router = APIRouter(
             response_model_by_alias=True)
 async def get_rwd(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех РВД в таблице
@@ -42,7 +43,8 @@ async def get_rwd(
 @router.get('/',
             response_model_by_alias=True)
 async def get_rwd_item(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод одного РВД по его id
@@ -57,7 +59,8 @@ async def get_rwd_item(
 
 
 @router.get('/addnew')
-async def add_new_rwd(request: Request):
+async def add_new_rwd(request: Request,
+                      user_data: dict = Depends(check_user)):
     """
     Добавление нового РВД
     :parameter:
@@ -73,7 +76,8 @@ async def add_new_rwd(request: Request):
             dependencies=[Depends(check_user)])
 async def patch_rwd_by_id(request: Request,
                           item_id: int,
-                          session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+                          session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+                          user_data: dict = Depends(check_user)):
     """
     Редактирование РВД по его id
     :parameter:
@@ -95,7 +99,8 @@ async def patch_rwd_by_id(request: Request,
 async def patch_rwd(
         patch_item: Annotated[RWDUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     Редактирование РВД по его id
@@ -123,7 +128,8 @@ async def patch_rwd(
 async def create_rwd(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         rwd_create: Annotated[RWDCreate, Form()],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     создание нового РВД
@@ -148,7 +154,8 @@ async def create_rwd(
 @router.get('/search')
 async def search_rwd_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск РВД по детальному ключу
@@ -172,6 +179,7 @@ async def search_rwd_by_request(
 async def search_rwd_item_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         rwd_item_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск РВД по его id
@@ -190,6 +198,7 @@ async def search_rwd_item_by_id(
 async def delete_rwd_item(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Удаление РВД по его id
@@ -213,6 +222,7 @@ async def update_rwd_item_by_id(
         rwd_item_update: RWDUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         rwd_item_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Редактирование РВД по его id

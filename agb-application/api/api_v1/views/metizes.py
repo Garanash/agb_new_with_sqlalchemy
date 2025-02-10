@@ -23,7 +23,8 @@ router = APIRouter(
             response_model_by_alias=True)
 async def get_metizes(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех метизов в таблице
@@ -40,7 +41,8 @@ async def get_metizes(
 
 
 @router.get('/addnew')
-async def add_new_metiz(request: Request):
+async def add_new_metiz(request: Request,
+                        user_data: dict = Depends(check_user)):
     """
     Добавление нового метиза
     :parameter:
@@ -54,7 +56,8 @@ async def add_new_metiz(request: Request):
 @router.get("/patch/{item_id}")
 async def patch_metiz_by_id(request: Request,
                             item_id: int,
-                            session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+                            session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+                            user_data: dict = Depends(check_user)):
     patch_item = await check_metiz_exists(
         session=session,
         metiz_id=item_id
@@ -69,7 +72,8 @@ async def patch_metiz_by_id(request: Request,
              response_class=RedirectResponse)
 async def patch_metizes(
         patch_item: Annotated[MetizUpdatePartial, Form()],
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
         ):
     """
     Обновление детали
@@ -97,7 +101,8 @@ async def patch_metizes(
 async def create_metiz(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         metiz_create: Annotated[MetizCreate, Form()],
-        request: Request):
+        request: Request,
+        user_data: dict = Depends(check_user)):
     """
     Создание новой детали
     :parameter:
@@ -122,7 +127,8 @@ async def create_metiz(
 @router.get('/search')
 async def search_metiz_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск детали по введенному запросу
@@ -146,6 +152,7 @@ async def search_metiz_by_request(
 async def search_metiz_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск детали по id
@@ -164,6 +171,7 @@ async def search_metiz_by_id(
 async def delete_metiz(
         delete_id: int,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
 ):
     """
     Удаление детали
@@ -184,6 +192,7 @@ async def update_metiz_by_id(
         metiz_updated: MetizUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         metiz_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Обновление детали по id

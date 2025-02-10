@@ -25,7 +25,8 @@ router = APIRouter(
             response_model_by_alias=True)
 async def get_hydroperforators(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех гидроперфораторов в таблице
@@ -42,7 +43,8 @@ async def get_hydroperforators(
 
 
 @router.get('/addnew')
-async def add_new_hydroperforator(request: Request):
+async def add_new_hydroperforator(request: Request,
+                                  user_data: dict = Depends(check_user)):
     """
     Вывод формы добавления нового гидроперфоратора
     :parameter:
@@ -57,7 +59,8 @@ async def add_new_hydroperforator(request: Request):
 async def patch_hydroperf_by_id(
     request: Request,
     item_id: int,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    user_data: dict = Depends(check_user)
 ):
     """
     Вывод формы редактирования гидроперфоратора по его ID
@@ -82,6 +85,7 @@ async def patch_hydroperf_by_id(
 async def patch_hydroperforators(
         patch_item: Annotated[PurchasedHydroperforatorUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
         ):
     """
     Обновление гидроперфоратора по его ID
@@ -110,7 +114,8 @@ async def patch_hydroperforators(
 async def create_hydroperforator(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         hydroperf_create: Annotated[PurchasedHydroperforatorCreate, Form()],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     Создание нового гидроперфоратора
@@ -137,7 +142,8 @@ async def create_hydroperforator(
 @router.get('/search')
 async def search_hydroperforator_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск гидроперфораторов по введенному запросу
@@ -161,6 +167,7 @@ async def search_hydroperforator_by_request(
 async def search_hydroperforator_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск гидроперфоратора по его ID
@@ -179,6 +186,7 @@ async def search_hydroperforator_by_id(
 async def delete_hydroperforator(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Удаление гидроперфоратора по его ID
@@ -202,6 +210,7 @@ async def update_hydroperforator_by_id(
         hydroperf_update: PurchasedHydroperforatorUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         hydroperf_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Обновление гидроперфоратора по его ID

@@ -71,7 +71,10 @@ async def auth_login_with_set_cookie(
 
             COOKIES[token] = {
                 'username': res.username,
-                'super_user': res.super_user,
+                'role': res.role,
+                'name': res.name,
+                'surname': res.surname,
+                'patronymic': res.patronymic,
             }
             ALLOWED_USERS.append(credentials.username)
             template_response = templates.TemplateResponse(

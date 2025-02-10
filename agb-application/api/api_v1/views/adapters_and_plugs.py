@@ -44,7 +44,8 @@ async def get_adapters_and_plugss(
 
 
 @router.get('/addnew')
-async def add_new_adapter(request: Request):
+async def add_new_adapter(request: Request,
+                          user_data: dict = Depends(check_user)):
     """
     Добавление нового адаптера и разъема
     :parameter:
@@ -59,7 +60,8 @@ async def add_new_adapter(request: Request):
 async def patch_adapter_by_id(
         request: Request,
         item_id: int,
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
 ):
     """
     Изменение адаптера и разъема по его id
@@ -83,6 +85,7 @@ async def patch_adapter_by_id(
 async def patch_adapters(
         patch_item: Annotated[AdapterAndPlugsUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
 ):
     """
     Изменение адаптера и разъема по его id
@@ -111,7 +114,8 @@ async def patch_adapters(
 async def create_adapter(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         adapter_create: Annotated[AdapterAndPlugsCreate, Form()],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Создание нового адаптера и разъема
@@ -137,7 +141,8 @@ async def create_adapter(
 @router.get('/search')
 async def search_adapter_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск адаптера и разъема по введенному запросу
@@ -161,6 +166,7 @@ async def search_adapter_by_request(
 async def search_adapter_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск адаптера и разъема по его id
@@ -180,6 +186,7 @@ async def search_adapter_by_id(
 async def delete_adapter(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Удаление адаптера и разъема по его id
@@ -200,6 +207,7 @@ async def update_adapter_by_id(
         adapter_update: AdapterAndPlugsUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         adapter_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Обновление адаптера и разъема по его id

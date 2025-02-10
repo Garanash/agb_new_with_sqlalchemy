@@ -25,7 +25,8 @@ router = APIRouter(
             response_model_by_alias=True)
 async def get_purchases(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех покупной позиции в таблице
@@ -42,7 +43,8 @@ async def get_purchases(
 
 
 @router.get('/addnew')
-async def add_new_purchase(request: Request):
+async def add_new_purchase(request: Request,
+                           user_data: dict = Depends(check_user)):
     """
     Вывод страницы добавления новой покупной позиции
     :parameter:
@@ -57,7 +59,8 @@ async def add_new_purchase(request: Request):
 async def patch_purchase_by_id(
     request: Request,
     item_id: int,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    user_data: dict = Depends(check_user)
 ):
     """
     Вывод страницы изменения покупной позиции
@@ -81,7 +84,8 @@ async def patch_purchase_by_id(
 async def patch_purchases(
         patch_item: Annotated[PurchasedUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     Изменение покупной позиции
@@ -111,7 +115,8 @@ async def patch_purchases(
 async def create_purchase(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         purchase_create: Annotated[PurchasedCreate, Form()],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     Создание новой покупной позиции
@@ -136,7 +141,8 @@ async def create_purchase(
 @router.get('/search')
 async def search_purchase_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск покупной позиции по определенному критерию
@@ -160,6 +166,7 @@ async def search_purchase_by_request(
 async def search_purchase_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск покупной позиции по её идентификатору
@@ -178,6 +185,7 @@ async def search_purchase_by_id(
 async def delete_purchase(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Удаление покупной позиции по её идентификатору
@@ -201,6 +209,7 @@ async def update_purchase_by_id(
         purchase_update: PurchasedUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         purchase_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Обновление покупной позиции по её идентификатору
