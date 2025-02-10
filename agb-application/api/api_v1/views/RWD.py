@@ -15,12 +15,12 @@ from core.models import db_helper, RWD
 templates = Jinja2Templates('templates')
 router = APIRouter(
     tags=['RWDBases'],
+    dependencies=[Depends(check_user)]
 )
 
 
 @router.get('/RWDs',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_rwd(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -40,8 +40,7 @@ async def get_rwd(
 
 
 @router.get('/',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_rwd_item(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
 ):
@@ -57,8 +56,7 @@ async def get_rwd_item(
     return rwd_item
 
 
-@router.get('/addnew',
-            dependencies=[Depends(check_user)])
+@router.get('/addnew')
 async def add_new_rwd(request: Request):
     """
     Добавление нового РВД
@@ -93,8 +91,7 @@ async def patch_rwd_by_id(request: Request,
 
 
 @router.post('/patch',
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def patch_rwd(
         patch_item: Annotated[RWDUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -122,8 +119,7 @@ async def patch_rwd(
 @router.post('/create',
              response_model=None,
              response_model_by_alias=True,
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def create_rwd(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         rwd_create: Annotated[RWDCreate, Form()],
@@ -149,8 +145,7 @@ async def create_rwd(
                                            'message': 'Такая деталь уже существует'})
 
 
-@router.get('/search',
-            dependencies=[Depends(check_user)])
+@router.get('/search')
 async def search_rwd_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -173,8 +168,7 @@ async def search_rwd_by_request(
 
 @router.get('/{rwd_item_id}',
             response_model=None,
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def search_rwd_item_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         rwd_item_id: int,
@@ -192,8 +186,7 @@ async def search_rwd_item_by_id(
     return object_search
 
 
-@router.delete('/{rwd_item_id}',
-               dependencies=[Depends(check_user)])
+@router.delete('/{rwd_item_id}')
 async def delete_rwd_item(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
@@ -215,8 +208,7 @@ async def delete_rwd_item(
     return deleted_rwd
 
 
-@router.put('/{rwd_item_id}',
-            dependencies=[Depends(check_user)])
+@router.put('/{rwd_item_id}')
 async def update_rwd_item_by_id(
         rwd_item_update: RWDUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],

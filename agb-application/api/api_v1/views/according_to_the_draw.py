@@ -16,12 +16,12 @@ from core.models import db_helper, AccordingToTheDrawing
 templates = Jinja2Templates('templates')
 router = APIRouter(
     tags=['AccordingToTheDrawBases'],
+    dependencies=[Depends(check_user)]
 )
 
 
 @router.get('/drawings',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_drawings(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -32,6 +32,8 @@ async def get_drawings(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
+    user_data = check_user()
+    print(user_data)
     drawings = await drawing_crud.get_multi(
         session=session
     )
@@ -40,8 +42,7 @@ async def get_drawings(
                                        'drawings': drawings})
 
 
-@router.get('/addnew',
-            dependencies=[Depends(check_user)])
+@router.get('/addnew')
 async def add_new_drawing(request: Request):
     """
     Страница добавления нового чертежа
@@ -54,8 +55,7 @@ async def add_new_drawing(request: Request):
 
 
 @router.post('/patch',
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def patch_drawing(
         patch_item: Annotated[AccordingToTheDrawUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -81,8 +81,7 @@ async def patch_drawing(
                             status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
 
-@router.get('/search',
-            dependencies=[Depends(check_user)])
+@router.get('/search')
 async def search_drawing_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -103,8 +102,7 @@ async def search_drawing_by_request(
                                        'drawings': res_search})
 
 
-@router.get('/patch/{item_id}',
-            dependencies=[Depends(check_user)])
+@router.get('/patch/{item_id}')
 async def patch_drawing_by_id(request: Request,
                               item_id: int,
                               session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
@@ -127,8 +125,7 @@ async def patch_drawing_by_id(request: Request,
 @router.post('/create',
              response_model=None,
              response_model_by_alias=True,
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def create_drawing(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         drawing_create: Annotated[AccordingToTheDrawCreate, Form()],
@@ -143,7 +140,7 @@ async def create_drawing(
     try:
         await drawing_crud.create(
             session=session,
-            db_obj=drawing_create
+            obj_in=drawing_create
             )
         return RedirectResponse('/draw/drawings',
                                 status_code=status.HTTP_301_MOVED_PERMANENTLY)
@@ -155,8 +152,7 @@ async def create_drawing(
 
 
 @router.get('/',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_according_to_the_draws(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
 ):
@@ -173,8 +169,7 @@ async def get_according_to_the_draws(
 
 @router.post('/new_according_to_the_draw',
              response_model=None,
-             response_model_by_alias=True,
-             dependencies=[Depends(check_user)])
+             response_model_by_alias=True)
 async def create_according_to_the_draw(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         according_to_the_draw_create: AccordingToTheDrawCreate
@@ -188,15 +183,14 @@ async def create_according_to_the_draw(
     """
     according_to_the_draw = await drawing_crud.create(
         session=session,
-        db_obj=according_to_the_draw_create
+        obj_in=according_to_the_draw_create
     )
     return according_to_the_draw
 
 
 @router.get('/{object_id}',
             response_model=None,
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def search_according_to_the_draw_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
@@ -215,8 +209,7 @@ async def search_according_to_the_draw_by_id(
     return object_search
 
 
-@router.delete('/{according_to_the_draw_id}',
-               dependencies=[Depends(check_user)])
+@router.delete('/{according_to_the_draw_id}')
 async def delete_according_to_the_draw(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
@@ -240,8 +233,7 @@ async def delete_according_to_the_draw(
     return deleted_drawing
 
 
-@router.put('/{according_to_the_draw_id}',
-            dependencies=[Depends(check_user)])
+@router.put('/{according_to_the_draw_id}')
 async def update_according_to_the_draw_by_id(
         according_to_the_draw_update: AccordingToTheDrawUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],

@@ -17,12 +17,12 @@ templates = Jinja2Templates('templates')
 
 router = APIRouter(
     tags=['PurchasedHydroperforatorBases'],
+    dependencies=[Depends(check_user)]
 )
 
 
 @router.get('/hydroperfs',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_hydroperforators(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -41,8 +41,7 @@ async def get_hydroperforators(
                                        'hydroperfs': hydroperfs})
 
 
-@router.get('/addnew',
-            dependencies=[Depends(check_user)])
+@router.get('/addnew')
 async def add_new_hydroperforator(request: Request):
     """
     Вывод формы добавления нового гидроперфоратора
@@ -54,8 +53,7 @@ async def add_new_hydroperforator(request: Request):
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
 
 
-@router.get('/patch/{item_id}',
-            dependencies=[Depends(check_user)])
+@router.get('/patch/{item_id}')
 async def patch_hydroperf_by_id(
     request: Request,
     item_id: int,
@@ -80,8 +78,7 @@ async def patch_hydroperf_by_id(
 
 
 @router.post('/patch',
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def patch_hydroperforators(
         patch_item: Annotated[PurchasedHydroperforatorUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -109,8 +106,7 @@ async def patch_hydroperforators(
 @router.post('/create',
              response_model=None,
              response_model_by_alias=True,
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def create_hydroperforator(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         hydroperf_create: Annotated[PurchasedHydroperforatorCreate, Form()],
@@ -138,8 +134,7 @@ async def create_hydroperforator(
                                            'message': 'Такая деталь уже существует'})
 
 
-@router.get('/search',
-            dependencies=[Depends(check_user)])
+@router.get('/search')
 async def search_hydroperforator_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -162,8 +157,7 @@ async def search_hydroperforator_by_request(
 
 @router.get('/{object_id}',
             response_model=None,
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def search_hydroperforator_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
@@ -181,8 +175,7 @@ async def search_hydroperforator_by_id(
     return object_search
 
 
-@router.delete('/{hydroperf_id}',
-               dependencies=[Depends(check_user)])
+@router.delete('/{hydroperf_id}')
 async def delete_hydroperforator(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
@@ -204,8 +197,7 @@ async def delete_hydroperforator(
     return deleted_hydroperf
 
 
-@router.put('/{hydroperf_id}',
-            dependencies=[Depends(check_user)])
+@router.put('/{hydroperf_id}')
 async def update_hydroperforator_by_id(
         hydroperf_update: PurchasedHydroperforatorUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],

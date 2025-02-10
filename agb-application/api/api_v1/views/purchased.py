@@ -17,12 +17,12 @@ templates = Jinja2Templates('templates')
 
 router = APIRouter(
     tags=['PurchasedBases'],
+    dependencies=[Depends(check_user)]
 )
 
 
 @router.get('/purchased',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_purchases(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -41,8 +41,7 @@ async def get_purchases(
                                        'purchased': purchases})
 
 
-@router.get('/addnew',
-            dependencies=[Depends(check_user)])
+@router.get('/addnew')
 async def add_new_purchase(request: Request):
     """
     Вывод страницы добавления новой покупной позиции
@@ -54,8 +53,7 @@ async def add_new_purchase(request: Request):
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
 
 
-@router.get('/patch/{item_id}',
-            dependencies=[Depends(check_user)])
+@router.get('/patch/{item_id}')
 async def patch_purchase_by_id(
     request: Request,
     item_id: int,
@@ -79,8 +77,7 @@ async def patch_purchase_by_id(
 
 
 @router.post('/patch',
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def patch_purchases(
         patch_item: Annotated[PurchasedUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -110,8 +107,7 @@ async def patch_purchases(
 @router.post('/create',
              response_model=None,
              response_model_by_alias=True,
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def create_purchase(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         purchase_create: Annotated[PurchasedCreate, Form()],
@@ -137,8 +133,7 @@ async def create_purchase(
                                            'message': 'Такая деталь уже существует'})
 
 
-@router.get('/search',
-            dependencies=[Depends(check_user)])
+@router.get('/search')
 async def search_purchase_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -161,8 +156,7 @@ async def search_purchase_by_request(
 
 @router.get('/{object_id}',
             response_model=None,
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def search_purchase_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
@@ -180,8 +174,7 @@ async def search_purchase_by_id(
     return purchase
 
 
-@router.delete('/{purchase_id}',
-               dependencies=[Depends(check_user)])
+@router.delete('/{purchase_id}')
 async def delete_purchase(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
@@ -203,8 +196,7 @@ async def delete_purchase(
     return delete_purchase
 
 
-@router.put('/{purchase_id}',
-            dependencies=[Depends(check_user)])
+@router.put('/{purchase_id}')
 async def update_purchase_by_id(
         purchase_update: PurchasedUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],

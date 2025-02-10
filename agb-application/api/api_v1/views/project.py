@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.api_v1.auth.views import check_user
 from api.api_v1.schemas.project import ProjectRead, ProjectCreate, ProjectUpdatePartial, ProjectBase, ProjectDelete
 from core.models import db_helper, Project
 from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_object, get_object_by_id, delete_object, \
@@ -10,6 +11,7 @@ from api.api_v1.crud.CRUD import get_all_objects, create_new_object, update_obje
 
 router = APIRouter(
     tags=['ProjectBases'],
+    dependencies=[Depends(check_user)]
 )
 
 

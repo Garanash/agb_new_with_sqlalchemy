@@ -126,22 +126,27 @@ async def check_user(
         ):
     if cookie_session_id is None or cookie_session_id not in COOKIES:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Access forbidden: no valid cookie found.'
-            )
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+            detail='Redirecting to relogin',
+            headers={"Location": "/auth/relogin"}
+        )
     try:
         user_data = COOKIES[cookie_session_id]
     except Exception:
-        return RedirectResponse('/auth/relogin', status_code=301)
+        raise HTTPException(
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+            detail='Redirecting to relogin',
+            headers={"Location": "/auth/relogin"}
+        )
 
     username = user_data.get('username')
     if username not in ALLOWED_USERS:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Access forbidden: not allowed.'
-            )
-    return RedirectResponse('/auth/relogin',
-                            status_code=301)
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+            detail='Redirecting to relogin',
+            headers={"Location": "/auth/relogin"}
+        )
+    return user_data
 
 
 @router.get('/logout')

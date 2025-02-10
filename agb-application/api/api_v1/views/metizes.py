@@ -15,12 +15,12 @@ templates = Jinja2Templates('templates')
 
 router = APIRouter(
     tags=['MetizBases'],
+    dependencies=[Depends(check_user)]
 )
 
 
 @router.get('/metizes',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_metizes(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -39,8 +39,7 @@ async def get_metizes(
                                        'metizes': metiz})
 
 
-@router.get('/addnew',
-            dependencies=[Depends(check_user)])
+@router.get('/addnew')
 async def add_new_metiz(request: Request):
     """
     Добавление нового метиза
@@ -52,8 +51,7 @@ async def add_new_metiz(request: Request):
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
 
 
-@router.get("/patch/{item_id}",
-            dependencies=[Depends(check_user)])
+@router.get("/patch/{item_id}")
 async def patch_metiz_by_id(request: Request,
                             item_id: int,
                             session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
@@ -68,8 +66,7 @@ async def patch_metiz_by_id(request: Request,
 
 
 @router.post('/patch',
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def patch_metizes(
         patch_item: Annotated[MetizUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
@@ -96,8 +93,7 @@ async def patch_metizes(
 @router.post("/create",
              response_model=None,
              response_model_by_alias=True,
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def create_metiz(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         metiz_create: Annotated[MetizCreate, Form()],
@@ -123,8 +119,7 @@ async def create_metiz(
                                            "message": 'Такая деталь уже существует'})
 
 
-@router.get('/search',
-            dependencies=[Depends(check_user)])
+@router.get('/search')
 async def search_metiz_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -147,8 +142,7 @@ async def search_metiz_by_request(
 
 @router.get('/{object_id}',
             response_model=None,
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def search_metiz_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
@@ -166,8 +160,7 @@ async def search_metiz_by_id(
     return object_search
 
 
-@router.delete('/{metiz_id}',
-               dependencies=[Depends(check_user)])
+@router.delete('/{metiz_id}')
 async def delete_metiz(
         delete_id: int,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -186,8 +179,7 @@ async def delete_metiz(
     return metiz_deleted
 
 
-@router.put('/{metiz_id}',
-            dependencies=[Depends(check_user)])
+@router.put('/{metiz_id}')
 async def update_metiz_by_id(
         metiz_updated: MetizUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],

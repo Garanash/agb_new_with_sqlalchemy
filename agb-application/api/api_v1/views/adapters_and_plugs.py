@@ -17,15 +17,16 @@ templates = Jinja2Templates('templates')
 
 router = APIRouter(
     tags=['AdapterAndPlugsBases'],
+    dependencies=[Depends(check_user)]
 )
 
 
 @router.get('/adapters',
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def get_adapters_and_plugss(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех адаптеров и разъемов в таблице
@@ -33,6 +34,7 @@ async def get_adapters_and_plugss(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
+    print(user_data)
     adapters_and_plugs = await adapter_crud.get_multi(
         session=session
     )
@@ -41,8 +43,7 @@ async def get_adapters_and_plugss(
                                        'adapters': adapters_and_plugs})
 
 
-@router.get('/addnew',
-            dependencies=[Depends(check_user)])
+@router.get('/addnew')
 async def add_new_adapter(request: Request):
     """
     Добавление нового адаптера и разъема
@@ -54,8 +55,7 @@ async def add_new_adapter(request: Request):
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
 
 
-@router.get('/patch/{item_id}',
-            dependencies=[Depends(check_user)])
+@router.get('/patch/{item_id}')
 async def patch_adapter_by_id(
         request: Request,
         item_id: int,
@@ -79,8 +79,7 @@ async def patch_adapter_by_id(
 
 
 @router.post('/patch',
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def patch_adapters(
         patch_item: Annotated[AdapterAndPlugsUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -108,8 +107,7 @@ async def patch_adapters(
 @router.post('/create',
              response_model=None,
              response_model_by_alias=True,
-             response_class=RedirectResponse,
-             dependencies=[Depends(check_user)])
+             response_class=RedirectResponse)
 async def create_adapter(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         adapter_create: Annotated[AdapterAndPlugsCreate, Form()],
@@ -136,8 +134,7 @@ async def create_adapter(
                                            'message': 'Такая деталь уже существует'})
 
 
-@router.get('/search',
-            dependencies=[Depends(check_user)])
+@router.get('/search')
 async def search_adapter_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
@@ -160,8 +157,7 @@ async def search_adapter_by_request(
 
 @router.get('/{object_id}',
             response_model=None,
-            response_model_by_alias=True,
-            dependencies=[Depends(check_user)])
+            response_model_by_alias=True)
 async def search_adapter_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
@@ -180,8 +176,7 @@ async def search_adapter_by_id(
     return adapter
 
 
-@router.delete('/{adapter_id}',
-               dependencies=[Depends(check_user)])
+@router.delete('/{adapter_id}')
 async def delete_adapter(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
@@ -200,8 +195,7 @@ async def delete_adapter(
     return delete_adapter
 
 
-@router.put('/{adapter_id}',
-            dependencies=[Depends(check_user)])
+@router.put('/{adapter_id}')
 async def update_adapter_by_id(
         adapter_update: AdapterAndPlugsUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],

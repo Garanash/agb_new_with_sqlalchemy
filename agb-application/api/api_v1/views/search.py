@@ -33,6 +33,7 @@ MODELS_PREFIX = {
 
 router = APIRouter(
     # prefix='/search'
+    dependencies=[Depends(check_user)]
 )
 
 
@@ -78,7 +79,7 @@ def adapter_search(request: Request):
                                       {'request': request})
 
 
-@router.get('/search_all_tables', dependencies=[Depends(check_user)])
+@router.get('/search_all_tables')
 async def search_all_tables(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         request: Request
