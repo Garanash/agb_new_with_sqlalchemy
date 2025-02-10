@@ -9,9 +9,11 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.templating import Jinja2Templates
 
+
 from api.api_v1.auth.functions import search_by_request
 from api.api_v1.crud.CRUD import create_new_object
 from api.api_v1.schemas.users import UserCreate
+from core.loging_config import logger
 from core.models import db_helper, User
 
 config = AuthXConfig()
@@ -77,18 +79,18 @@ async def auth_login_with_set_cookie(
                 'patronymic': res.patronymic,
             }
             ALLOWED_USERS.append(credentials.username)
-            user_data = COOKIES[token]
+            logger.info(f'User {credentials.username} logged in')
             template_response = templates.TemplateResponse(
                 'authuser.html', {
                     'request': request,
                     'response': response,
-                    'username': credentials.username,
-                    'userdata': user_data
+                    'username': credentials.username
                     })
             template_response.set_cookie(
                 key=COOKIE_SESSION_ID_KEY,
                 value=token
                 )
+            logger.info(f'Cookie for user {credentials.username} generated')
             return template_response
     return RedirectResponse('/auth/relogin', status_code=301)
 
@@ -114,6 +116,7 @@ async def register_user(
         session=session
         )
     if existing_user:
+        logger.info(f'User {user.username} already exists')
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Username already registered'
@@ -123,6 +126,7 @@ async def register_user(
         object_create=user,
         model=User
         )
+    logger.info(f'User {user.username} registered')
     return {'message': 'User registered successfully'}
 
 
@@ -130,6 +134,7 @@ async def check_user(
         cookie_session_id: str = Cookie(None, alias=COOKIE_SESSION_ID_KEY)
         ):
     if cookie_session_id is None or cookie_session_id not in COOKIES:
+        logger.info('No valid cookie provided')
         raise HTTPException(
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
             detail='Redirecting to relogin',
@@ -138,6 +143,7 @@ async def check_user(
     try:
         user_data = COOKIES[cookie_session_id]
     except Exception:
+        logger.info('No valid user data found in cookie')
         raise HTTPException(
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
             detail='Redirecting to relogin',
@@ -146,6 +152,9 @@ async def check_user(
 
     username = user_data.get('username')
     if username not in ALLOWED_USERS:
+        logger.warning(
+            f'Unauthorized user {username} tried to access protected resource'
+            )
         raise HTTPException(
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
             detail='Redirecting to relogin',
@@ -163,6 +172,7 @@ async def logout(
         session_id=request.cookies.get(COOKIE_SESSION_ID_KEY)
         )
     ALLOWED_USERS.remove(cookie_session_id['username'])
+    logger.info(f'User {cookie_session_id["username"]} logged out')
     template_response = templates.TemplateResponse(
         'start.html',
         {
@@ -170,4 +180,5 @@ async def logout(
             'response': response,
         })
     template_response.delete_cookie(key=COOKIE_SESSION_ID_KEY)
+    logger.info(f'Cookie for user {cookie_session_id["username"]} deleted')
     return template_response
