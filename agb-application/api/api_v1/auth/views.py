@@ -1,3 +1,5 @@
+import logging
+from logging.handlers import RotatingFileHandler
 import uuid
 from typing import Annotated
 
@@ -11,9 +13,8 @@ from starlette.templating import Jinja2Templates
 
 
 from api.api_v1.auth.functions import search_by_request
-from api.api_v1.crud.CRUD import create_new_object
+from api.api_v1.crud.crud_base import CRUDBase
 from api.api_v1.schemas.users import UserCreate
-from core.loging_config import logger
 from core.models import db_helper, User
 
 config = AuthXConfig()
@@ -30,6 +31,11 @@ security_log = HTTPBasic()
 COOKIES = {}
 COOKIE_SESSION_ID_KEY = 'agb-app-token'
 ALLOWED_USERS = []
+
+logger = logging.getLogger(__name__)
+handler = RotatingFileHandler('logger.log')
+logger.setLevel('DEBUG')
+logger.addHandler(handler)
 
 
 class UserLogin(BaseModel):
@@ -116,15 +122,14 @@ async def register_user(
         session=session
         )
     if existing_user:
-        logger.info(f'User {user.username} already exists')
+        logger.warning(f'User {user.username} already exists')
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Username already registered'
             )
-    await create_new_object(
+    await CRUDBase(User).create(
         session=session,
-        object_create=user,
-        model=User
+        obj_in=user
         )
     logger.info(f'User {user.username} registered')
     return {'message': 'User registered successfully'}
