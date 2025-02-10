@@ -8,7 +8,7 @@ class UserBase(BaseModel):
     name: str = Field(min_length=1, max_length=50)
     surname: str = Field(min_length=1, max_length=50)
     patronymic: str = Field(min_length=1, max_length=50)
-    image_url: str = Field(min_length=1)
+    image: str = Field(min_length=1)
     is_active: bool = Field(default=False)
     super_user: bool = Field(default=False)
     # tnum: int (табельный номер, при необходимости)
@@ -34,7 +34,7 @@ class UserUpdatePartial(UserBase):
     name: str | None = None
     surname: str | None = None
     patronymic: str | None = None
-    image_url: str | None = None
+    image: str | None = None
     is_active: bool | None = None
     super_user: bool | None = None
 
