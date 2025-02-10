@@ -24,7 +24,8 @@ router = APIRouter(
             response_model_by_alias=True)
 async def get_drawings(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех чертежей в таблице
@@ -43,7 +44,8 @@ async def get_drawings(
 
 
 @router.get('/addnew')
-async def add_new_drawing(request: Request):
+async def add_new_drawing(request: Request,
+                          user_data: dict = Depends(check_user)):
     """
     Страница добавления нового чертежа
     :parameter:
@@ -59,7 +61,8 @@ async def add_new_drawing(request: Request):
 async def patch_drawing(
         patch_item: Annotated[AccordingToTheDrawUpdatePartial, Form()],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     Обновление информации о конкретном чертеже
@@ -84,7 +87,8 @@ async def patch_drawing(
 @router.get('/search')
 async def search_drawing_by_request(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск чертежей по введенному запросу
@@ -105,7 +109,8 @@ async def search_drawing_by_request(
 @router.get('/patch/{item_id}')
 async def patch_drawing_by_id(request: Request,
                               item_id: int,
-                              session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+                              session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+                              user_data: dict = Depends(check_user)):
     """
     Страница редактирования конкретного чертежа
     :parameter:
@@ -129,7 +134,8 @@ async def patch_drawing_by_id(request: Request,
 async def create_drawing(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         drawing_create: Annotated[AccordingToTheDrawCreate, Form()],
-        request: Request
+        request: Request,
+        user_data: dict = Depends(check_user)
         ):
     """
     Создание нового чертежа
@@ -154,7 +160,8 @@ async def create_drawing(
 @router.get('/',
             response_model_by_alias=True)
 async def get_according_to_the_draws(
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
 ):
     """
     Вывод всех чертежей в таблице
@@ -172,7 +179,8 @@ async def get_according_to_the_draws(
              response_model_by_alias=True)
 async def create_according_to_the_draw(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-        according_to_the_draw_create: AccordingToTheDrawCreate
+        according_to_the_draw_create: AccordingToTheDrawCreate,
+        user_data: dict = Depends(check_user)
         ):
     """
     Создание нового чертежа
@@ -194,6 +202,7 @@ async def create_according_to_the_draw(
 async def search_according_to_the_draw_by_id(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         object_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Поиск чертежа по id
@@ -213,6 +222,7 @@ async def search_according_to_the_draw_by_id(
 async def delete_according_to_the_draw(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         delete_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Удаление чертежа по id
@@ -238,6 +248,7 @@ async def update_according_to_the_draw_by_id(
         according_to_the_draw_update: AccordingToTheDrawUpdatePartial,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         according_to_the_draw_id: int,
+        user_data: dict = Depends(check_user)
 ):
     """
     Обновление чертежа по id
@@ -262,7 +273,8 @@ async def update_according_to_the_draw_by_id(
 @router.get('/s/{request_item}')
 async def search_according_by_request(
         request_item: str,
-        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        user_data: dict = Depends(check_user)
 ):
     return await drawing_crud.search(
         request=request_item,
