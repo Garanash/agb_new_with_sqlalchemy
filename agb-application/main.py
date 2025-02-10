@@ -1,4 +1,6 @@
+import logging
 import pathlib
+from logging.handlers import RotatingFileHandler
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -8,10 +10,15 @@ from fastapi.templating import Jinja2Templates
 
 from api import router as api_router
 from core.config import settings
-from core.loging_config import logger
 from core.models import db_helper
 
 templates = Jinja2Templates(directory='templates')
+
+logger = logging.getLogger(__name__)
+handler = RotatingFileHandler('logger.log')
+logger.setLevel('DEBUG')
+logger.addHandler(handler)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
