@@ -37,7 +37,7 @@ async def get_metizes(
     )
     return templates.TemplateResponse('/search/metizes.html',
                                       {'request': request,
-                                       'metizes': metiz})
+                                       'metizes': metiz, "userdata":user_data})
 
 
 @router.get('/addnew')
@@ -50,7 +50,7 @@ async def add_new_metiz(request: Request,
     """
     return templates.TemplateResponse('/addnew/add_new_metiz.html',
                                       {'request': request,
-                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
+                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'), "userdata":user_data})
 
 
 @router.get("/patch/{item_id}")
@@ -65,7 +65,7 @@ async def patch_metiz_by_id(request: Request,
     return templates.TemplateResponse('/patch/patch_metiz.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime("%Y-%m-%d %H:%M"),
-                                       'item': patch_item})
+                                       'item': patch_item, "userdata":user_data})
 
 
 @router.post('/patch',
@@ -121,7 +121,7 @@ async def create_metiz(
     except BaseException:
         return templates.TemplateResponse('/search/metizes.html',
                                           {'request': request,
-                                           "message": 'Такая деталь уже существует'})
+                                           "message": 'Такая деталь уже существует', "userdata":user_data})
 
 
 @router.get('/search')
@@ -143,7 +143,7 @@ async def search_metiz_by_request(
         )
     return templates.TemplateResponse('/finded/metizes.html',
                                       {'request': request,
-                                       'metizes': res_search})
+                                       'metizes': res_search, "userdata":user_data})
 
 
 @router.get('/{object_id}',

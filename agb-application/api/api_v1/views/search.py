@@ -41,49 +41,49 @@ router = APIRouter(
 def rwd_search(request: Request,
                user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/rwd.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_metizes')
 def metizes_search(request: Request,
                    user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/metizes.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_drawing')
 def drawing_search(request: Request,
                    user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/drawing.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_projects')
 def project_search(request: Request,
                    user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/projects.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_purchased')
 def purchased_search(request: Request,
                      user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/purchased.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_hydroperfs')
 def purchasedhydro_search(request: Request,
                           user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/hydroperfs.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_adapters')
 def adapter_search(request: Request,
                    user_data: dict = Depends(check_user)):
     return templates.TemplateResponse('/search/adapters.html',
-                                      {'request': request})
+                                      {'request': request, "userdata":user_data})
 
 
 @router.get('/search_all_tables')
@@ -112,4 +112,4 @@ async def search_all_tables(
     result_data = [ReturnData(key, val[0], MODELS_PREFIX[key]) for key, val in search_results.items()]
     return templates.TemplateResponse('/finded/all_tables.html',
                                       {"request": request, "result_search": result_data, "main_input": search_item,
-                                       "server_url": server_url})
+                                       "server_url": server_url, "userdata":user_data})

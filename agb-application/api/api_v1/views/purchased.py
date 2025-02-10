@@ -39,7 +39,7 @@ async def get_purchases(
     )
     return templates.TemplateResponse('/search/purchased.html',
                                       {'request': request,
-                                       'purchased': purchases})
+                                       'purchased': purchases, "userdata":user_data})
 
 
 @router.get('/addnew')
@@ -52,7 +52,7 @@ async def add_new_purchase(request: Request,
     """
     return templates.TemplateResponse('/addnew/add_new_purchase.html',
                                       {'request': request,
-                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
+                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'), "userdata":user_data})
 
 
 @router.get('/patch/{item_id}')
@@ -76,7 +76,7 @@ async def patch_purchase_by_id(
     return templates.TemplateResponse('/patch/patch_purchase.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       'item': patch_item})
+                                       'item': patch_item, "userdata":user_data})
 
 
 @router.post('/patch',
@@ -135,7 +135,7 @@ async def create_purchase(
     except BaseException:
         return templates.TemplateResponse('/search/purchased.html',
                                           {'request': request,
-                                           'message': 'Такая деталь уже существует'})
+                                           'message': 'Такая деталь уже существует', "userdata":user_data})
 
 
 @router.get('/search')
@@ -157,7 +157,7 @@ async def search_purchase_by_request(
         )
     return templates.TemplateResponse('/finded/purchased.html',
                                       {'request': request,
-                                       'purchased': res_search})
+                                       'purchased': res_search, "userdata":user_data})
 
 
 @router.get('/{object_id}',

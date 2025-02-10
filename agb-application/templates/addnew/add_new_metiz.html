@@ -73,7 +73,24 @@
         </div>
     </div>
 </header>
+<style>
+.dropdown-container {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
 
+select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.category-label {
+  margin-bottom: 5px;
+  color: #666;
+}
+</style>
 
 <form action="/metiz/create" method="POST">
     <div class="container text-center">
@@ -114,32 +131,28 @@
                 <input type="text" name="standard" placeholder="Пример: ASME B18.2.1" class="form-control"/>
             </div>
             <div class="col">
-                <label>Тип</label>
-                <select class="form-select" aria-label="Default select example" id="type" name="hardware_type"
-                        typeof="text">
-                    <option value="-">-- Выберите тип --</option>
-                    <option value="Болт">Болт</option>
-                    <option value="Болт доработанный">Болт доработанный</option>
-                    <option value="Винт">Винт</option>
-                    <option value="Винт с шестигранной головкой">Винт с шестигранной головкой</option>
-                    <option value="Винт установочный">Винт установочный</option>
-                    <option value="Втулка">Втулка</option>
-                    <option value="Гайка">Гайка</option>
-                    <option value="Гайка-барашек">Гайка-барашек</option>
-                    <option value="Заглушка">Заглушка</option>
-                    <option value="Заклепка">Заклепка</option>
-                    <option value="Заклепка вытяжная">Заклепка вытяжная</option>
-                    <option value="Заклепка резьбовая">Заклепка резьбовая</option>
-                    <option value="Кольцо">Кольцо</option>
-                    <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/
-                        ТипСМ.ПРИМЕЧАНИЕ
-                    </option>
-                    <option value="Ось">Ось</option>
-                    <option value="Саморез">Саморез</option>
-                    <option value="Скоба U-образная">Скоба U-образная</option>
-                    <option value="Шайба">Шайба</option>
-                    <option value="Шпилька">Шпилька</option>
-                </select>
+                <div id="dependent-dropdowns">
+                  <div class="dropdown-container">
+                    <label class="category-label">Тип метиза:</label>
+                    <select id="fastener-type">
+                      <option value="">Выберите тип метиза</option>
+                    </select>
+                  </div>
+
+                  <div class="dropdown-container">
+                    <label class="category-label">Стандарт:</label>
+                    <select id="standard" disabled>
+                      <option value="">Сначала выберите тип метиза</option>
+                    </select>
+                  </div>
+
+                  <div class="dropdown-container">
+                    <label class="category-label">Профиль:</label>
+                    <select id="profile" disabled>
+                      <option value="">Сначала выберите стандарт</option>
+                    </select>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -188,7 +201,8 @@
         <input type="text" name="note" placeholder="Любое примечание по детали" class="form-control"/>
 
         <label>Применяемость</label>
-        <input type="text" name="applicability" placeholder="В каком проекте применяется данная деталь" class="form-control"/>
+        <input type="text" name="applicability" placeholder="В каком проекте применяется данная деталь"
+               class="form-control"/>
 
         <label style="display: none;">Дата</label>
         <input type="datetime-local" name="date" placeholder="date" style="display: none;"
@@ -201,5 +215,132 @@
     </div>
 </form>
 
+<script>
+class FastenerDropdowns {
+  constructor() {
+    // Данные о метизах, стандартах и профилях
+    this.fasteners = {
+      bolt: {
+        name: 'Болт',
+        standards: {
+          gost: {
+            name: 'ГОСТ',
+            profiles: [
+              { id: 'm8', name: 'М8' },
+              { id: 'm10', name: 'М10' },
+              { id: 'm12', name: 'М12' }
+            ]
+          },
+          din: {
+            name: 'DIN',
+            profiles: [
+              { id: 'm6', name: 'М6' },
+              { id: 'm8', name: 'М8' },
+              { id: 'm10', name: 'М10' }
+            ]
+          }
+        }
+      },
+      nut: {
+        name: 'Гайка',
+        standards: {
+          gost: {
+            name: 'ГОСТ',
+            profiles: [
+              { id: 'm8', name: 'М8' },
+              { id: 'm12', name: 'М12' },
+              { id: 'm16', name: 'М16' }
+            ]
+          },
+          iso: {
+            name: 'ISO',
+            profiles: [
+              { id: 'm10', name: 'М10' },
+              { id: 'm12', name: 'М12' },
+              { id: 'm14', name: 'М14' }
+            ]
+          }
+        }
+      }
+    };
 
+    // Элементы DOM
+    this.fastenerTypeSelect = document.getElementById('fastener-type');
+    this.standardSelect = document.getElementById('standard');
+    this.profileSelect = document.getElementById('profile');
+
+    // Инициализация
+    this.initializeDropdowns();
+    this.setupEventListeners();
+  }
+
+  initializeDropdowns() {
+    // Заполняем первый выпадающий список
+    Object.entries(this.fasteners).forEach(([key, fastener]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = fastener.name;
+      this.fastenerTypeSelect.appendChild(option);
+    });
+  }
+
+  setupEventListeners() {
+    // Обработчик изменения типа метиза
+    this.fastenerTypeSelect.addEventListener('change', () => {
+      const selectedFastenerId = this.fastenerTypeSelect.value;
+
+      // Очищаем стандарты и профили
+      this.standardSelect.innerHTML = '<option value="">Сначала выберите тип метиза</option>';
+      this.profileSelect.innerHTML = '<option value="">Сначала выберите стандарт</option>';
+
+      if (selectedFastenerId) {
+        const fastener = this.fasteners[selectedFastenerId];
+
+        // Заполняем стандарты
+        Object.entries(fastener.standards).forEach(([key, standard]) => {
+          const option = document.createElement('option');
+          option.value = key;
+          option.textContent = standard.name;
+          this.standardSelect.appendChild(option);
+        });
+
+        this.standardSelect.disabled = false;
+      } else {
+        this.standardSelect.disabled = true;
+      }
+    });
+
+    // Обработчик изменения стандарта
+    this.standardSelect.addEventListener('change', () => {
+      const selectedFastenerId = this.fastenerTypeSelect.value;
+      const selectedStandardId = this.standardSelect.value;
+
+      // Очищаем профили
+      this.profileSelect.innerHTML = '<option value="">Сначала выберите стандарт</option>';
+
+      if (selectedFastenerId && selectedStandardId) {
+        const fastener = this.fasteners[selectedFastenerId];
+        const standard = fastener.standards[selectedStandardId];
+
+        // Заполняем профили
+        standard.profiles.forEach(profile => {
+          const option = document.createElement('option');
+          option.value = profile.id;
+          option.textContent = profile.name;
+          this.profileSelect.appendChild(option);
+        });
+
+        this.profileSelect.disabled = false;
+      } else {
+        this.profileSelect.disabled = true;
+      }
+    });
+  }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+  new FastenerDropdowns();
+});
+</script>
 {% endblock content %}
