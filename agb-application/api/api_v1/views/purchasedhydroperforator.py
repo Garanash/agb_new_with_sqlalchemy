@@ -39,7 +39,7 @@ async def get_hydroperforators(
     )
     return templates.TemplateResponse('/search/hydroperfs.html',
                                       {'request': request,
-                                       'hydroperfs': hydroperfs})
+                                       'hydroperfs': hydroperfs, "userdata":user_data})
 
 
 @router.get('/addnew')
@@ -52,7 +52,7 @@ async def add_new_hydroperforator(request: Request,
     """
     return templates.TemplateResponse('/addnew/add_new_hydroperf.html',
                                       {'request': request,
-                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M')})
+                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'), "userdata":user_data})
 
 
 @router.get('/patch/{item_id}')
@@ -77,7 +77,7 @@ async def patch_hydroperf_by_id(
     return templates.TemplateResponse('/patch/patch_hydroperf.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M"'),
-                                       'item': patch_item})
+                                       'item': patch_item, "userdata":user_data})
 
 
 @router.post('/patch',
@@ -136,7 +136,7 @@ async def create_hydroperforator(
         print(ex)
         return templates.TemplateResponse('/search/hydroperfs.html',
                                           {'request': request,
-                                           'message': 'Такая деталь уже существует'})
+                                           'message': 'Такая деталь уже существует', "userdata":user_data})
 
 
 @router.get('/search')
@@ -158,7 +158,7 @@ async def search_hydroperforator_by_request(
         )
     return templates.TemplateResponse('/finded/hydroperfs.html',
                                       {'request': request,
-                                       'hydroperfs': res_search})
+                                       'hydroperfs': res_search, "userdata":user_data})
 
 
 @router.get('/{object_id}',
