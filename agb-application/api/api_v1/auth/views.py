@@ -80,11 +80,14 @@ async def auth_login_with_set_cookie(
             }
             ALLOWED_USERS.append(credentials.username)
             logger.info(f'User {credentials.username} logged in')
+
+            user_data = COOKIES[token]
             template_response = templates.TemplateResponse(
                 'authuser.html', {
                     'request': request,
                     'response': response,
-                    'username': credentials.username
+                    'username': credentials.username,
+                    "userdata": user_data
                     })
             template_response.set_cookie(
                 key=COOKIE_SESSION_ID_KEY,
