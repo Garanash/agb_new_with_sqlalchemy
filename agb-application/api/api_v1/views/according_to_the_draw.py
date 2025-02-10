@@ -33,8 +33,6 @@ async def get_drawings(
     session: сессия в асинхронную базу данных
     request: запрос от пользователя
     """
-    user_data = check_user()
-    print(user_data)
     drawings = await drawing_crud.get_multi(
         session=session
     )
