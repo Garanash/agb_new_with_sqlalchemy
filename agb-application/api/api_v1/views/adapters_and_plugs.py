@@ -40,7 +40,9 @@ async def get_adapters_and_plugss(
     )
     return templates.TemplateResponse('/search/adapters.html',
                                       {'request': request,
-                                       'adapters': adapters_and_plugs, "userdata":user_data})
+                                       'adapters': adapters_and_plugs,
+                                       "userdata": user_data,
+                                       'tag': 'adapters'})
 
 
 @router.get('/addnew')
@@ -53,7 +55,9 @@ async def add_new_adapter(request: Request,
     """
     return templates.TemplateResponse('/addnew/add_new_adapter.html',
                                       {'request': request,
-                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'), "userdata":user_data})
+                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
+                                       "userdata": user_data,
+                                       'tag': 'adapters'})
 
 
 @router.get('/patch/{item_id}')
@@ -77,7 +81,9 @@ async def patch_adapter_by_id(
     return templates.TemplateResponse('/patch/patch_adapters.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       'item': patch_item, "userdata":user_data})
+                                       'item': patch_item,
+                                       "userdata": user_data,
+                                       'tag': 'adapters'})
 
 
 @router.post('/patch',
@@ -135,7 +141,9 @@ async def create_adapter(
     except BaseException:
         return templates.TemplateResponse('/search/adapters.html',
                                           {'request': request,
-                                           'message': 'Такая деталь уже существует', "userdata":user_data})
+                                           'message': 'Такая деталь уже существует',
+                                           "userdata": user_data,
+                                           'tag': 'adapters'})
 
 
 @router.get('/search')
@@ -157,7 +165,9 @@ async def search_adapter_by_request(
         )
     return templates.TemplateResponse('/finded/adapters.html',
                                       {'request': request,
-                                       'adapters': res_search, "userdata":user_data})
+                                       'adapters': res_search,
+                                       "userdata": user_data,
+                                       'tag': 'adapters'})
 
 
 @router.get('/{object_id}',

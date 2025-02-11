@@ -73,13 +73,13 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/search_metizes" class="nav-link px-2 link-body-emphasis">Метизы</a></li>
-                <li><a href="/search_rwd" class="nav-link px-2 link-body-emphasis">РВД</a></li>
-                <li><a href="/search_drawing" class="nav-link px-2 link-body-emphasis">По Чертежу</a></li>
-                <li><a href="/search_adapters" class="nav-link px-2 link-secondary">Адаптеры</a></li>
-                <li><a href="/search_purchased" class="nav-link px-2 link-body-emphasis">Покупные</a></li>
-                <li><a href="/search_hydroperfs" class="nav-link px-2 link-body-emphasis">Гидроперфораторы</a></li>
-                <li><a href="/search_projects" class="nav-link px-2 link-body-emphasis">Проекты</a></li>
+                <li><a href="/search_metizes" class="nav-link px-2 {{ 'link-secondary' if tag=='metiz' else 'link-body-emphasis'}}">Метизы</a></li>
+                <li><a href="/search_rwd" class="nav-link px-2 {{ 'link-secondary' if tag=='rwd' else 'link-body-emphasis'}}">РВД</a></li>
+                <li><a href="/search_drawing" class="nav-link px-2 {{ 'link-secondary' if tag=='drawing' else 'link-body-emphasis'}}">По Чертежу</a></li>
+                <li><a href="/search_adapters" class="nav-link px-2 {{ 'link-secondary' if tag=='adapters' else 'link-body-emphasis'}}">Адаптеры</a></li>
+                <li><a href="/search_purchased" class="nav-link px-2 {{ 'link-secondary' if tag=='purchase' else 'link-body-emphasis'}}">Покупные</a></li>
+                <li><a href="/search_hydroperfs" class="nav-link px-2 {{ 'link-secondary' if tag=='hydroperf' else 'link-body-emphasis'}}">Гидроперфораторы</a></li>
+                <li><a href="/search_projects" class="nav-link px-2 {{ 'link-secondary' if tag=='project' else 'link-body-emphasis'}}">Проекты</a></li>
                 <li><a href="/starter" class="nav-link px-2 link-body-emphasis">На главную</a></li>
             </ul>
 

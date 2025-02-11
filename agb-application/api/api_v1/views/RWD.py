@@ -37,7 +37,9 @@ async def get_rwd(
     )
     return templates.TemplateResponse('/search/rwd.html',
                                       {'request': request,
-                                       'rwd': rwd, "userdata":user_data})
+                                       'rwd': rwd,
+                                       "userdata":user_data,
+                                       'tag': 'rwd'})
 
 
 @router.get('/',
@@ -69,7 +71,9 @@ async def add_new_rwd(request: Request,
     """
     return templates.TemplateResponse('/addnew/add_new_rwd.html',
                                       {'request': request,
-                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'), "userdata":user_data})
+                                       'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
+                                       "userdata":user_data,
+                                       'tag': 'rwd'})
 
 
 @router.get('/patch/{item_id}',
@@ -91,7 +95,9 @@ async def patch_rwd_by_id(request: Request,
     return templates.TemplateResponse('/patch/patch_rwd.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       'item': patch_item, "userdata":user_data})
+                                       'item': patch_item,
+                                       "userdata":user_data,
+                                       'tag': 'rwd'})
 
 
 @router.post('/patch',
@@ -148,7 +154,9 @@ async def create_rwd(
     except BaseException:
         return templates.TemplateResponse('/search/rwd.html',
                                           {'request': request,
-                                           'message': 'Такая деталь уже существует', "userdata":user_data})
+                                           'message': 'Такая деталь уже существует',
+                                           "userdata":user_data,
+                                           'tag': 'rwd'})
 
 
 @router.get('/search')
@@ -170,7 +178,9 @@ async def search_rwd_by_request(
         )
     return templates.TemplateResponse('/finded/rwds.html',
                                       {'request': request,
-                                       'rwds': res_search, "userdata":user_data})
+                                       'rwds': res_search,
+                                       "userdata":user_data,
+                                       'tag': 'rwd'})
 
 
 @router.get('/{rwd_item_id}',
