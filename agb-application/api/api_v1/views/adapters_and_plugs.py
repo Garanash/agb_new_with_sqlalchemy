@@ -41,7 +41,7 @@ async def get_adapters_and_plugss(
     return templates.TemplateResponse('/search/adapters.html',
                                       {'request': request,
                                        'adapters': adapters_and_plugs,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'adapters'})
 
 
@@ -56,7 +56,7 @@ async def add_new_adapter(request: Request,
     return templates.TemplateResponse('/addnew/add_new_adapter.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'adapters'})
 
 
@@ -82,7 +82,7 @@ async def patch_adapter_by_id(
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
                                        'item': patch_item,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'adapters'})
 
 
@@ -142,7 +142,7 @@ async def create_adapter(
         return templates.TemplateResponse('/search/adapters.html',
                                           {'request': request,
                                            'message': 'Такая деталь уже существует',
-                                           "userdata": user_data,
+                                           'userdata': user_data,
                                            'tag': 'adapters'})
 
 
@@ -166,7 +166,7 @@ async def search_adapter_by_request(
     return templates.TemplateResponse('/finded/adapters.html',
                                       {'request': request,
                                        'adapters': res_search,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'adapters'})
 
 

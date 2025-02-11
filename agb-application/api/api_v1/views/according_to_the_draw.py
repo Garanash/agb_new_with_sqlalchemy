@@ -39,7 +39,7 @@ async def get_drawings(
     return templates.TemplateResponse('/search/drawing.html',
                                       {'request': request,
                                        'drawings': drawings,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'drawing'})
 
 
@@ -54,7 +54,7 @@ async def add_new_drawing(request: Request,
     return templates.TemplateResponse('/addnew/add_new_drawing.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'drawing'})
 
 
@@ -106,7 +106,7 @@ async def search_drawing_by_request(
     return templates.TemplateResponse('/finded/drawing.html',
                                       {'request': request,
                                        'drawings': res_search,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'drawing'})
 
 
@@ -129,7 +129,7 @@ async def patch_drawing_by_id(request: Request,
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
                                        'item': patch_item,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'drawing'})
 
 
@@ -161,7 +161,7 @@ async def create_drawing(
         return templates.TemplateResponse('/search/drawing.html',
                                           {'request': request,
                                            'message': 'Такая деталь уже существует',
-                                           "userdata": user_data,
+                                           'userdata': user_data,
                                            'tag': 'drawing'})
 
 

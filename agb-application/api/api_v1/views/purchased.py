@@ -40,7 +40,7 @@ async def get_purchases(
     return templates.TemplateResponse('/search/purchased.html',
                                       {'request': request,
                                        'purchased': purchases,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'purchase'})
 
 
@@ -55,7 +55,7 @@ async def add_new_purchase(request: Request,
     return templates.TemplateResponse('/addnew/add_new_purchase.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'purchase'
                                        })
 
@@ -82,7 +82,7 @@ async def patch_purchase_by_id(
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
                                        'item': patch_item,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'purchase'})
 
 
@@ -143,7 +143,7 @@ async def create_purchase(
         return templates.TemplateResponse('/search/purchased.html',
                                           {'request': request,
                                            'message': 'Такая деталь уже существует',
-                                           "userdata":user_data,
+                                           'userdata': user_data,
                                            'tag': 'purchase'})
 
 
@@ -167,7 +167,7 @@ async def search_purchase_by_request(
     return templates.TemplateResponse('/finded/purchased.html',
                                       {'request': request,
                                        'purchased': res_search,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'purchase'})
 
 

@@ -38,7 +38,7 @@ async def get_rwd(
     return templates.TemplateResponse('/search/rwd.html',
                                       {'request': request,
                                        'rwd': rwd,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'rwd'})
 
 
@@ -72,7 +72,7 @@ async def add_new_rwd(request: Request,
     return templates.TemplateResponse('/addnew/add_new_rwd.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'rwd'})
 
 
@@ -96,7 +96,7 @@ async def patch_rwd_by_id(request: Request,
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
                                        'item': patch_item,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'rwd'})
 
 
@@ -155,7 +155,7 @@ async def create_rwd(
         return templates.TemplateResponse('/search/rwd.html',
                                           {'request': request,
                                            'message': 'Такая деталь уже существует',
-                                           "userdata":user_data,
+                                           'userdata': user_data,
                                            'tag': 'rwd'})
 
 
@@ -179,7 +179,7 @@ async def search_rwd_by_request(
     return templates.TemplateResponse('/finded/rwds.html',
                                       {'request': request,
                                        'rwds': res_search,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'rwd'})
 
 

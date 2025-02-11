@@ -38,7 +38,7 @@ async def get_metizes(
     return templates.TemplateResponse('/search/metizes.html',
                                       {'request': request,
                                        'metizes': metiz,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'metiz'})
 
 
@@ -53,7 +53,7 @@ async def add_new_metiz(request: Request,
     return templates.TemplateResponse('/addnew/add_new_metiz.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'metiz'})
 
 
@@ -70,7 +70,7 @@ async def patch_metiz_by_id(request: Request,
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime("%Y-%m-%d %H:%M"),
                                        'item': patch_item,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'metiz'})
 
 
@@ -128,7 +128,7 @@ async def create_metiz(
         return templates.TemplateResponse('/search/metizes.html',
                                           {'request': request,
                                            "message": 'Такая деталь уже существует',
-                                           "userdata": user_data,
+                                           'userdata': user_data,
                                            'tag': 'metiz'})
 
 
@@ -152,7 +152,7 @@ async def search_metiz_by_request(
     return templates.TemplateResponse('/finded/metizes.html',
                                       {'request': request,
                                        'metizes': res_search,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'metiz'})
 
 

@@ -40,7 +40,7 @@ async def get_hydroperforators(
     return templates.TemplateResponse('/search/hydroperfs.html',
                                       {'request': request,
                                        'hydroperfs': hydroperfs,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'hydroperf'})
 
 
@@ -55,7 +55,7 @@ async def add_new_hydroperforator(request: Request,
     return templates.TemplateResponse('/addnew/add_new_hydroperf.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'hydroperf'})
 
 
@@ -82,7 +82,7 @@ async def patch_hydroperf_by_id(
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M"'),
                                        'item': patch_item,
-                                       "userdata":user_data,
+                                       'userdata': user_data,
                                        'tag': 'hydroperf'})
 
 
@@ -143,7 +143,7 @@ async def create_hydroperforator(
         return templates.TemplateResponse('/search/hydroperfs.html',
                                           {'request': request,
                                            'message': 'Такая деталь уже существует',
-                                           "userdata":user_data,
+                                           'userdata': user_data,
                                            'tag': 'hydroperf'})
 
 
@@ -167,7 +167,7 @@ async def search_hydroperforator_by_request(
     return templates.TemplateResponse('/finded/hydroperfs.html',
                                       {'request': request,
                                        'hydroperfs': res_search,
-                                       "userdata": user_data,
+                                       'userdata': user_data,
                                        'tag': 'hydroperf'})
 
 
