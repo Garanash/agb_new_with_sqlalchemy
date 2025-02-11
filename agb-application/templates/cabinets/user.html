@@ -1,30 +1,11 @@
 {% extends 'base_header_and_footer.html' %}
 
 {% block content %}
-<style>
-    .content-display {
-        display: none;
-    }
-</style>
 
-<div class="container">
-
-    <button onclick="toggleOpacity()">Помощник</button>
-    <div id="content1" class="content-display">
-        <iframe allow="microphone;autoplay" style="width:90%;height:70vh!important;" id="frame-border3"
-                src="https://functions.ai.almazgeobur.ru/api/v1.0/chatgpt_widget_dialog_api?record_id=recb3IsF5aBBXfiUm&promt_id=16933&lang=ru&fullscreen=0&voice=1&file=1"></iframe>
-    </div>
-    <button onclick="toggleOpacity()">Поисковик</button>
-    <div id="content4" class="content-display">
-        <iframe allow="microphone;autoplay" style="width:90%;height:70vh!important;"
-                    src="https://functions.ai.almazgeobur.ru/api/v1.0/chatgpt_widget_dialog_api?record_id=recBVnvclxgnCKf2K&promt_id=15214&lang=ru&fullscreen=0&voice=1&file=1"></iframe>
-    </div>
+<div class="container" style="height:700px;">
+    <iframe allow="microphone;autoplay" style="width:100%;height:100%!important;"
+            src="https://functions.ai.almazgeobur.ru/api/v1.0/chatgpt_widget_dialog_api?record_id=recBVnvclxgnCKf2K&promt_id=15214&lang=ru&fullscreen=0&voice=1&file=1"></iframe>
 </div>
-<script>
-    function toggleDisplay() {
-        const content = document.getElementById('content1');
-        content.style.display = content.style.display === 'none' ? 'block' : 'none';
-    }
-</script>
+
 
 {% endblock content %}
