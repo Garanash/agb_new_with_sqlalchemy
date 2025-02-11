@@ -39,7 +39,8 @@ async def get_drawings(
     return templates.TemplateResponse('/search/drawing.html',
                                       {'request': request,
                                        'drawings': drawings,
-                                       "userdata":user_data})
+                                       "userdata":user_data,
+                                       'tag': 'drawing'})
 
 
 @router.get('/addnew')
@@ -53,7 +54,8 @@ async def add_new_drawing(request: Request,
     return templates.TemplateResponse('/addnew/add_new_drawing.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       "userdata":user_data})
+                                       "userdata": user_data,
+                                       'tag': 'drawing'})
 
 
 @router.post('/patch',
@@ -103,7 +105,9 @@ async def search_drawing_by_request(
     )
     return templates.TemplateResponse('/finded/drawing.html',
                                       {'request': request,
-                                       'drawings': res_search, "userdata":user_data})
+                                       'drawings': res_search,
+                                       "userdata": user_data,
+                                       'tag': 'drawing'})
 
 
 @router.get('/patch/{item_id}')
@@ -124,7 +128,9 @@ async def patch_drawing_by_id(request: Request,
     return templates.TemplateResponse('/patch/patch_drawing.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
-                                       'item': patch_item, "userdata":user_data})
+                                       'item': patch_item,
+                                       "userdata": user_data,
+                                       'tag': 'drawing'})
 
 
 @router.post('/create',
@@ -154,7 +160,9 @@ async def create_drawing(
         print(ex)
         return templates.TemplateResponse('/search/drawing.html',
                                           {'request': request,
-                                           'message': 'Такая деталь уже существует',"userdata":user_data})
+                                           'message': 'Такая деталь уже существует',
+                                           "userdata": user_data,
+                                           'tag': 'drawing'})
 
 
 @router.get('/',
