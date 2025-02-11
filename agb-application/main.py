@@ -4,10 +4,10 @@ from logging.handlers import RotatingFileHandler
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import ORJSONResponse
 from fastapi.templating import Jinja2Templates
-
+from api.api_v1.auth.views import check_user
 from api import router as api_router
 from core.config import settings
 from core.models import db_helper
@@ -57,9 +57,10 @@ def cabinet(request: Request):
 
 
 @main_app.get('/starter')
-def re_start(request: Request):
+def re_start(request: Request,
+             user_data: dict = Depends(check_user)):
     logger.info('Re-start page')
-    return templates.TemplateResponse('/authuser.html', {'request': request})
+    return templates.TemplateResponse('/authuser.html', {'request': request, "userdata": user_data})
 
 
 if __name__ == '__main__':
