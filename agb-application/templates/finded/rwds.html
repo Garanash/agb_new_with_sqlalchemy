@@ -50,7 +50,7 @@
                     {% if userdata.role == 'admin' %}
                     <a id="deleteLink{{item.id}}"
                        data-id="{{item.id}}"
-                       href="{{server_url}}{{ item.prefix }}/delete/{{item.id}}"
+                       href="/RWD/delete/{{item.id}}"
                        data-method="delete"
                        style="width:100%; height:100%;"
                        class="btn btn-warning"

@@ -122,7 +122,8 @@ select {
     </div>
     <div class="container text-center">
         <label>Присвоил</label>
-        <input required type="text" name="assigned" placeholder="(Обязательное поле) Ваша Фамилия"
+        <input readonly required type="text" name="assigned" placeholder="(Обязательное поле) Ваша Фамилия"
+               value="{{userdata.username}}"
                class="form-control"/>
 
         <label>Примечание</label>

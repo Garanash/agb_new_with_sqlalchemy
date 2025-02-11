@@ -63,9 +63,6 @@
                     <option value="Заклепка вытяжная">Заклепка вытяжная</option>
                     <option value="Заклепка резьбовая">Заклепка резьбовая</option>
                     <option value="Кольцо">Кольцо</option>
-                    <option value="Наименование по каталогу АГБ/ ТипСМ.ПРИМЕЧАНИЕ">Наименование по каталогу АГБ/
-                        ТипСМ.ПРИМЕЧАНИЕ
-                    </option>
                     <option value="Ось">Ось</option>
                     <option value="Саморез">Саморез</option>
                     <option value="Скоба U-образная">Скоба U-образная</option>
@@ -119,7 +116,7 @@
     </div>
     <div class="container text-center">
         <label>Присвоил</label>
-        <input required type="text" value="{{item.assigned}}" name="assigned"
+        <input readonly required type="text" value="{{userdata.username}}" name="assigned"
                placeholder="(Обязательное поле) Ваша Фамилия"
                class="form-control"/>
 
