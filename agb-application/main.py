@@ -51,16 +51,19 @@ def admin(request: Request):
 
 
 @main_app.get('/cabinet')
-def cabinet(request: Request):
+def cabinet(request: Request,
+            user_data: dict = Depends(check_user)):
     logger.info('Cabinet page')
-    return templates.TemplateResponse('/cabinets/user.html', {'request': request})
+    return templates.TemplateResponse('/cabinets/user.html', {'request': request,
+                                                              "userdata": user_data})
 
 
 @main_app.get('/starter')
 def re_start(request: Request,
              user_data: dict = Depends(check_user)):
     logger.info('Re-start page')
-    return templates.TemplateResponse('/authuser.html', {'request': request, "userdata": user_data})
+    return templates.TemplateResponse('/authuser.html', {'request': request,
+                                                         "userdata": user_data})
 
 
 if __name__ == '__main__':
