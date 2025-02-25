@@ -10,6 +10,7 @@ from api.api_v1.auth.views import check_user
 from api.api_v1.crud.metiz import metiz_crud
 from api.api_v1.schemas.metizes import MetizCreate, MetizUpdatePartial
 from core.models import db_helper, Metiz
+from utils import consts
 
 templates = Jinja2Templates('templates')
 
@@ -50,10 +51,20 @@ async def add_new_metiz(request: Request,
     :parameter:
     request: запрос от пользователя
     """
+    metiz_types = consts.MetizType
+    standards_dict = {
+        metiz_type.name: metiz_type.value for metiz_type in consts.MetizStandards
+        }
+    types_dict = {
+        metiz_type.name: metiz_type.value for metiz_type in consts.MetizTypes
+    }
     return templates.TemplateResponse('/addnew/add_new_metiz.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
                                        'userdata': user_data,
+                                       'standards_dict': standards_dict,
+                                       'types_dict': types_dict,
+                                       'metiz_types': metiz_types,
                                        'tag': 'metiz'})
 
 
