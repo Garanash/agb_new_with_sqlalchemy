@@ -45,25 +45,22 @@ def start(request: Request):
 
 
 @main_app.get('/adminka')
-def admin(request: Request):
+def admin(request: Request, user_data: dict = Depends(check_user)):
     logger.info('Admin page')
-    return templates.TemplateResponse('/cabinets/admin.html', {'request': request})
+    return templates.TemplateResponse('/cabinets/admin.html', {'request': request, "userdata":user_data})
 
 
 @main_app.get('/cabinet')
-def cabinet(request: Request,
-            user_data: dict = Depends(check_user)):
+def cabinet(request: Request, user_data: dict = Depends(check_user)):
     logger.info('Cabinet page')
-    return templates.TemplateResponse('/cabinets/user.html', {'request': request,
-                                                              "userdata": user_data})
+    return templates.TemplateResponse('/cabinets/user.html', {'request': request, "userdata":user_data})
 
 
 @main_app.get('/starter')
 def re_start(request: Request,
              user_data: dict = Depends(check_user)):
     logger.info('Re-start page')
-    return templates.TemplateResponse('/authuser.html', {'request': request,
-                                                         "userdata": user_data})
+    return templates.TemplateResponse('/authuser.html', {'request': request, "userdata": user_data})
 
 
 if __name__ == '__main__':

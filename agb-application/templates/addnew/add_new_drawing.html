@@ -42,7 +42,8 @@
         <div class="row">
             <div class="col">
                 <label>Разработал</label>
-                <input type="text" name="developed" required placeholder="(Обязательное поле) Пример: Иванов И.И."
+                <input type="text" name="developed" readonly required placeholder="(Обязательное поле) Пример: Иванов И.И."
+                       value="{{userdata.username}}"
                        class="form-control"/>
             </div>
             <div class="col">

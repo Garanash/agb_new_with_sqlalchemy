@@ -1,22 +1,22 @@
 {% extends 'base_header_and_footer.html' %} {% block content %}
 
 <style>
-  .dropdown-container {
-    max-width: 300px;
-    margin-bottom: 20px;
-  }
+    .dropdown-container {
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
 
-  select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
 
-  .category-label {
-    margin-bottom: 5px;
-    color: #666;
-  }
+    .category-label {
+      margin-bottom: 5px;
+      color: #666;
+    }
 </style>
 
 <form
@@ -64,7 +64,6 @@
       placeholder="Название в каталоге АГБ"
       class="form-control"
     />
-
     <label>Название по КД</label>
     <input
       type="text"
@@ -184,16 +183,14 @@
         />
       </div>
     </div>
-  </div>
-  <div class="container text-center">
-    <label>Присвоил</label>
-    <input
-      required
-      type="text"
-      name="assigned"
-      placeholder="(Обязательное поле) Ваша Фамилия"
-      class="form-control"
-    />
+    <div class="container text-center">
+        <label>Присвоил</label>
+        <input readonly required type="text" name="assigned" placeholder="(Обязательное поле) Ваша Фамилия"
+               value="{{userdata.username}}"
+               class="form-control"/>
+
+        <label>Примечание</label>
+        <input type="text" name="note" placeholder="Любое примечание по детали" class="form-control"/>
 
     <label>Примечание</label>
     <input
