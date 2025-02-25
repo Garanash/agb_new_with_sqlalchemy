@@ -1,5 +1,4 @@
-{% extends 'base_header_and_footer.html' %}
-{% block content %}
+{% extends 'base_header_and_footer.html' %} {% block content %}
 
 <style>
     .dropdown-container {
@@ -20,162 +19,169 @@
     }
 </style>
 
-<form action="/metiz/create" method="POST">
-    <div class="container text-center">
-        <h1> Форма создания метиза </h1>
-        <div class="row">
-            <div class="col">
-                <label>Номер в каталоге</label>
-                <input required type="text" name="number_in_catalog" placeholder="(Обязательное поле) Номер в каталоге"
-                       class="form-control"/>
-            </div>
-            <div class="col">
-                <label>Номер в каталоге АГБ</label>
-                <input required type="text" name="number_in_catalog_agb"
-                       placeholder="(Обязательное поле) Номер в каталоге АГБ"
-                       class="form-control"/>
-            </div>
-        </div>
+<form
+  action="/metiz/create"
+  method="POST"
+>
+  <div class="container text-center">
+    <h1>Форма создания метиза</h1>
+    <div class="row">
+      <div class="col">
+        <label>Номер в каталоге</label>
+        <input
+          required
+          type="text"
+          name="number_in_catalog"
+          placeholder="(Обязательное поле) Номер в каталоге"
+          class="form-control"
+        />
+      </div>
+      <div class="col">
+        <label>Номер в каталоге АГБ</label>
+        <input
+          required
+          type="text"
+          name="number_in_catalog_agb"
+          placeholder="(Обязательное поле) Номер в каталоге АГБ"
+          class="form-control"
+        />
+      </div>
     </div>
-    <div class="container text-center">
-        <label>Название в каталоге</label>
-        <input type="text" name="name_in_catalog" placeholder="Название в каталоге" class="form-control"/>
+  </div>
+  <div class="container text-center">
+    <label>Название в каталоге</label>
+    <input
+      type="text"
+      name="name_in_catalog"
+      placeholder="Название в каталоге"
+      class="form-control"
+    />
 
+    <label>Название в каталоге АГБ</label>
+    <input
+      type="text"
+      name="name_in_catalog_agb"
+      placeholder="Название в каталоге АГБ"
+      class="form-control"
+    />
+    <label>Название по КД</label>
+    <input
+      type="text"
+      name="name_in_kd"
+      placeholder="Название по конструкторской документации"
+      class="form-control"
+    />
+  </div>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <label>Стандарт <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
+        <input
+          type="text"
+          name="standard"
+          placeholder="Пример: ASME B18.2.1"
+          class="form-control"
+        />
+      </div>
+      <div class="col">
+        <div id="dependent-dropdowns">
+          <div class="dropdown-container">
+            <label class="category-label">Тип метиза:</label>
+            <select id="fastener-type">
+              <option value="">Выберите тип метиза</option>
+              {% for metiz in metiz_types %}
+              <option value="{{ metiz.name }}">{{ metiz.value }}</option>
+              {% endfor %}
+            </select>
+          </div>
 
-        <label>Название в каталоге АГБ</label>
-        <input type="text" name="name_in_catalog_agb" placeholder="Название в каталоге АГБ"
-               class="form-control"/>
+          <div class="dropdown-container">
+            <label class="category-label">Стандарт:</label>
+            <select
+              id="standard"
+              disabled
+            >
+              <option value="">Сначала выберите тип метиза</option>
+            </select>
+          </div>
 
-        <label>Название по КД</label>
-        <input type="text" name="name_in_kd" placeholder="Название по конструкторской документации"
-               class="form-control"/>
-    </div>
-    <div class="container text-center">
-
-        <div class="row">
-            <div class="col">
-                <label>Стандарт
-                    <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
-                <select class="form-select" aria-label="Default select example" id="type" name="standard"
-                        typeof="text">
-                    <option value="-">-- Выберите стандарт --</option>
-                    <option value="ASME B18.2.1">ASME B18.2.1</option>
-                    <option value="ASME B18.21.1">ASME B18.21.1</option>
-                    <option value="ASME B18.3">ASME B18.3</option>
-                    <option value="ASME B18.2.2">ASME B18.2.2</option>
-                    <option value="DIN965">DIN965</option>
-                    <option value="DIN965A">DIN965A</option>
-                    <option value="DIN7337">DIN7337</option>
-                    <option value="DIN912">DIN912</option>
-                    <option value="DIN985">DIN985</option>
-                    <option value="DIN7985">DIN7985</option>
-                    <option value="DIN85">DIN85</option>
-                    <option value="DIN9021">DIN9021</option>
-                    <option value="DIN913">DIN913</option>
-                    <option value="DIN7504-N">DIN7504-N</option>
-                    <option value="DIN7981">DIN7981</option>
-                    <option value="DIN7982">DIN7982</option>
-                    <option value="DIN968">DIN968</option>
-                    <option value="DIN969">DIN969</option>
-                    <option value="DIN125">DIN125</option>
-                    <option value="DIN127-B">DIN127-B</option>
-                    <option value="DIN934">DIN934</option>
-                    <option value="DIN982">DIN982</option>
-                    <option value="DIN7991">DIN7991</option>
-                    <option value="DIN931">DIN931</option>
-                    <option value="DIN7338">DIN7338</option>
-                    <option value="DIN929">DIN929</option>
-                    <option value="DIN928">DIN928</option>
-                    <option value="DIN933">DIN933</option>
-                    <option value="DIN916">DIN916</option>
-                    <option value="DIN25201">DIN25201</option>
-                    <option value="DIN 316">DIN 316</option>
-                    <option value="ГОСТ Р ИСО 15973-2005">ГОСТ Р ИСО 15973-2005</option>
-                    <option value="DIN7504-K">DIN7504-K</option>
-                    <option value="DIN6923">DIN6923</option>
-                    <option value="DIN7964">DIN7964</option>
-                    <option value="DIN963">DIN963</option>
-                    <option value="DIN915">DIN915</option>
-                    <option value="DIN660">DIN660</option>
-
-                    <option value="DIN7504-K">DIN7504-K</option>
-                    <option value="DIN6923">DIN6923</option>
-                    <option value="DIN7964">DIN7964</option>
-                    <option value="DIN963">DIN963</option>
-                    <option value="DIN915">DIN915</option>
-                    <option value="DIN660">DIN660</option>
-                    <option value="DIN7504-K">DIN7504-K</option>
-                    <option value="DIN6923">DIN6923</option>
-                    <option value="DIN7964">DIN7964</option>
-                    <option value="DIN963">DIN963</option>
-                    <option value="DIN915">DIN915</option>
-                    <option value="DIN660">DIN660</option>
-
-
-                </select>
-            </div>
-            <!--            <div class="col">-->
-            <!--                            <div id="dependent-dropdowns">-->
-            <!--                                <div class="dropdown-container">-->
-            <!--                                    <label class="category-label">Тип метиза:</label>-->
-            <!--                                    <select id="fastener-type">-->
-            <!--                                        <option value="">Выберите тип метиза</option>-->
-            <!--                                    </select>-->
-            <!--                                </div>-->
-
-            <!--                                <div class="dropdown-container">-->
-            <!--                                    <label class="category-label">Стандарт:</label>-->
-            <!--                                    <select id="standard" disabled>-->
-            <!--                                        <option value="">Сначала выберите тип метиза</option>-->
-            <!--                                    </select>-->
-            <!--                                </div>-->
-
-            <!--                                <div class="dropdown-container">-->
-            <!--                                    <label class="category-label">Профиль:</label>-->
-            <!--                                    <select id="profile" disabled>-->
-            <!--                                        <option value="">Сначала выберите стандарт</option>-->
-            <!--                                    </select>-->
-            <!--                                </div>-->
-            <!--                                &lt;!&ndash;                </div>&ndash;&gt;-->
-            <!--                            </div>-->
-            <!--            </div>-->
+          <div class="dropdown-container">
+            <label class="category-label">Профиль:</label>
+            <select
+              id="profile"
+              disabled
+            >
+              <option value="">Сначала выберите стандарт</option>
+            </select>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <label>Профиль</label>
-                <input type="text" name="thread_profile" placeholder="Пример: UNC" class="form-control"/>
-            </div>
-            <div class="col">
-                <label>Диаметр <small>(Номинальный)</small></label>
-                <input type="text" name="nominal_diameter" placeholder="Пример: #10" class="form-control"/>
-            </div>
-        </div>
+  </div>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <label>Профиль</label>
+        <input
+          type="text"
+          name="thread_profile"
+          placeholder="Пример: UNC"
+          class="form-control"
+        />
+      </div>
+      <div class="col">
+        <label>Диаметр <small>(Номинальный)</small></label>
+        <input
+          type="text"
+          name="nominal_diameter"
+          placeholder="Пример: #10"
+          class="form-control"
+        />
+      </div>
     </div>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <label>Шаг резьбы</label>
-                <input type="text" name="thread_pitch" placeholder="Пример: 24" class="form-control"/>
-            </div>
-            <div class="col">
-                <label>Длинна</label>
-                <input type="text" name="length" placeholder="Пример: 1/2" class="form-control"/>
-            </div>
-        </div>
+  </div>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <label>Шаг резьбы</label>
+        <input
+          type="text"
+          name="thread_pitch"
+          placeholder="Пример: 24"
+          class="form-control"
+        />
+      </div>
+      <div class="col">
+        <label>Длинна</label>
+        <input
+          type="text"
+          name="length"
+          placeholder="Пример: 1/2"
+          class="form-control"
+        />
+      </div>
     </div>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <label>Материал покрытия</label>
-                <input type="text" name="Material_or_coating" placeholder="Пример: Zn" class="form-control"/>
-            </div>
-            <div class="col">
-                <label>Класс прочности</label>
-                <input type="text" name="strength_class" placeholder="Пример: G5" class="form-control"/>
-            </div>
-        </div>
+  </div>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <label>Материал покрытия</label>
+        <input
+          type="text"
+          name="Material_or_coating"
+          placeholder="Пример: Zn"
+          class="form-control"
+        />
+      </div>
+      <div class="col">
+        <label>Класс прочности</label>
+        <input
+          type="text"
+          name="strength_class"
+          placeholder="Пример: G5"
+          class="form-control"
+        />
+      </div>
     </div>
     <div class="container text-center">
         <label>Присвоил</label>
@@ -186,192 +192,90 @@
         <label>Примечание</label>
         <input type="text" name="note" placeholder="Любое примечание по детали" class="form-control"/>
 
-        <label>Применяемость</label>
-        <input type="text" name="applicability" placeholder="В каком проекте применяется данная деталь"
-               class="form-control"/>
+    <label>Примечание</label>
+    <input
+      type="text"
+      name="note"
+      placeholder="Любое примечание по детали"
+      class="form-control"
+    />
 
-        <label style="display: none;">Дата</label>
-        <input type="datetime-local" name="date" placeholder="date" style="display: none;"
-               class="form-control" value="{{ current_datetime }}" readonly/>
+    <label>Применяемость</label>
+    <input
+      type="text"
+      name="applicability"
+      placeholder="В каком проекте применяется данная деталь"
+      class="form-control"
+    />
 
-    </div>
-    <br>
-    <div class="container text-center">
-        <button class="btn btn-success" style="width: 400px">Добавить</button>
-    </div>
-
+    <label style="display: none">Дата</label>
+    <input
+      type="datetime-local"
+      name="date"
+      placeholder="date"
+      style="display: none"
+      class="form-control"
+      value="{{ current_datetime }}"
+      readonly
+    />
+  </div>
+  <br />
+  <div class="container text-center">
+    <button
+      class="btn btn-success"
+      style="width: 400px"
+    >
+      Добавить
+    </button>
+  </div>
 </form>
 
 <script>
-    class FastenerDropdowns {
-      constructor() {
-        // Данные о метизах, стандартах и профилях
-        this.fasteners = {
-          bolt: {
-            name: 'Болт',
-            standards: {
-              gost: {
-                name: 'ГОСТ',
-                profiles: [
-                { id: 'm6', name: 'М6' },
-                { id: 'm8', name: 'М8' },
-                { id: 'm10', name: 'М10' },
-                { id: 'm12', name: 'М12' },
-                { id: 'm14', name: 'М14' },
-                { id: 'm16', name: 'М16' },
-                { id: 'm18', name: 'М18' },
-                { id: 'm20', name: 'М20' },
-                { id: 'm22', name: 'М22' },
-                { id: 'm24', name: 'М24' },
-                { id: 'm26', name: 'М26' },
-                { id: 'm28', name: 'М28' },
-                { id: 'm30', name: 'М30' },
-                { id: 'm32', name: 'М32' }
-                ]
-              },
-              din: {
-                name: 'DIN',
-                profiles: [
-                  { id: 'm6', name: 'М6' },
-                  { id: 'm8', name: 'М8' },
-                  { id: 'm10', name: 'М10' },
-                  { id: 'm12', name: 'М12' },
-                  { id: 'm14', name: 'М14' },
-                  { id: 'm16', name: 'М16' },
-                  { id: 'm18', name: 'М18' },
-                  { id: 'm20', name: 'М20' },
-                  { id: 'm22', name: 'М22' },
-                  { id: 'm24', name: 'М24' },
-                  { id: 'm26', name: 'М26' },
-                  { id: 'm28', name: 'М28' },
-                  { id: 'm30', name: 'М30' },
-                  { id: 'm32', name: 'М32' }
-                ]
-              }
-            }
-          },
-          nut: {
-            name: 'Гайка',
-            standards: {
-              gost: {
-                name: 'ГОСТ',
-                profiles: [
-                    { id: 'm6', name: 'М6' },
-                    { id: 'm8', name: 'М8' },
-                    { id: 'm10', name: 'М10' },
-                    { id: 'm12', name: 'М12' },
-                    { id: 'm14', name: 'М14' },
-                    { id: 'm16', name: 'М16' },
-                    { id: 'm18', name: 'М18' },
-                    { id: 'm20', name: 'М20' },
-                    { id: 'm22', name: 'М22' },
-                    { id: 'm24', name: 'М24' },
-                    { id: 'm26', name: 'М26' },
-                    { id: 'm28', name: 'М28' },
-                    { id: 'm30', name: 'М30' },
-                    { id: 'm32', name: 'М32' }
-                ]
-              },
-              iso: {
-                name: 'ISO',
-                profiles: [
-                  { id: 'm6', name: 'М6' },
-                { id: 'm8', name: 'М8' },
-                { id: 'm10', name: 'М10' },
-                { id: 'm12', name: 'М12' },
-                { id: 'm14', name: 'М14' },
-                { id: 'm16', name: 'М16' },
-                { id: 'm18', name: 'М18' },
-                { id: 'm20', name: 'М20' },
-                { id: 'm22', name: 'М22' },
-                { id: 'm24', name: 'М24' },
-                { id: 'm26', name: 'М26' },
-                { id: 'm28', name: 'М28' },
-                { id: 'm30', name: 'М30' },
-                { id: 'm32', name: 'М32' }
-                ]
-              }
-            }
-          }
-        };
+  const standards = {
+    {% for key, value in standards_dict.items() %}
+      {{ key }}: {{ value|tojson }},
+    {% endfor %}
+  };
+  const profiles = {
+    {% for key, value in types_dict.items() %}
+      {{ key }}: {{ value|tojson }},
+    {% endfor %}
+  };
 
-        // Элементы DOM
-        this.fastenerTypeSelect = document.getElementById('fastener-type');
-        this.standardSelect = document.getElementById('standard');
-        this.profileSelect = document.getElementById('profile');
 
-        // Инициализация
-        this.initializeDropdowns();
-        this.setupEventListeners();
-      }
+  document.getElementById("fastener-type").addEventListener("change", function () {
+    const standardSelect = document.getElementById("standard");
+    const profileSelect = document.getElementById("profile");
+    standardSelect.innerHTML = '<option value="">Сначала выберите тип метиза</option>';
+    profileSelect.innerHTML = '<option value="">Сначала выберите тип метиза</option>';
+    if (this.value) {
+      const selectedStandards = standards[this.value];
 
-      initializeDropdowns() {
-        // Заполняем первый выпадающий список
-        Object.entries(this.fasteners).forEach(([key, fastener]) => {
-          const option = document.createElement('option');
-          option.value = key;
-          option.textContent = fastener.name;
-          this.fastenerTypeSelect.appendChild(option);
-        });
-      }
+      selectedStandards.forEach(function (standard) {
+        const option = document.createElement("option");
+        option.value = standard;
+        option.textContent = standard;
+        standardSelect.appendChild(option);
+      });
 
-      setupEventListeners() {
-        // Обработчик изменения типа метиза
-        this.fastenerTypeSelect.addEventListener('change', () => {
-          const selectedFastenerId = this.fastenerTypeSelect.value;
-
-          // Очищаем стандарты и профили
-          this.standardSelect.innerHTML = '<option value="">Сначала выберите тип метиза</option>';
-          this.profileSelect.innerHTML = '<option value="">Сначала выберите стандарт</option>';
-
-          if (selectedFastenerId) {
-            const fastener = this.fasteners[selectedFastenerId];
-
-            // Заполняем стандарты
-            Object.entries(fastener.standards).forEach(([key, standard]) => {
-              const option = document.createElement('option');
-              option.value = key;
-              option.textContent = standard.name;
-              this.standardSelect.appendChild(option);
-            });
-
-            this.standardSelect.disabled = false;
-          } else {
-            this.standardSelect.disabled = true;
-          }
-        });
-
-        // Обработчик изменения стандарта
-        this.standardSelect.addEventListener('change', () => {
-          const selectedFastenerId = this.fastenerTypeSelect.value;
-          const selectedStandardId = this.standardSelect.value;
-
-          // Очищаем профили
-          this.profileSelect.innerHTML = '<option value="">Сначала выберите стандарт</option>';
-
-          if (selectedFastenerId && selectedStandardId) {
-            const fastener = this.fasteners[selectedFastenerId];
-            const standard = fastener.standards[selectedStandardId];
-
-            // Заполняем профили
-            standard.profiles.forEach(profile => {
-              const option = document.createElement('option');
-              option.value = profile.id;
-              option.textContent = profile.name;
-              this.profileSelect.appendChild(option);
-            });
-
-            this.profileSelect.disabled = false;
-          } else {
-            this.profileSelect.disabled = true;
-          }
-        });
-      }
+      standardSelect.disabled = false;
+    } else {
+      standardSelect.disabled = true;
     }
+    if (this.value) {
+      const selectedProfiles = profiles[this.value];
 
-    // Инициализация при загрузке страницы
-    document.addEventListener('DOMContentLoaded', () => {
-      new FastenerDropdowns();
-    });
+      selectedProfiles.forEach(function (profile) {
+        const option = document.createElement("option");
+        option.value = profile;
+        option.textContent = profile;
+        profileSelect.appendChild(option);
+      });
+
+      profileSelect.disabled = false;
+    } else {
+      profileSelect.disabled = true;
+    }
+  });
 </script>
 {% endblock content %}
