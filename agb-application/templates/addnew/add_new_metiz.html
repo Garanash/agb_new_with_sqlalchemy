@@ -76,68 +76,44 @@
   <div class="container text-center">
     <div class="row">
       <div class="col">
-        <label>Стандарт <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
-        <input
-          type="text"
-          name="standard"
-          placeholder="Пример: ASME B18.2.1"
-          class="form-control"
-        />
+        <label class="category-label">Тип метиза:</label>
+        <select id="fastener-type">
+          <option value="">Выберите тип метиза</option>
+          {% for metiz in metiz_types %}
+          <option value="{{ metiz.name }}">{{ metiz.value }}</option>
+          {% endfor %}
+        </select>
       </div>
       <div class="col">
-        <div id="dependent-dropdowns">
-          <div class="dropdown-container">
-            <label class="category-label">Тип метиза:</label>
-            <select id="fastener-type">
-              <option value="">Выберите тип метиза</option>
-              {% for metiz in metiz_types %}
-              <option value="{{ metiz.name }}">{{ metiz.value }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="dropdown-container">
-            <label class="category-label">Стандарт:</label>
-            <select
-              id="standard"
-              disabled
-            >
-              <option value="">Сначала выберите тип метиза</option>
-            </select>
-          </div>
-
-          <div class="dropdown-container">
-            <label class="category-label">Профиль:</label>
-            <select
-              id="profile"
-              disabled
-            >
-              <option value="">Сначала выберите стандарт</option>
-            </select>
-          </div>
-        </div>
+        <label class="category-label">Стандарт <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
+        <select
+          id="standard"
+          disabled
+        >
+          <option value="">Сначала выберите тип метиза</option>
+        </select>
       </div>
     </div>
   </div>
   <div class="container text-center">
     <div class="row">
       <div class="col">
-        <label>Профиль</label>
-        <input
-          type="text"
-          name="thread_profile"
-          placeholder="Пример: UNC"
-          class="form-control"
-        />
+        <label class="category-label">Профиль</label>
+        <select
+          id="profile"
+          disabled
+        >
+          <option value="">Сначала выберите тип метиза</option>
+        </select>
       </div>
       <div class="col">
-        <label>Диаметр <small>(Номинальный)</small></label>
-        <input
-          type="text"
-          name="nominal_diameter"
-          placeholder="Пример: #10"
-          class="form-control"
-        />
+        <label class="category-label">Диаметр <small>(Номинальный)</small></label>
+        <select id="diameters">
+          <option value="">Выберите диаметр</option>
+          {% for diameter in diameters %}
+          <option value="{{ diameter.name }}">{{ diameter.value }}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
   </div>
@@ -249,8 +225,8 @@
   document.getElementById("fastener-type").addEventListener("change", function () {
     const standardSelect = document.getElementById("standard");
     const profileSelect = document.getElementById("profile");
-    standardSelect.innerHTML = '<option value="">Сначала выберите тип метиза</option>';
-    profileSelect.innerHTML = '<option value="">Сначала выберите тип метиза</option>';
+    standardSelect.innerHTML = '<option value="">Выберите стандарт</option>';
+    profileSelect.innerHTML = '<option value="">Выберите профиль</option>';
     if (this.value) {
       const selectedStandards = standards[this.value];
 
