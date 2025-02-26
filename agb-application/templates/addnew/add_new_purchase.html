@@ -33,7 +33,8 @@
             <input type="text" name="name_in_OEM" placeholder="Название в ОЕМ. Пример: ГПР 001 321 034"
                    class="form-control"/>
             <label>Присвоил</label>
-            <input required type="text" name="assigned" placeholder="(Обязательное поле) Ваша Фамилия"
+            <input readonly required type="text" name="assigned" placeholder="(Обязательное поле) Ваша Фамилия"
+                   value="{{userdata.username}}"
                    class="form-control"/>
             <label>Примечание</label>
             <input type="text" name="note" placeholder="Любое примечание по данному изделию" class="form-control"/>

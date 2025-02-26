@@ -71,7 +71,8 @@
         <div class="container text-center">
             <div class="col">
                 <label>Присвоил</label>
-                <input required type="text" name="assigned" placeholder="(Обязательное поле) Пример: Иванов И.И."
+                <input required type="text" readonly name="assigned" placeholder="(Обязательное поле) Пример: Иванов И.И."
+                       value="{{userdata.username}}"
                        class="form-control"/>
             </div>
             <div class="col">
