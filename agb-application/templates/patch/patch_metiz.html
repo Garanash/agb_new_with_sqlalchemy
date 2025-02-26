@@ -89,8 +89,8 @@
     <div class="row">
       <div class="col">
         <label class="category-label">Тип метиза:</label>
-        <select id="fastener-type">
-          <option value="">Выберите тип метиза</option>
+        <select id="fastener-type" name="hardware_type">
+          <option value={{item.hardware_type}}>{{item.hardware_type}}</option>
           {% for metiz in metiz_types %}
           <option value="{{ metiz.name }}">{{ metiz.value }}</option>
           {% endfor %}
@@ -100,9 +100,10 @@
         <label class="category-label">Стандарт <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
         <select
           id="standard"
+          name="standard"
           disabled
         >
-          <option value="">Сначала выберите тип метиза</option>
+          <option value={{item.standard}}>{{item.standard}}</option>
         </select>
       </div>
     </div>
@@ -120,8 +121,8 @@
       </div>
       <div class="col">
         <label class="category-label">Диаметр <small>(Номинальный)</small></label>
-        <select id="diameters">
-          <option value="">Выберите диаметр</option>
+        <select id="diameters" name="nominal_diameter">
+          <option value={{item.nominal_diameter}}>{{item.nominal_diameter}}р</option>
           {% for diameter in diameters %}
           <option value="{{ diameter.name }}">{{ diameter.value }}</option>
           {% endfor %}
