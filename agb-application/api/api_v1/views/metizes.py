@@ -52,6 +52,7 @@ async def add_new_metiz(request: Request,
     request: запрос от пользователя
     """
     metiz_types = consts.MetizType
+    diameters = consts.MetizDiameter
     standards_dict = {
         metiz_type.name: metiz_type.value for metiz_type in consts.MetizStandards
         }
@@ -63,6 +64,7 @@ async def add_new_metiz(request: Request,
                                        'current_datetime': datetime.now().strftime('%Y-%m-%d %H:%M'),
                                        'userdata': user_data,
                                        'standards_dict': standards_dict,
+                                       'diameters': diameters,
                                        'types_dict': types_dict,
                                        'metiz_types': metiz_types,
                                        'tag': 'metiz'})
@@ -77,9 +79,21 @@ async def patch_metiz_by_id(request: Request,
         session=session,
         metiz_id=item_id
     )
+    metiz_types = consts.MetizType
+    diameters = consts.MetizDiameter
+    standards_dict = {
+        metiz_type.name: metiz_type.value for metiz_type in consts.MetizStandards
+        }
+    types_dict = {
+        metiz_type.name: metiz_type.value for metiz_type in consts.MetizTypes
+    }
     return templates.TemplateResponse('/patch/patch_metiz.html',
                                       {'request': request,
                                        'current_datetime': datetime.now().strftime("%Y-%m-%d %H:%M"),
+                                       'standards_dict': standards_dict,
+                                       'diameters': diameters,
+                                       'types_dict': types_dict,
+                                       'metiz_types': metiz_types,
                                        'item': patch_item,
                                        'userdata': user_data,
                                        'tag': 'metiz'})
