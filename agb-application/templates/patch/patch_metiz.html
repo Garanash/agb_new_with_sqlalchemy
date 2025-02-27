@@ -91,21 +91,20 @@
         <label class="category-label">Тип метиза:</label>
         <select
           id="fastener-type"
+          disabled
           name="hardware_type"
         >
           <option value="{{item.hardware_type}}">{{item.hardware_type}}</option>
-          {% for metiz in metiz_types %}
-          <option value="{{ metiz.name }}">{{ metiz.value }}</option>
-          {% endfor %}
         </select>
       </div>
       <div class="col">
         <label class="category-label">Стандарт <small>(предпочтительно DIN. Для дюймовых ASME)</small></label>
         <select
           id="standard"
+          disabled
           name="standard"
         >
-          <option value="">Сначала выберите тип метиза</option>
+          <option value="{{item.standard}}">{{item.standard}}</option>
         </select>
       </div>
     </div>
@@ -119,19 +118,17 @@
           disabled
           name="thread_profile"
         >
-          <option value="">Сначала выберите тип метиза</option>
+          <option value="{{item.thread_profile}}">{{item.thread_profile}}</option>
         </select>
       </div>
       <div class="col">
         <label class="category-label">Диаметр <small>(Номинальный)</small></label>
         <select
           id="diameters"
+          disabled
           name="nominal_diameter"
         >
           <option value="{{item.nominal_diameter}}">{{item.nominal_diameter}}</option>
-          {% for diameter in diameters %}
-          <option value="{{ diameter.value }}">{{ diameter.value }}</option>
-          {% endfor %}
         </select>
       </div>
     </div>
@@ -234,51 +231,4 @@
     </button>
   </div>
 </form>
-<script>
-  const standards = {
-    {% for key, value in standards_dict.items() %}
-      {{ key }}: {{ value|tojson }},
-    {% endfor %}
-  };
-  const profiles = {
-    {% for key, value in types_dict.items() %}
-      {{ key }}: {{ value|tojson }},
-    {% endfor %}
-  };
-
-  document.getElementById("fastener-type").addEventListener("change", function () {
-    const standardSelect = document.getElementById("standard");
-    const profileSelect = document.getElementById("profile");
-    standardSelect.innerHTML = '<option value="">Выберите стандарт</option>';
-    profileSelect.innerHTML = '<option value="">Выберите профиль</option>';
-    if (this.value) {
-      const selectedStandards = standards[this.value];
-
-      selectedStandards.forEach(function (standard) {
-        const option = document.createElement("option");
-        option.value = standard;
-        option.textContent = standard;
-        standardSelect.appendChild(option);
-      });
-
-      standardSelect.disabled = false;
-    } else {
-      standardSelect.disabled = true;
-    }
-    if (this.value) {
-      const selectedProfiles = profiles[this.value];
-
-      selectedProfiles.forEach(function (profile) {
-        const option = document.createElement("option");
-        option.value = profile;
-        option.textContent = profile;
-        profileSelect.appendChild(option);
-      });
-
-      profileSelect.disabled = false;
-    } else {
-      profileSelect.disabled = true;
-    }
-  });
-</script>
 {% endblock content %}
