@@ -56,6 +56,7 @@ async def add_new_metiz(request: Request,
     standards_dict = {
         metiz_type.name: metiz_type.value for metiz_type in consts.MetizStandards
         }
+    print(standards_dict)
     types_dict = {
         metiz_type.name: metiz_type.value for metiz_type in consts.MetizTypes
     }
@@ -84,6 +85,7 @@ async def patch_metiz_by_id(request: Request,
     standards_dict = {
         metiz_type.name: metiz_type.value for metiz_type in consts.MetizStandards
         }
+    print(standards_dict)
     types_dict = {
         metiz_type.name: metiz_type.value for metiz_type in consts.MetizTypes
     }
